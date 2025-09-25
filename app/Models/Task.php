@@ -21,11 +21,11 @@ class Task extends Model
 
     public function board()
     {
-        return $this->belongsTo(Board::class);   
+        return $this->belongsTo(Board::class);
     }
 
     public function tags()
     {
-        return $this->hasMany(Tag::class);
+        return $this->belongsToMany(Tag::class);
     }
 }
