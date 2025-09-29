@@ -47,20 +47,19 @@
             @endif
         </div>
 </div>
-        
+<div class="flex justify-end pt-4">
+    <x-primary-button>{{ __('Save Settings') }}</x-primary-button>
+
+    @if (session('status') === 'profile-updated')
+        <p
+            x-data="{ show: true }"
+            x-show="show"
+            x-transition
+            x-init="setTimeout(() => show = false, 2000)"
+            class="text-sm text-gray-600"
+        >{{ __('Saved.') }}</p>
+    @endif
+</div>       
     
     </form>
 </section>
-<div class="flex justify-end pt-4">
-            <x-primary-button>{{ __('Save Settings') }}</x-primary-button>
-
-            @if (session('status') === 'profile-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600"
-                >{{ __('Saved.') }}</p>
-            @endif
-</div>
