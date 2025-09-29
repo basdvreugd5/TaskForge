@@ -22,7 +22,7 @@
             </nav>
         
         <div class="flex items-center gap-2">
-        <button class="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium bg-primary text-white hover:bg-primary/90 transition-colors">
+        <button class="flex items-center gap-2 rounded-lg px-2 text-sm font-medium bg-primary text-white hover:bg-primary/90 transition-colors">
             <span class="material-symbols-outlined text-base">add</span>
             New Task                
         </button>

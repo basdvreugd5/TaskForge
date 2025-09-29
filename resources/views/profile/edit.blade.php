@@ -14,23 +14,26 @@
         </p>
     </x-slot>
 
-     
+    <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6">Profile</h2>
+
     
         <div class="space-y-12">
             <div class="bg-white dark:bg-slate-900/70 rounded-xl shadow-sm p-8 space-y-6">
-                <div class="max-w-xl">
+                <div class="">
                     @include('profile.partials.update-profile-information-form')
                 </div>
             </div>
 
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6">Update Password</h2>
+
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
+                <div class="">
                     @include('profile.partials.update-password-form')
                 </div>
             </div>
 
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
+                <div class="">
                     @include('profile.partials.delete-user-form')
                 </div>
             </div>
