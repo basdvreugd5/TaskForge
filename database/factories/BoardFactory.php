@@ -23,6 +23,7 @@ class BoardFactory extends Factory
         return [
             'name' => fake()->sentence(2),
             'user_id' => User::factory(),
+            'description' => fake()->paragraph(),
         ];
     }
 }

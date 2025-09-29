@@ -17,22 +17,28 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        // User::factory(10)->create();
-
-        User::factory()->create([
+        $testUser = User::factory()->create([
             'name' => 'Test User',
             'email' => 'admin@taskforge.test',
         ]);
 
-        Board::factory(5)
-            ->has(Task::factory(10))
-            ->create()
-            ->each(function ($board) {
-                $tags = Tag::factory(5)->create();
+        $users = User::factory(9)->create();
 
-                $board->tasks->each(function ($task) use ($tags) {
-                    $task->tags()->attach($tags->random(rand(1, 3))->pluck('id')->toArray());
+        $users->push($testUser);
+
+        $users->each(function ($user) {
+            Board::factory(3)
+                ->for($user)
+                ->has(Task::factory(10))
+                ->create()
+                ->each(function ($board) {
+                    $tags = Tag::factory(5)->create();
+
+                    $board->tasks->each(function ($task) use ($tags) {
+                        $task->tags()->attach($tags->random(rand(1, 3))->pluck('id')->toArray()
+                    );
                 });
             });
+        });
     }
 }

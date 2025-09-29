@@ -17,6 +17,13 @@ class Task extends Model
         'hard_deadline',
         'status',
         'priority',
+        'checklist',
+    ];
+
+    protected $casts = [
+        'soft_due_date' => 'datetime',
+        'hard_deadline' => 'datetime',
+        'checklist' => 'array',
     ];
 
     public function board()

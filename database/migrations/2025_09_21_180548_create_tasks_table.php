@@ -18,8 +18,9 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->date('soft_due_date')->nullable();
             $table->date('hard_deadline');
-            $table->enum('status', ['open', 'in_progress', 'done'])->default('open');
+            $table->enum('status', ['open', 'in_progress', 'review', 'done'])->default('open');
             $table->enum('priority', ['low', 'medium', 'high'])->default('medium');
+            $table->json('checklist')->nullable();
             $table->timestamps();
         });
     }

@@ -16,9 +16,9 @@
     <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
         @csrf
         @method('patch')
-
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-            <x-input-label for="name" :value="__('Name')" />
+            <x-input-label for="name" :value="__('Full Name')" />
             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
@@ -46,9 +46,13 @@
                 </div>
             @endif
         </div>
-
-        <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
+</div>
+        
+    
+    </form>
+</section>
+<div class="flex justify-end pt-4">
+            <x-primary-button>{{ __('Save Settings') }}</x-primary-button>
 
             @if (session('status') === 'profile-updated')
                 <p
@@ -59,6 +63,4 @@
                     class="text-sm text-gray-600"
                 >{{ __('Saved.') }}</p>
             @endif
-        </div>
-    </form>
-</section>
+</div>

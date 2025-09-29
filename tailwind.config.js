@@ -11,8 +11,19 @@ export default {
 
     theme: {
         extend: {
+            colors: {
+                primary: "#30abe8",
+                "background-light": "#f6f7f8",
+                "background-dark": "#111c21"
+            },
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Space Grotesk', ...defaultTheme.fontFamily.sans],
+            },
+            borderRadius: {
+                DEFAULT: "0.5rem",
+                lg: "1rem",
+                xl: "1.5rem",
+                full: "9999px"
             },
         },
     },
