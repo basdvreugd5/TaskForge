@@ -24,7 +24,7 @@
             @include('layouts.navigation')
 
             <!-- Main Content -->
-            <main class= "flex-1 overflow-y-auto p-6 lg:p-10">
+            <main class= "flex-1 p-6 lg:p-10">
                 
                 <!-- Page Heading -->
                 @isset($header)
@@ -38,4 +38,6 @@
             </main>
         </div>
     </body>
+    {{-- <script src="//unpkg.com/alpinejs" defer></script> --}}
 </html>
+

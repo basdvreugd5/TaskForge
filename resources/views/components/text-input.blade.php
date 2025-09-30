@@ -1,3 +1,10 @@
-@props(['disabled' => false])
+@props(['disabled' => false, 'type' => 'text'])
 
-<input @disabled($disabled) {{ $attributes->merge(['class' => 'form-input w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-primary focus:border-primary py-3 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500']) }}>
+@if ($type === 'textarea')
+    <textarea @disabled($disabled) {{ $attributes->merge(['class' => 'form-textarea w-full w-full px-4 py-3 bg-slate-100 dark:bg-border-dark/30 border border-slate-200 dark:border-slate-700 rounded-lg text-lg text-slate-800 dark:text-slate-200 focus:ring-primary focus:border-primary transition-shadow']) }}>{{  $slot ?? '' }}</textarea>
+    
+@else
+
+<input @disabled($disabled) {{ $attributes->merge(['class' => 'form-input w-full w-full px-4 py-3 bg-slate-100 dark:bg-border-dark/30 border border-slate-200 dark:border-slate-700 rounded-lg text-lg text-slate-800 dark:text-slate-200 focus:ring-primary focus:border-primary transition-shadow']) }}>
+
+@endif

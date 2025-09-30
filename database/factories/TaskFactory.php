@@ -42,7 +42,7 @@ class TaskFactory extends Factory
             'checklist' => collect(range(1, rand(2, 5)))->map(function() {
                 return [
                     'title' => $this->faker->words(3, true),
-                    'is_completeed' => $this->faker->boolean(30),
+                    'is_completed' => $this->faker->boolean(30),
                 ];
             })->toArray(),
         ];
