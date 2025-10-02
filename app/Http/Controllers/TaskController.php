@@ -98,6 +98,28 @@ class TaskController extends Controller
                         ->with('success', 'Task updated successfully!');
     }
 
+    //Update Checklist
+    public function updateChecklist(Request $request, Task $task)
+    {
+        $validated = $request->validate([
+            'index' => 'required|integer',
+            'is_completed' => 'required|boolean'
+        ]);
+
+        $checklist = $task->checklist ?? [];
+
+        if (isset($checklist[$validated['index']])) {
+            $checklist[$validated['index']]['is_completed'] = $validated['is_completed'];
+        }
+
+        $task->update(['checklist' => $checklist]);
+
+        return response()->json([
+            'success' => true,
+            'checklist' => $checklist,
+        ]);
+    }
+
     //Delete
     public function destroy(Task $task)
     {

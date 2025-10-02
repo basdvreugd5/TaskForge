@@ -5,6 +5,7 @@ use App\Models\User;
 use App\Models\Task;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\BoardController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -34,21 +35,36 @@ Route::middleware(['auth', 'verified'])
         return view('timeline');
     })->name('timeline');
 
-    //Individual Boards
 
-    Route::get('boards/{board}', function(Board $board) {
-        $board->load(['tasks' => function($query) {
-            $query->whereIn('status', ['open', 'in_progress', 'review', 'done']);
-        }]);
-        return view('boards.show', compact('board'));
-    })->name('boards.show');
 
-    
+// Route::get('/boards/create', function () {
+//     return view('boards.create', [
+//         'board' => new Board(), // empty model
+//     ]);
+// })->name('boards.create');
+//     //Individual Boards
+
+//     Route::get('boards/{board}', function(Board $board) {
+//         $board->load(['tasks' => function($query) {
+//             $query->whereIn('status', ['open', 'in_progress', 'review', 'done']);
+//         }]);
+//         return view('boards.show', compact('board'));
+//     })->name('boards.show');
+
+    route::get('/boards{board}', [BoardController::class, 'show'])->name('boards.show');
+    route::get('/boards/create', [BoardController::class, 'create'])->name('boards.create');
+    Route::post('/boards', [BoardController::class, 'store'])->name('boards.store');
+    Route::get('/boards/{board}/edit', [BoardController::class, 'edit'])->name('boards.edit');
+    Route::put('boards/{board}', [BoardController::class, 'update'])->name('boards.update');
+    Route::delete('/boards/{board}', [BoardController::class, 'destroy'])->name('boards.destroy');   
+
+
     Route::get('tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
     Route::get('boards/{board}/tasks/create', [TaskController::class, 'create'])->name('tasks.create');
     Route::post('boards/{board}/tasks', [TaskController::class, 'store'])->name('tasks.store');
     Route::get('/tasks/{task}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
     Route::put('tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
+    Route::put('/tasks/{task}/checklist', [TaskController::class, 'updateChecklist'])->name('tasks.checklist.update');
     Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
 
     

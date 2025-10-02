@@ -150,7 +150,7 @@
                             <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">
                                 Subtasks
                             </h2>
-                            <p class="text-base text-slate-500 dark:text-slate-400 font-medium">
+                            <p class="subtask-progress text-base text-slate-500 dark:text-slate-400 font-medium">
                                 {{-- Example: count completed subtasks --}}
                                 {{ collect($task->checklist)->where('is_completed', true)->count() }}
                                 of
@@ -159,16 +159,18 @@
                         </div>
 
                         <div class="space-y-4">
-                            @foreach($task->checklist ?? [] as $item)
+                            @foreach($task->checklist ?? [] as $i => $item)
                                 <label class="flex items-center space-x-4 p-4 rounded-lg bg-slate-100/70 dark:bg-border-dark/30 hover:bg-slate-200/70 dark:hover:bg-border-dark/50 transition-colors cursor-pointer shadow-sm">
                                     <input type="checkbox"
                                            @checked($item['is_completed'])
-                                           class="h-6 w-6 rounded-md border-slate-400 dark:border-border-dark text-primary focus:ring-primary/50 bg-slate-200 dark:bg-slate-700">
+                                           data-index="{{ $i }}"
+                                           class="subtask-checkbox h-6 w-6 rounded-md border-slate-400 dark:border-border-dark text-primary focus:ring-primary/50 bg-slate-200 dark:bg-slate-700">
                                     <span class="text-lg text-slate-600 dark:text-slate-400 {{ $item['is_completed'] ? 'line-through' : '' }}">
                                         {{ $item['title'] }}
                                     </span>
                                 </label>
                             @endforeach
+
                         </div>
                     </div>
 
@@ -176,4 +178,40 @@
             </div>
         </main>
     </div>
+    <script>
+document.querySelectorAll('.subtask-checkbox').forEach(cb => {
+    cb.addEventListener('change', async e => {
+        let index = e.target.dataset.index;
+        let taskId = "{{ $task->id }}";
+
+        const response = await fetch(`/dashboard/tasks/${taskId}/checklist`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            },
+            body: JSON.stringify({
+                index: index,
+                is_completed: e.target.checked ? true : false
+            })
+        });
+
+        if (response.ok) {
+            // Toggle line-through immediately
+            let label = e.target.closest('label').querySelector('span');
+            if (e.target.checked) {
+                label.classList.add('line-through');
+            } else {
+                label.classList.remove('line-through');
+            }
+
+            // Update "X of Y completed"
+            let data = await response.json();
+            let completed = data.checklist.filter(i => i.is_completed).length;
+            let total = data.checklist.length;
+            document.querySelector('.subtask-progress').textContent = `${completed} of ${total} completed`;
+        }
+    });
+});
+</script>
 </x-app-layout>

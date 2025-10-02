@@ -27,7 +27,7 @@
                         </a>
                     </nav>
                     <div class="flex items-center gap-2">
-                        <a href="" class="flex items-center gap-2 rounded-lg px-2 py-1 text-sm font-medium bg-primary text-white hover:bg-primary/90 transition-colors">
+                        <a href="{{ route('boards.create') }}" class="flex items-center gap-2 rounded-lg px-2 py-1 text-sm font-medium bg-primary text-white hover:bg-primary/90 transition-colors">
                             <span class="material-symbols-outlined text-base">add</span>
                             New Board
                         </a>
