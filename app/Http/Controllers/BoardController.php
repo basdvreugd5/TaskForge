@@ -3,29 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\Board;
-use App\Models\Task;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request; 
+use Illuminate\Http\Request;
 
 class BoardController extends Controller
 {
-    //Index
-
     //Show
-
     public function show(Board $board) 
     {
+        $this->authorize('view', $board); 
+        
         $board->load(['tasks' => function($query) {
             $query->whereIn('status', ['open', 'in_progress', 'review', 'done']);
         }]);
         
-        return view ('boards.show', compact('board'));
+        return view('boards.show', compact('board'));
     }
 
     //Create
     public function create() 
     {
-        return view('boards.create',[
+        return view('boards.create', [
             'board' => new Board(),
         ]);
     }
@@ -45,44 +43,43 @@ class BoardController extends Controller
         ]);
 
         return redirect()->route('boards.show', $board)
-        ->with('succes', 'Board created successfully!');
+                         ->with('success', 'Board created successfully!');
     }
-    
+
     //Edit
     public function edit(Board $board)
     {
+        $this->authorize('update', $board); 
         return view('boards.edit', compact('board'));
     }
 
     //Update
     public function update(Request $request, Board $board)
     {
-        // Validate incoming request
-        $validated =$request->validate([
+        $this->authorize('update', $board);
+
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
         ]);
 
-        //Update the board using mass assignment.
         $board->update([
             'name' => $validated['name'],
             'description' => $validated['description']
         ]);
 
-        //Redirect back to the board page.
-        return redirect()->route('boards.show', $board)->with('success', 'Board updated successfully!');
+        return redirect()->route('boards.show', $board)
+                         ->with('success', 'Board updated successfully!');
     }
 
-    
     //Destroy
     public function destroy(Board $board) 
     {
+        $this->authorize('delete', $board);
+
         $board->delete();
 
-        return redirect()
-        ->route('dashboard')
-        ->with('success', 'Board deleted succesfully');
+        return redirect()->route('dashboard')
+                         ->with('success', 'Board deleted successfully');
     }
-    
-
 }

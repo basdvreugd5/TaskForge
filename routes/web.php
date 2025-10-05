@@ -30,52 +30,41 @@ Route::middleware(['auth', 'verified'])
         return view('dashboard', compact('user', 'boards', 'tasks'));
     })->name('dashboard');
 
-    //Timeline Page
+    //Timeline Page -- WORK IN PROGRESS
     Route::get('/timeline',function() {
         return view('timeline');
     })->name('timeline');
 
+    //Board routes
+    Route::prefix('boards')->name('boards.')->group(function () {
+        Route::get('create', [BoardController::class, 'create'])->name('create');
+        Route::post('/', [BoardController::class, 'store'])->name('store');
+        Route::get('{board}/edit', [BoardController::class, 'edit'])->name('edit');
+        Route::put('{board}', [BoardController::class, 'update'])->name('update');
+        Route::delete('{board}', [BoardController::class, 'destroy'])->name('destroy');
+        Route::get('{board}', [BoardController::class, 'show'])->name('show');
+    });   
 
+    // Board → Task routes
+    Route::prefix('boards/{board}')->name('boards.')->group(function () {
+        Route::get('tasks/create', [TaskController::class, 'create'])->name('tasks.create');
+        Route::post('tasks', [TaskController::class, 'store'])->name('tasks.store');
+    });
 
-// Route::get('/boards/create', function () {
-//     return view('boards.create', [
-//         'board' => new Board(), // empty model
-//     ]);
-// })->name('boards.create');
-//     //Individual Boards
-
-//     Route::get('boards/{board}', function(Board $board) {
-//         $board->load(['tasks' => function($query) {
-//             $query->whereIn('status', ['open', 'in_progress', 'review', 'done']);
-//         }]);
-//         return view('boards.show', compact('board'));
-//     })->name('boards.show');
-
-    route::get('/boards{board}', [BoardController::class, 'show'])->name('boards.show');
-    route::get('/boards/create', [BoardController::class, 'create'])->name('boards.create');
-    Route::post('/boards', [BoardController::class, 'store'])->name('boards.store');
-    Route::get('/boards/{board}/edit', [BoardController::class, 'edit'])->name('boards.edit');
-    Route::put('boards/{board}', [BoardController::class, 'update'])->name('boards.update');
-    Route::delete('/boards/{board}', [BoardController::class, 'destroy'])->name('boards.destroy');   
-
-
-    Route::get('tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
-    Route::get('boards/{board}/tasks/create', [TaskController::class, 'create'])->name('tasks.create');
-    Route::post('boards/{board}/tasks', [TaskController::class, 'store'])->name('tasks.store');
-    Route::get('/tasks/{task}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
-    Route::put('tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
-    Route::put('/tasks/{task}/checklist', [TaskController::class, 'updateChecklist'])->name('tasks.checklist.update');
-    Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
-
-    
-
+    // Direct Task routes
+    Route::prefix('tasks')->name('tasks.')->group(function () {
+        Route::get('{task}/edit', [TaskController::class, 'edit'])->name('edit');
+        Route::put('{task}', [TaskController::class, 'update'])->name('update');
+        Route::put('{task}/checklist', [TaskController::class, 'updateChecklist'])->name('checklist.update');
+        Route::delete('{task}', [TaskController::class, 'destroy'])->name('destroy');
+        Route::get('{task}', [TaskController::class, 'show'])->name('show');
+    });
 });
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');    
 });
 
 require __DIR__.'/auth.php';

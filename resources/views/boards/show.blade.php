@@ -26,7 +26,7 @@
                                 <span class="material-symbols-outlined text-base">edit</span>
                                 Edit Board
                             </a>
-                            <a href="{{ route('tasks.create', $board) }}" class="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium bg-primary text-white hover:bg-primary/90 transition-colors">
+                            <a href="{{ route('boards.tasks.create', $board) }}" class="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium bg-primary text-white hover:bg-primary/90 transition-colors">
                                 <span class="material-symbols-outlined text-base">add</span>
                                 New Task
                             </a>
