@@ -16,7 +16,7 @@
 
                 <!-- Task Card -->
                 <div class="bg-white dark:bg-card-dark rounded-xl shadow-lg p-8 md:p-12 space-y-12">
-                    <form action="{{ route('tasks.store', $board) }}" method="POST" class="space-y-10">
+                    <form action="{{ route('boards.tasks.store', $board) }}" method="POST" class="space-y-10">
                         @csrf
                         <input type="hidden" name="board_id" value="{{ $board->id }}">
                         <!-- Title + Board -->

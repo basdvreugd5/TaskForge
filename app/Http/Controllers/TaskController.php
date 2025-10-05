@@ -13,12 +13,16 @@ class TaskController extends Controller
     //Show
     public function show(Task $task)
     {
+        $this->authorize('view', $task);
+
         $task->load(['board.tasks']);
         return view ('tasks.show', compact('task'));
     }
     //Create
     public function create(Board $board)
     {
+        $this->authorize('create', [Task::class, $board]);
+
         return view('tasks.create', [
             'task' => new Task(),
             'board' => $board,
@@ -27,6 +31,8 @@ class TaskController extends Controller
     //Store
     public function store(Request $request, Board $board)
     {
+        $this->authorize('create', [Task::class, $board]);
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string|max:1220',
@@ -60,6 +66,8 @@ class TaskController extends Controller
     //Edit
     public function edit(Task $task)
     {
+        $this->authorize('update', $task);
+
         $board = $task->board;
         return view('tasks.edit', compact('task', 'board'));
     }
@@ -67,6 +75,7 @@ class TaskController extends Controller
     //Update
     public function update(Request $request, Task $task)
     {
+        $this->authorize('update', $task);
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string|max:1220',
@@ -101,6 +110,8 @@ class TaskController extends Controller
     //Update Checklist
     public function updateChecklist(Request $request, Task $task)
     {
+        $this->authorize('update', $task);
+
         $validated = $request->validate([
             'index' => 'required|integer',
             'is_completed' => 'required|boolean'
@@ -123,6 +134,7 @@ class TaskController extends Controller
     //Delete
     public function destroy(Task $task)
     {
+        $this->authorize('delete', $task);
         $board = $task->board;
         $task->delete();
 
