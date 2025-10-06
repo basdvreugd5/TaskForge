@@ -50,4 +50,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(Board::class);
     }
+
+    public function collaboratedBoards()
+    {
+        return $this->belongsToMany(Board::class)
+                    ->withPivot('role')
+                    ->withTimestamps();
+    }
 }
