@@ -17,13 +17,13 @@ class BoardController extends Controller
             $query->whereIn('status', ['open', 'in_progress', 'review', 'done']);
         }]);
         
-        return view('boards.show', compact('board'));
+        return view('dashboard.boards.show', compact('board'));
     }
 
     //Create
     public function create() 
     {
-        return view('boards.create', [
+        return view('dashboard.boards.create', [
             'board' => new Board(),
         ]);
     }
@@ -44,7 +44,7 @@ class BoardController extends Controller
 
         $board->collaborators()->attach(Auth::id(), ['role' => 'owner']);
 
-        return redirect()->route('boards.show', $board)
+        return redirect()->route('dashboard.boards.show', $board)
                          ->with('success', 'Board created successfully!');
     }
 
@@ -52,7 +52,7 @@ class BoardController extends Controller
     public function edit(Board $board)
     {
         $this->authorize('update', $board); 
-        return view('boards.edit', compact('board'));
+        return view('dashboard.boards.edit', compact('board'));
     }
 
     //Update
@@ -70,7 +70,7 @@ class BoardController extends Controller
             'description' => $validated['description']
         ]);
 
-        return redirect()->route('boards.show', $board)
+        return redirect()->route('dashboard.boards.show', $board)
                          ->with('success', 'Board updated successfully!');
     }
 
@@ -81,7 +81,7 @@ class BoardController extends Controller
 
         $board->delete();
 
-        return redirect()->route('dashboard')
+        return redirect()->route('dashboard.index')
                          ->with('success', 'Board deleted successfully');
     }
 }

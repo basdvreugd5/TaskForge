@@ -11,7 +11,7 @@
         $statusClasses .= ' border-2 border-red-500/50 dark:border-red-400/50';
     }
 @endphp
-<a href="{{ route('tasks.show', $task) }}" class="block">
+<a href="{{ route('dashboard.tasks.show', $task) }}" class="block">
     <div class="rounded-lg p-4 shadow-sm hover:shadow-lg transition-shadow cursor-grab {{ $statusClasses }}">
         <div class="flex items-start justify-between">
             <div>

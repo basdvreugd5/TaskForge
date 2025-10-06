@@ -16,7 +16,7 @@
 
                 <!-- Task Card -->
                 <div class="bg-white dark:bg-card-dark rounded-xl shadow-lg p-8 md:p-12 space-y-12">
-                    <form action="{{ route('boards.tasks.store', $board) }}" method="POST" class="space-y-10">
+                    <form action="{{ route('dashboard.boards.tasks.store', $board) }}" method="POST" class="space-y-10">
                         @csrf
                         <input type="hidden" name="board_id" value="{{ $board->id }}">
                         <!-- Title + Board -->
@@ -129,7 +129,7 @@
                             </div>
                         </div>
                         <div class="mt-12 flex justify-end gap-4">
-                            <a href="{{ route('boards.show', $board) }}" class ="px-6 py-3 rounded-lg text-slate-700 dark:text-slate-300 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 font-semibold transition-colors">Cancel</a>
+                            <a href="{{ route('dashboard.boards.show', $board) }}" class ="px-6 py-3 rounded-lg text-slate-700 dark:text-slate-300 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 font-semibold transition-colors">Cancel</a>
                             <button class="px-6 py-3 rounded-lg text-white bg-primary hover:bg-primary/90 font-semibold transition-colors shadow-lg shadow-primary/20" type="submit">Save Changes</button>
                         </div>
 

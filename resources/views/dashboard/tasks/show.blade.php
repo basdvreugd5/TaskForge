@@ -7,12 +7,12 @@
 
                 <!-- Back to Boards Button & Edit Task Button -->
                 <div class="flex items-center justify-between mb-8">
-                    <a href="{{ route('boards.show', $task->board) }}" 
+                    <a href="{{ route('dashboard.boards.show', $task->board) }}" 
                        class="flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
                         <span class="material-symbols-outlined">arrow_back</span>
                         <span class="text-sm font-medium">Back to Board</span>
                     </a>
-                    <a href="{{ route('tasks.edit', $task) }}" class="flex items-center gap-2 px-5 py-3 rounded-lg bg-primary text-white font-medium shadow-lg shadow-primary/30 hover:bg-primary/90 transition-all duration-300">
+                    <a href="{{ route('dashboard.tasks.edit', $task) }}" class="flex items-center gap-2 px-5 py-3 rounded-lg bg-primary text-white font-medium shadow-lg shadow-primary/30 hover:bg-primary/90 transition-all duration-300">
                         <span class="material-symbols-outlined">
                             edit
                         </span>

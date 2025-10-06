@@ -16,14 +16,14 @@ class TaskController extends Controller
         $this->authorize('view', $task);
 
         $task->load(['board.tasks']);
-        return view ('tasks.show', compact('task'));
+        return view ('dashboard.tasks.show', compact('task'));
     }
     //Create
     public function create(Board $board)
     {
         $this->authorize('create', [Task::class, $board]);
 
-        return view('tasks.create', [
+        return view('dashboard.tasks.create', [
             'task' => new Task(),
             'board' => $board,
         ]);
@@ -61,7 +61,7 @@ class TaskController extends Controller
             })->toArray(),
         ]);
 
-        return redirect()->route('tasks.show', $task);
+        return redirect()->route('dashboard.tasks.show', $task);
     }
     //Edit
     public function edit(Task $task)
@@ -69,7 +69,7 @@ class TaskController extends Controller
         $this->authorize('update', $task);
 
         $board = $task->board;
-        return view('tasks.edit', compact('task', 'board'));
+        return view('dashboard.tasks.edit', compact('task', 'board'));
     }
 
     //Update
@@ -103,7 +103,7 @@ class TaskController extends Controller
             })->toArray(),
         ]);
 
-        return redirect()->route('tasks.show', $task)
+        return redirect()->route('dashboard.tasks.show', $task)
                         ->with('success', 'Task updated successfully!');
     }
 
@@ -139,7 +139,7 @@ class TaskController extends Controller
         $task->delete();
 
         return redirect()
-        ->route('boards.show', $board)
+        ->route('dashboard.boards.show', $board)
         ->with('succes', 'Task deleted succesfully');
     }
 

@@ -13,7 +13,7 @@
                         <span class="text-sm font-medium">Back to Board</span>
                     </a>
                     <div class="mt-6">
-                        <form action="{{ route('boards.destroy', $board) }}" method="POST" 
+                        <form action="{{ route('dashboard.boards.destroy', $board) }}" method="POST" 
                                 onsubmit="return confirm('Are you sure you want to delete this board?');">
                             @csrf
                             @method('DELETE')
@@ -26,7 +26,7 @@
 
                 <!-- Task Card -->
                 <div class="bg-white dark:bg-card-dark rounded-xl shadow-lg p-8 md:p-12 space-y-12">
-                    <form class="space-y-10" method="POST" action="{{ route('boards.update', $board) }}" enctype="multipart/form-data">
+                    <form class="space-y-10" method="POST" action="{{ route('dashboard.boards.update', $board) }}" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         
@@ -74,7 +74,7 @@
                             </div>
 
                         <div class="mt-12 flex justify-end gap-4">
-                            <a href="{{ route('dashboard') }}" class ="px-6 py-3 rounded-lg text-slate-700 dark:text-slate-300 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 font-semibold transition-colors">Cancel</a>
+                            <a href="{{ route('dashboard.index') }}" class ="px-6 py-3 rounded-lg text-slate-700 dark:text-slate-300 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 font-semibold transition-colors">Cancel</a>
                             <button class="px-6 py-3 rounded-lg text-white bg-primary hover:bg-primary/90 font-semibold transition-colors shadow-lg shadow-primary/20" type="submit">Save Changes</button>
                         </div>
 

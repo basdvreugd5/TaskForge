@@ -16,6 +16,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])
     ->prefix('dashboard')
+    ->name('dashboard.')
     ->group(function() {
 
     // Dashboard home
@@ -27,12 +28,12 @@ Route::middleware(['auth', 'verified'])
             ->orderBy('hard_deadline', 'asc')
             ->paginate(5);
             
-        return view('dashboard', compact('user', 'boards', 'tasks'));
-    })->name('dashboard');
+        return view('dashboard.index', compact('user', 'boards', 'tasks'));
+    })->name('index');
 
     //Timeline Page -- WORK IN PROGRESS
     Route::get('/timeline',function() {
-        return view('timeline');
+        return view('dashboard.timeline');
     })->name('timeline');
 
     //Board routes

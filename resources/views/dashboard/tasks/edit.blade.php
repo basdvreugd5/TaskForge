@@ -13,7 +13,7 @@
                         <span class="text-sm font-medium">Back to Board</span>
                     </a>
                     <div class="mt-6">
-                        <form action="{{ route('tasks.destroy', $task) }}" method="POST" 
+                        <form action="{{ route('dashboard.tasks.destroy', $task) }}" method="POST" 
                                 onsubmit="return confirm('Are you sure you want to delete this task?');">
                             @csrf
                             @method('DELETE')
@@ -26,7 +26,7 @@
 
                 <!-- Task Card -->
                 <div class="bg-white dark:bg-card-dark rounded-xl shadow-lg p-8 md:p-12 space-y-12">
-                    <form id="update-task-form" action="{{ route('tasks.update', $task) }}" method="POST" class="space-y-10">
+                    <form id="update-task-form" action="{{ route('dashboard.tasks.update', $task) }}" method="POST" class="space-y-10">
                         @csrf
                         @method('PUT')
                         <input type="hidden" name="board_id" value="{{ $board->id }}">
@@ -132,7 +132,7 @@
                             
                             <!-- Cancel + Save on the right -->
                             <div class="flex gap-4">
-                                <a href="{{ route('boards.show', $board) }}" 
+                                <a href="{{ route('dashboard.boards.show', $board) }}" 
                                 class="px-6 py-3 rounded-lg text-slate-700 dark:text-slate-300 bg-slate-200 dark:bg-border-dark/30 hover:bg-slate-300 dark:hover:bg-slate-700 font-semibold transition-colors">
                                     Cancel
                                 </a>

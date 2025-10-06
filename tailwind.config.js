@@ -20,9 +20,12 @@ export default {
                 "accent": "#34D399",
                 "text-light": "#111827",
                 "text-dark": "#9FB3C8", 
-                
+                "card-light": "#ffffff",
                 "card-dark": "#172A3A",
-                "border-dark": "#2A4454",                
+                "border-dark": "#2A4454",
+                "pastel-pink": "#fde4e4",
+                "pastel-blue": "#daeaf6",
+                "pastel-green": "#e4f6e9",                
             },
             fontFamily: {
                 sans: ['Space Grotesk', ...defaultTheme.fontFamily.sans],
