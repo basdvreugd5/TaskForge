@@ -42,6 +42,8 @@ class BoardController extends Controller
             'user_id' => Auth::id(),
         ]);
 
+        $board->collaborators()->attach(Auth::id(), ['role' => 'owner']);
+
         return redirect()->route('boards.show', $board)
                          ->with('success', 'Board created successfully!');
     }

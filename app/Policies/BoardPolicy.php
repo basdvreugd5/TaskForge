@@ -8,6 +8,17 @@ use Illuminate\Auth\Access\Response;
 
 class BoardPolicy
 {
+    protected function getRole(User $user, Board $board): ?string
+    {
+        if ($user->id === $board->user_id) {
+            return 'owner';
+        }
+
+        $collaborator = $board->collaborators()->where('user_id', $user->id)->first();
+
+        return $collaborator ? $collaborator->pivot->role : null;
+                            
+    }
     /**
      * Determine whether the user can view any models.
      */
@@ -21,9 +32,14 @@ class BoardPolicy
      */
     public function view(User $user, Board $board): Response
     {
-        return $user->id === $board->user_id
+        $role = $this->getRole($user, $board);
+
+        return $role !== null
             ? Response::allow()
-            : Response::denyAsNotFound();
+            : Response::deny('You do not have access to this board.');
+        // return $user->id === $board->user_id
+        //     ? Response::allow()
+        //     : Response::denyAsNotFound();
     }
 
     /**
@@ -39,9 +55,12 @@ class BoardPolicy
      */
     public function update(User $user, Board $board): Response
     {
-        return $user->id === $board->user_id
-            ? Response::allow()
-            : Response::denyAsNotFound();
+        $role = $this->getRole($user, $board);
+
+        if (in_array($role, ['owner', 'editor'])) {
+            return Response::allow();
+        }
+        return Response::deny('You do not have permission to edit this board.');
     }
 
     /**
@@ -49,9 +68,12 @@ class BoardPolicy
      */
     public function delete(User $user, Board $board): Response
     {
-        return $user->id === $board->user_id
-            ? Response::allow()
-            : Response::denyAsNotFound();
+        $role = $this->getRole($user, $board);
+
+        if ($role === 'owner') {
+            return Response::allow();
+        }
+        return Response::deny('You do not have permission to delete this board');
     }
 
     /**
@@ -59,7 +81,7 @@ class BoardPolicy
      */
     public function restore(User $user, Board $board): bool
     {
-        return $user->id === $board->user_id;
+        return $this->getRole($user, $board) === 'owner';
     }
 
     /**
@@ -67,6 +89,6 @@ class BoardPolicy
      */
     public function forceDelete(User $user, Board $board): bool
     {
-        return $user->id === $board->user_id;
+        return $this->getRole($user, $board) === 'owner';
     }
 }
