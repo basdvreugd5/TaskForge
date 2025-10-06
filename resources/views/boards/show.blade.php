@@ -8,6 +8,16 @@
                 <div class="mb-8">
                     <h1 class="text-3xl font-bold text-slate-900 dark:text-white">{{ $board->name }}</h1>
                     <p class="text-slate-500 dark:text-slate-400 mt-1">{{ $board->description }}</p>
+
+                    @if ($board->collaborators->isNotEmpty())
+                        <p class="text-sm tet-slate-600 dark:text-slate-300 mt-2">
+                            Team:
+                            <span class="font-medium text-slate-800 dark:text-slate-100">
+                                {{ $board->collaborators->pluck('name')->implode(', ') }}
+                            </span>
+                        </p>
+                    @endif
+
                 </div>
 
                 <!-- Tabs + New Task Button -->

@@ -26,4 +26,28 @@ class BoardFactory extends Factory
             'description' => fake()->paragraph(),
         ];
     }
+
+    public function configure(): static
+    {
+        return $this->afterCreating(function (Board $board) {
+            $board->collaborators()->attach($board->user_id, ['role' => 'owner']);
+        });
+    }
+
+    public function hasCollaborators(): static
+    {
+        return $this->afterCreating(function (Board $board) {
+
+            $nonOwnerUsers = User::where('id', '!=', $board->user_id)->inRandomOrder()->limit(3)->get();
+
+            if ($nonOwnerUsers->count() >= 1) {
+                $board->collaborators()->attach($nonOwnerUsers->shift()->id, ['role' => 'editor']);
+            }
+
+            foreach ($nonOwnerUsers as $user) {
+                $board->collaborators()->attach($user->id, ['role' => 'member']);
+            }
+
+        });
+    }
 }
