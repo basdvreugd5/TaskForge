@@ -27,8 +27,8 @@
                         </a>
                     </nav>
                     <div class="flex items-center gap-2">
-                        <a href="{{ route('dashboard.boards.create') }}" class="flex items-center gap-2 rounded-lg px-2 py-1 text-sm font-medium bg-primary text-white hover:bg-primary/90 transition-colors">
-                            <span class="material-symbols-outlined text-base">add</span>
+                        <a href="{{ route('dashboard.boards.create') }}" class="flex items-center gap-2 text-sm font-medium text-role-viewer-light dark:text-role-viewer hover:text-neon-green dark:hover:text-neon-green transition-colors rounded-lg px-3 py-1.5 -my-1.5 -mx-3">
+                            <span class="material-symbols-outlined text-role-viewer-light">add</span>
                             New Board
                         </a>
                     </div>
@@ -88,12 +88,12 @@
                                                 </p>
                                             </div>
                                         </div>
-                                        <button class="flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors rounded-lg px-3 py-1.5 -my-1.5 -mx-3 hover:bg-slate-100 dark:hover:bg-slate-800">
+                                        <a href="{{ route('dashboard.boards.manage.collaborators', $board) }}" class="flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors rounded-lg px-3 py-1.5 -my-1.5 -mx-3 hover:bg-slate-100 dark:hover:bg-slate-800">
                                             <span class="material-symbols-outlined text-base">
                                                 manage_accounts
                                             </span>
                                             Manage
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
                             </li>

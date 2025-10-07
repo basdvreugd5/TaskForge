@@ -99,4 +99,9 @@ class BoardController extends Controller
         return view('dashboard.shared.index', compact('sharedBoards'));
 
     }
+
+    public function manageCollaborators(Board $board)
+    {
+        return view('dashboard.boards.collaborators.manage', compact('board'));
+    }
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\BoardController;
+use App\Http\Controllers\CollaboratorController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -35,10 +36,24 @@ Route::middleware(['auth', 'verified'])
         Route::get('create', [BoardController::class, 'create'])->name('create');
         Route::post('/', [BoardController::class, 'store'])->name('store');
         Route::get('{board}/edit', [BoardController::class, 'edit'])->name('edit');
+
+        Route::get('{board}/manage-collaborators', [BoardController::class, 'manageCollaborators'])->name('manage.collaborators');
+
         Route::put('{board}', [BoardController::class, 'update'])->name('update');
         Route::delete('{board}', [BoardController::class, 'destroy'])->name('destroy');
         Route::get('{board}', [BoardController::class, 'show'])->name('show');
-    });   
+        
+        // FIX: Route for a user to leave a board. This route name resolves to 'dashboard.boards.leave'.
+        Route::delete('{board}/leave', [CollaboratorController::class, 'leaveBoard'])->name('leave');
+    });
+    
+    // Collaborator-specific management routes (adding, updating, removing other users)
+    // Note: The board ID is part of the group prefix.
+    Route::prefix('boards/{board}')->name('collaborators.')->group(function () {
+        Route::post('collaborators', [CollaboratorController::class, 'store'])->name('store'); 
+        Route::put('collaborators/{collaborator}', [CollaboratorController::class, 'update'])->name('update');
+        Route::delete('collaborators/{collaborator}', [CollaboratorController::class, 'destroy'])->name('destroy');
+    });
 
     // Board → Task routes
     Route::prefix('boards/{board}')->name('boards.')->group(function () {

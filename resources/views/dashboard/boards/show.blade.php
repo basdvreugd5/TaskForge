@@ -16,8 +16,18 @@
                                 {{ $board->collaborators->pluck('name')->implode(', ') }}
                             </span>
                         </p>
+                    
                     @endif
 
+
+                </div>
+                <div class="mb-8">
+                                        <a href="{{ route('dashboard.boards.manage.collaborators', $board) }}" class="flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors rounded-lg px-3 py-1.5 -my-1.5 -mx-3">
+                                            <span class="material-symbols-outlined text-base">
+                                                manage_accounts
+                                            </span>
+                                            Manage
+                                        </a>
                 </div>
 
                 <!-- Tabs + New Task Button -->
@@ -31,14 +41,16 @@
                                 <p class="text-sm font-bold">Timeline</p>
                             </a>
                         </nav>
-                        <div class="flex items-center gap-2">
-                            <a href="{{ route('dashboard.boards.edit', $board) }}" class="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium bg-primary text-white hover:bg-primary/90 transition-colors">
-                                <span class="material-symbols-outlined text-base">edit</span>
-                                Edit Board
+                        <div class="flex items-center gap-4">
+                            <a href="{{ route('dashboard.boards.edit', $board) }}" class="flex items-center gap-2 text-sm font-medium text-role-editor-light dark:text-role-editor hover:text-neon-blue dark:hover:text-neon-blue transition-colors rounded-lg px-3 py-1.5 -my-1.5 -mx-3">
+                                <span class="material-symbols-outlined text-role-editor-light">edit</span>
+                                <p class="text-sm font-bold">Edit Board</p>
+                                
                             </a>
-                            <a href="{{ route('dashboard.boards.tasks.create', $board) }}" class="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium bg-primary text-white hover:bg-primary/90 transition-colors">
-                                <span class="material-symbols-outlined text-base">add</span>
-                                New Task
+                            <a href="{{ route('dashboard.boards.tasks.create', $board) }}" class="flex items-center gap-2 text-sm font-medium text-role-viewer-light dark:text-role-viewer hover:text-neon-green dark:hover:text-neon-green transition-colors rounded-lg px-3 py-1.5 -my-1.5 -mx-3">
+                                <span class="material-symbols-outlined text-role-viewer-light">add</span>
+                                <p class="text-sm font-bold">New Task</p>
+                                
                             </a>
                         </div>
                     </div>
