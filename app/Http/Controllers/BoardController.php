@@ -84,4 +84,19 @@ class BoardController extends Controller
         return redirect()->route('dashboard.index')
                          ->with('success', 'Board deleted successfully');
     }
+
+    public function shared()
+    {
+        $user = Auth::user();
+
+        $sharedBoards = $user->collaboratedBoards()
+            ->wherePivot('role', '!=', 'owner')
+            ->with(['user', 'tasks', 'collaborators'])
+            ->withCount('collaborators')
+            ->withCount('tasks')
+            ->get();
+
+        return view('dashboard.shared.index', compact('sharedBoards'));
+
+    }
 }

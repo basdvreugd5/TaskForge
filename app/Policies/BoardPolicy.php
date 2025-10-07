@@ -37,9 +37,6 @@ class BoardPolicy
         return $role !== null
             ? Response::allow()
             : Response::deny('You do not have access to this board.');
-        // return $user->id === $board->user_id
-        //     ? Response::allow()
-        //     : Response::denyAsNotFound();
     }
 
     /**

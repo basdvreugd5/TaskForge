@@ -22,11 +22,11 @@
                         <!-- Title + Board -->
                         <div>
                             <x-input-label for="task-title" value="Task Title" class="block text-xl font-semibold text-slate-800 dark:text-slate-200 mb-2" />
-                            <x-text-input id="task-title" name="title" type="text" value="Name your task!" class="form-input text-3xl font-bold" />
+                            <x-text-input id="task-title" name="title" type="text" class="form-input text-3xl font-bold" placeholder="Name your task..!"/> 
                         </div>
                         <div>
                             <x-input-label for="task-description" value="Description" class="block text-xl font-semibold text-slate-800 dark:text-slate-200 mb-2" />
-                            <x-text-input id="task-description" name="description" type="textarea"  rows="5" class="form-textarea leading-relaxed "> Describe your task..! </x-text-input>
+                            <x-text-input id="task-description" name="description" type="textarea"  rows="5" class="form-textarea leading-relaxed " placeholder="Describe your task..!">  </x-text-input>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div>

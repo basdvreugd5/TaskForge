@@ -22,11 +22,11 @@
                         <!-- Title + Board -->
                         <div>
                             <x-input-label for="board-name" value="Board Name" class="block text-xl font-semibold text-slate-800 dark:text-slate-200 mb-2" />
-                            <x-text-input id="board-name" name="name" type="text" value="Name your Board!" class="form-input text-3xl font-bold" />
+                            <x-text-input id="board-name" name="name" type="text" placeholder="Name your Board!" class="form-input text-3xl font-bold" />
                         </div>
                         <div>
                             <x-input-label for="board-description" value="Description" class="block text-xl font-semibold text-slate-800 dark:text-slate-200 mb-2" />
-                            <x-text-input id="board-description" name="description" type="textarea"  rows="5" class="form-textarea leading-relaxed "> Describe your Board..! </x-text-input>
+                            <x-text-input id="board-description" name="description" type="textarea"  rows="5" class="form-textarea leading-relaxed " placeholder="Describe your Board..!"> </x-text-input>
                         </div>
                         <div>
                             <label class="block text-xl font-medium text-slate-800 dark:text-slate-200 mb-3">Board Image</label>

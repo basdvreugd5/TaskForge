@@ -19,7 +19,7 @@
                         <a class="flex items-center justify-center border-b-2 border-primary text-primary pb-3">
                             <p class="text-sm font-bold">My Boards</p>
                         </a>
-                        <a class="flex items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary hover:border-primary/50 transition-colors pb-3">
+                        <a href="{{ route('dashboard.shared') }}" class="flex items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary hover:border-primary/50 transition-colors pb-3">
                             <p class="text-sm font-bold">Shared Boards</p>
                         </a>
                         <a class="flex items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary hover:border-primary/50 transition-colors pb-3">
@@ -40,7 +40,7 @@
                 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500">
                     search
                 </span>
-                <input class="form-input w-full rounded-lg border-slate-200 dark:border-slate-800 bg-white dark:bg-border-dark/30 focus:ring-primary focus:border-primary pl-12 py-3 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500" placeholder="Search tasks..." type="text">
+                <input class="form-input w-full rounded-lg border-slate-200 dark:border-slate-800 bg-white dark:bg-border-dark/30 focus:ring-primary focus:border-primary pl-12 py-3 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500" placeholder="Search..." type="text">
             </div>
 
             
@@ -61,7 +61,11 @@
                                                 {{ $board->name }}
                                             </h3>
                                             <span class="material-symbols-outlined text-pink-500 dark:text-pink-400 mt-1">
-                                                group
+                                                @if ($board->collaborators_count > 1) 
+                                                    group
+                                                @else
+                                                    person
+                                                @endif
                                             </span>
                                         </div>
                                         <p class="text-sm text-slate-600 dark:text-slate-400 flex-grow line-clamp-3">
@@ -73,7 +77,11 @@
                                             <img class="w-8 h-8 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_zaJu3CUequj9yYD9CgvVtH3Q7W-85gh0QGgZ5Rp6lx4RZMdE_r4NGfIhvXJwvwCVxVp-AULmmIl4bylfDOXtF87luU88ml4ZMMM4wv7HL9ig0kFpK0YcHPSOSdZgdRUWfnf31wXL1Sun7tp2c1Fw9FzLQDTOl4QEUVdfAEwJDADeSdYiPkILz-ai0kfIEKqAMZU2M_9IGsVluTFFLTIPK_OUH7xII4IsodZLF0QmEC8H6OpXLEaqAGe7Hh_7Iw5LZJr0gq7X9zo">
                                             <div>
                                                 <p class="text-xs text-slate-500 dark:text-slate-500">
-                                                    Shared by
+                                                   @if ($board->collaborators_count > 1)
+                                                        Shared by
+                                                    @else
+                                                        Owned by
+                                                    @endif
                                                 </p>
                                                 <p class="text-sm font-medium text-slate-700 dark:text-slate-300">
                                                     {{ $board->user->name }}

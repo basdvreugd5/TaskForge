@@ -4,6 +4,7 @@ use App\Models\Board;
 use App\Models\User;
 use App\Models\Task;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\BoardController;
 use Illuminate\Support\Facades\Route;
@@ -20,16 +21,9 @@ Route::middleware(['auth', 'verified'])
     ->group(function() {
 
     // Dashboard home
-    Route::get('/', function () {
-        $user = Auth::user();
-        $boards = $user->boards()->withCount('tasks')->get();
-        $tasks = Task::whereIn('board_id', $user->boards()->pluck('id'))
-            ->with('board')
-            ->orderBy('hard_deadline', 'asc')
-            ->paginate(5);
-            
-        return view('dashboard.index', compact('user', 'boards', 'tasks'));
-    })->name('index');
+    Route::get('/', [DashboardController::class, 'index'])->name('index');
+
+    Route::get('/shared', [BoardController::class, 'shared'])->name('shared');
 
     //Timeline Page -- WORK IN PROGRESS
     Route::get('/timeline',function() {
