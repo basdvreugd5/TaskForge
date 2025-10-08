@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log; // Added for better error handling
 use Illuminate\Validation\Rule; // Added for more advanced validation options
 use Illuminate\Support\Facades\DB; // Added for explicit pivot table check
-use App\Http\Requests\StoreCollaboratorRequest;
+use App\Http\Requests\CollaboratorStoreRequest;
 
 class CollaboratorController extends Controller
 {
@@ -21,7 +21,7 @@ class CollaboratorController extends Controller
      * @param  \App\Models\Board  $board
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCollaboratorRequest $request, Board $board)
+    public function store(CollaboratorStoreRequest $request, Board $board)
     {
 
         $collaborator = User::where('email', $request->email)->first();
