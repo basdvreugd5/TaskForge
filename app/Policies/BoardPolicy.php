@@ -5,20 +5,11 @@ namespace App\Policies;
 use App\Models\Board;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use App\Policies\Traits\HasBoardRole;
 
 class BoardPolicy
 {
-    protected function getRole(User $user, Board $board): ?string
-    {
-        if ($user->id === $board->user_id) {
-            return 'owner';
-        }
-
-        $collaborator = $board->collaborators()->where('user_id', $user->id)->first();
-
-        return $collaborator ? $collaborator->pivot->role : null;
-                            
-    }
+    use hasBoardRole;
     /**
      * Determine whether the user can view any models.
      */
@@ -32,9 +23,8 @@ class BoardPolicy
      */
     public function view(User $user, Board $board): Response
     {
-        $role = $this->getRole($user, $board);
-
-        return $role !== null
+        
+        return $this->hasAcces($user, $board) !== null
             ? Response::allow()
             : Response::deny('You do not have access to this board.');
     }
@@ -54,10 +44,9 @@ class BoardPolicy
     {
         $role = $this->getRole($user, $board);
 
-        if (in_array($role, ['owner', 'editor'])) {
-            return Response::allow();
-        }
-        return Response::deny('You do not have permission to edit this board.');
+        return in_array($role, ['owner', 'editor']) 
+            ? Response::allow()
+            : Response::deny('You do not have permission to edit this board.');
     }
 
     /**
@@ -67,10 +56,9 @@ class BoardPolicy
     {
         $role = $this->getRole($user, $board);
 
-        if ($role === 'owner') {
-            return Response::allow();
-        }
-        return Response::deny('You do not have permission to delete this board');
+        return $this->getRole($user, $board) === 'owner' 
+            ? Response::allow()
+            : Response::deny('You do not have permission to delete this board');
     }
 
     /**

@@ -6,9 +6,11 @@ use App\Models\Task;
 use App\Models\Board;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use App\Policies\Traits\HasBoardRole;
 
 class TaskPolicy
 {
+    use HasBoardRole;
     /**
      * Determine whether the user can view any models.
      */
@@ -20,34 +22,48 @@ class TaskPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Task $task): bool
+    public function view(User $user, Task $task): Response
     {
-        return $user->id === $task->board->user_id;
+        return $this->hasAcces($user, $task->board)
+            ? Response::allow()
+            : Response::deny('You do not have acces to this task.');
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user, Board $board): bool
+    public function create(User $user, Board $board): Response
     {
-        return $user->id === $board->user_id;
+        $role = $this->getRole($user, $board);
+
+        return in_array($role,['owner', 'editor'])
+            ? Response::allow()
+            : Response::deny('You do not have acces to this task.');
 
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Task $task): bool
+    public function update(User $user, Task $task): Response
     {
-        return $user->id === $task->board->user_id;
+        $role = $this->getRole($user, $task->board);
+
+        return in_array($role,['owner', 'editor'])
+            ? Response::allow()
+            : Response::deny('You do not have acces to this task.');   
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Task $task): bool
+    public function delete(User $user, Task $task): Response
     {
-        return $user->id === $task->board->user_id;
+        $role = $this->getRole($user, $task->board);
+
+        return in_array($role,['owner', 'editor'])
+            ? Response::allow()
+            : Response::deny('You do not have acces to this task.');
     }
 
     /**
@@ -55,7 +71,7 @@ class TaskPolicy
      */
     public function restore(User $user, Task $task): bool
     {
-        return $user->id === $task->board->user_id;
+        return $this->getRole($user, $task->board) === 'owner';
     }
 
     /**
@@ -63,6 +79,6 @@ class TaskPolicy
      */
     public function forceDelete(User $user, Task $task): bool
     {
-        return $user->id === $task->board->user_id;
+        return $this->getRole($user, $task->board) === 'owner';
     }
 }
