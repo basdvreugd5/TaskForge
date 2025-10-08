@@ -76,4 +76,19 @@ class BoardPolicy
     {
         return $this->getRole($user, $board) === 'owner';
     }
+
+    public function addCollaborator(User $user, Board $board): bool
+    {
+        return $this->getRole($user, $board) === 'owner';
+    }
+
+    public function removeCollaborator(User $user, Board $board): bool
+    {
+        return $this->getRole($user, $board) === 'owner';
+    }
+
+    public function leave(User $user, Board $board): bool
+    {
+        return $this->getRole($user, $board) !== 'owner';
+    }
 }

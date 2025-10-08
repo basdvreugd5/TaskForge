@@ -23,9 +23,7 @@ class CollaboratorController extends Controller
     public function store(Request $request, Board $board)
     {
         // 1. Authorization: Only the owner should add collaborators
-        if (Auth::id() !== $board->user_id) {
-            abort(403, 'You are not authorized to add collaborators to this board.');
-        }
+        $this->authorize('addCollaborator', $board);
 
         // 2. Validation
         $request->validate([
@@ -57,7 +55,6 @@ class CollaboratorController extends Controller
         
         // 5. Attach the collaborator to the board
         try {
-            // FIX: Removed 'joined_at' because your database table 'board_user' does not have this column.
             $board->collaborators()->attach($collaborator->id, [
                 'role' => $request->role, 
             ]);
@@ -89,9 +86,7 @@ class CollaboratorController extends Controller
     public function destroy(Board $board, User $collaborator)
     {
         // 1. Authorization: Ensure the current user can remove collaborators
-        if (Auth::id() !== $board->user_id) {
-            abort(403, 'You are not authorized to remove collaborators from this board.');
-        }
+        $this->authorize('removeCollaborator', $board);
 
         // 2. Prevent removing the owner (the board creator)
         if ($collaborator->id === $board->user_id) {
@@ -129,16 +124,14 @@ class CollaboratorController extends Controller
      */
     public function leaveBoard(Board $board)
     {
-        $userId = Auth::id();
-
         // 1. Prevent owner from using 'leave' action (owner must delete the board)
-        if ($userId === $board->user_id) {
-            return back()->with('error', 'As the owner, you must delete the board if you no longer want it.');
-        }
+        $this->authorize('leave', $board);
 
         // 2. Detach the current user from the board's collaborators
         try {
-            $deletedCount = $board->collaborators()->detach($userId);
+            $user = Auth::user();
+
+            $deletedCount = $board->collaborators()->detach($user->id);
 
             if ($deletedCount === 0) {
                  return back()->with('error', 'You were not found as a collaborator on this board.');
@@ -149,7 +142,7 @@ class CollaboratorController extends Controller
 
         } catch (\Exception $e) {
              // Log the full error for server-side debugging
-             Log::error('Collaborator self-detach failed: ' . $e->getMessage(), ['board_id' => $board->id, 'user_id' => $userId]);
+             Log::error('Collaborator self-detach failed: ' . $e->getMessage(), ['board_id' => $board->id, 'user_id' => Auth::id()]);
 
              // Expose the error message in development/testing environments
              $errorMessage = app()->environment('local', 'testing')
