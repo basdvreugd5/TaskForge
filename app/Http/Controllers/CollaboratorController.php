@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log; // Added for better error handling
 use Illuminate\Validation\Rule; // Added for more advanced validation options
 use Illuminate\Support\Facades\DB; // Added for explicit pivot table check
+use App\Http\Requests\StoreCollaboratorRequest;
 
 class CollaboratorController extends Controller
 {
@@ -20,57 +21,25 @@ class CollaboratorController extends Controller
      * @param  \App\Models\Board  $board
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Board $board)
+    public function store(StoreCollaboratorRequest $request, Board $board)
     {
-        // 1. Authorization: Only the owner should add collaborators
-        $this->authorize('addCollaborator', $board);
 
-        // 2. Validation
-        $request->validate([
-            // 'exists' ensures the email belongs to a registered user
-            'email' => ['required', 'email', 'exists:users,email'],
-            // Validate role against only the allowed pivot roles (editor, viewer).
-            'role' => ['required', Rule::in(['editor', 'viewer'])], 
-        ]);
-        
-        // 3. Find the user to add
         $collaborator = User::where('email', $request->email)->first();
 
-        // 4. Critical Redundancy Checks
-        
-        // Check A: Prevent adding the board's designated owner (defined by board->user_id)
         if ($collaborator->id === $board->user_id) {
             return back()->with('error', 'The board owner is automatically included and cannot be added manually.');
         }
-
-        // Check B: Prevent adding a user who is ALREADY ATTACHED. 
-        $isAlreadyAttached = DB::table('board_user')
-            ->where('board_id', $board->id)
-            ->where('user_id', $collaborator->id)
-            ->exists();
-            
-        if ($isAlreadyAttached) {
-            return back()->with('error', 'This user is already a collaborator on this board.');
+           
+        if ($board->collaborators()->where('user_id', $collaborator->id)->exists()) {
+            return back()->with('error', 'This user is already a collaborator');
         }
-        
-        // 5. Attach the collaborator to the board
-        try {
-            $board->collaborators()->attach($collaborator->id, [
-                'role' => $request->role, 
-            ]);
-            
-            return back()->with('success', 'Collaborator added successfully: ' . $collaborator->name . ' as ' . ucfirst($request->role) . '.');
 
+        try {
+            $board->collaborators()->attach($collaborator->id, ['role' => $request->role]);
+            return back()->with('success', "Collaborator {$collaborator->name} added as {$request->role}.");
         } catch (\Exception $e) {
-            // Log the full error for server-side debugging
-            Log::error('Collaborator attach failed: ' . $e->getMessage(), ['board_id' => $board->id, 'collaborator_email' => $request->email]);
-            
-            // Expose the error message in development/testing environments to aid debugging
-            $errorMessage = app()->environment('local', 'testing') 
-                ? 'Database error: ' . $e->getMessage() 
-                : 'Could not add collaborator due to a database error. Please check server logs.';
-            
-            return back()->with('error', $errorMessage);
+            Log::error('Collaborator attach failed', compact('board', 'collaborator', 'e'));
+            return back()->with('error', 'Could not add collaborator. Please try again.');
         }
     }
 
@@ -85,15 +54,12 @@ class CollaboratorController extends Controller
      */
     public function destroy(Board $board, User $collaborator)
     {
-        // 1. Authorization: Ensure the current user can remove collaborators
         $this->authorize('removeCollaborator', $board);
 
-        // 2. Prevent removing the owner (the board creator)
         if ($collaborator->id === $board->user_id) {
             return back()->with('error', 'The board owner cannot be removed.');
         }
         
-        // 3. Detach the collaborator
         try {
             $deletedCount = $board->collaborators()->detach($collaborator->id);
 
@@ -124,10 +90,9 @@ class CollaboratorController extends Controller
      */
     public function leaveBoard(Board $board)
     {
-        // 1. Prevent owner from using 'leave' action (owner must delete the board)
+
         $this->authorize('leave', $board);
 
-        // 2. Detach the current user from the board's collaborators
         try {
             $user = Auth::user();
 

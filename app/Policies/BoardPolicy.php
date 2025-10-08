@@ -5,7 +5,7 @@ namespace App\Policies;
 use App\Models\Board;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
-use App\Policies\Traits\HasBoardRole;
+use App\Traits\HasBoardRole;
 
 class BoardPolicy
 {
