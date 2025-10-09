@@ -19,16 +19,7 @@
                          Edit Task 
                     </a>
                 </div>
-@php
-    $statusIcons = match($task->status) {
-        'open' => 'task_alt',
-        'in_progress' => 'hourglass_top', 
-        'review' => 'rate_review', 
-        'done' => 'check_circle'
-    };
 
-
-@endphp
                 <!-- Task Card -->
                 <div class="bg-white dark:bg-card-dark rounded-xl shadow-lg p-8 md:p-12 space-y-12">
 
@@ -40,22 +31,41 @@
                         <div class="flex flex-col gap-4 flex-shrink-0">
                             <div class="flex items-center gap-3">
                                 <span class="material-symbols-outlined text-amber-500">
-                                    {{ $statusIcons }}
+                                    @switch($task->status)
+                                        @case('open')
+                                            task_alt
+                                            @break
+                                        @case('in_progress')
+                                            hourglass_top
+                                            @break
+                                        @case('review')
+                                            rate_review
+                                            @break
+                                        @case('done')
+                                            check_circle
+                                            @break
+                                        @default
+                                            help_outline
+                                    @endswitch
                                 </span>
                                 <span class="text-lg font-medium text-slate-600 dark:text-slate-300">
                                     {{ ucfirst(str_replace('_', ' ', $task->status)) }}
                             </div>
-                            @php
-                                $priorityIcons = match($task->priority) {
-                                    'low' => 'arrow_downward_alt',
-                                    'medium' => 'drag_handle',
-                                    'high' => 'priority_high',
-                                    default => 'flag',
-                                };
-                            @endphp
                             <div class="flex items-center gap-3">
                                 <span class="material-symbols-outlined text-red-500">
-                                    {{ $priorityIcons }}
+                                    @switch($task->priority)
+                                        @case('low')
+                                            arrow_downward_alt
+                                            @break
+                                        @case('medium')
+                                            drag_handle
+                                            @break
+                                        @case('high')
+                                            priority_high
+                                            @break
+                                        @default
+                                            flag
+                                    @endswitch
                                 </span>
                                 <span class="text-lg font-medium text-slate-600 dark:text-slate-300">
                                     {{ ucfirst(str_replace('_', ' ', $task->priority)) }}
@@ -151,7 +161,6 @@
                                 Subtasks
                             </h2>
                             <p class="subtask-progress text-base text-slate-500 dark:text-slate-400 font-medium">
-                                {{-- Example: count completed subtasks --}}
                                 {{ collect($task->checklist)->where('is_completed', true)->count() }}
                                 of
                                 {{ count($task->checklist ?? []) }} completed
@@ -179,39 +188,39 @@
         </main>
     </div>
     <script>
-document.querySelectorAll('.subtask-checkbox').forEach(cb => {
-    cb.addEventListener('change', async e => {
-        let index = e.target.dataset.index;
-        let taskId = "{{ $task->id }}";
+        document.querySelectorAll('.subtask-checkbox').forEach(cb => {
+            cb.addEventListener('change', async e => {
+                let index = e.target.dataset.index;
+                let taskId = "{{ $task->id }}";
 
-        const response = await fetch(`/dashboard/tasks/${taskId}/checklist`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            },
-            body: JSON.stringify({
-                index: index,
-                is_completed: e.target.checked ? true : false
-            })
+                const response = await fetch(`/dashboard/tasks/${taskId}/checklist`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    },
+                    body: JSON.stringify({
+                        index: index,
+                        is_completed: e.target.checked ? true : false
+                    })
+                });
+
+                if (response.ok) {
+                    // Toggle line-through immediately
+                    let label = e.target.closest('label').querySelector('span');
+                    if (e.target.checked) {
+                        label.classList.add('line-through');
+                    } else {
+                        label.classList.remove('line-through');
+                    }
+
+                    // Update "X of Y completed"
+                    let data = await response.json();
+                    let completed = data.checklist.filter(i => i.is_completed).length;
+                    let total = data.checklist.length;
+                    document.querySelector('.subtask-progress').textContent = `${completed} of ${total} completed`;
+                }
+            });
         });
-
-        if (response.ok) {
-            // Toggle line-through immediately
-            let label = e.target.closest('label').querySelector('span');
-            if (e.target.checked) {
-                label.classList.add('line-through');
-            } else {
-                label.classList.remove('line-through');
-            }
-
-            // Update "X of Y completed"
-            let data = await response.json();
-            let completed = data.checklist.filter(i => i.is_completed).length;
-            let total = data.checklist.length;
-            document.querySelector('.subtask-progress').textContent = `${completed} of ${total} completed`;
-        }
-    });
-});
-</script>
+    </script>
 </x-app-layout>
