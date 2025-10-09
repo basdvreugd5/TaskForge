@@ -126,40 +126,32 @@
                                             {{ $task->board->name }}
                                         </td> 
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            @php
-                                                $statusClasses = match($task->status) {
-                                                    'open' => 'bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-300',
-                                                    'in_progress' => 'bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300',
-                                                    'done' => 'bg-green-100 dark:bg-green-700 text-green-800 dark:text-green-300',
-                                                    'review' => 'bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-300',
-                                                    default => 'bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-300',
-                                                }
-                                            @endphp
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $statusClasses }} ">
-                                                 {{ ucfirst(str_replace('_', ' ', $task->status)) }}
+                                            <span @class([
+                                                'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
+                                                'bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-300' => $task->status === 'open',
+                                                'bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300' => $task->status === 'in_progress',
+                                                'bg-green-100 dark:bg-green-700 text-green-800 dark:text-green-300' => $task->status === 'done',
+                                                'bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-300' => $task->status === 'review',
+                                            ])> 
+                                            {{ ucfirst(str_replace('_', ' ', $task->status)) }}
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            @php
-                                                $priorityClasses = match($task->priority) {
-                                                    'low' => 'bg-green-100 dark:bg-green-700 text-green-800 dark:text-green-300',
-                                                    'medium' => 'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-300',
-                                                    'high' => 'bg-red-100 dark:bg-red-700 text-red-800 dark:text-red-300',
-                                                    default => 'bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-300',
-                                                }
-                                            @endphp
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $priorityClasses }} ">
-                                                 {{ ucfirst(str_replace('_', ' ', $task->priority)) }}
+                                            <span @class([
+                                                'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
+                                                'bg-green-100 dark:bg-green-700 text-green-800 dark:text-green-300' => $task->priority ==='low',
+                                                'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-300' =>$task->priority === 'medium',
+                                                'bg-red-100 dark:bg-red-700 text-red-800 dark:text-red-300' =>$task->priority === 'high',
+                                            ])>
+                                            {{ ucfirst(str_replace('_', ' ', $task->priority)) }}
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 text-center text-slate-900 dark:text-white">
                                             {{ $task->hard_deadline->format('M jS') }}
                                         </td>
-                                        
                                     </tr>
                                     @empty
-                                    @endforelse
-      
+                                @endforelse
                             </tbody>      
                         </table>                       
                     </div>
