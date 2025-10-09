@@ -1,18 +1,18 @@
 <x-app-layout>
     {{-- ===== HEADER SLOT ===== --}}
     <x-slot name="header">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+        <div class="mb-8">
             <h1 class="text-3xl font-bold text-slate-900 dark:text-white">
                 Shared Boards
             </h1>
             <p class="text-slate-500 dark:text-slate-400 mt-1">
                 Welcome back, {{ Auth::user()->name }}! Let's get things done.
             </p>
-        </div>
+        
     </x-slot>
 
     {{-- ===== MAIN CONTENT ===== --}}
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="">
         <!-- Tabs + New Board Button -->
         <div class="border-b border-slate-200 dark:border-slate-800 mb-6">
             <div class="flex justify-between items-center">
@@ -138,5 +138,6 @@
                 </ul>
             @endif
         </div>
+    </div>
     </div>
 </x-app-layout>
