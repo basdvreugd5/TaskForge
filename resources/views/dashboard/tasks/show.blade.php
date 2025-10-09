@@ -12,7 +12,7 @@
                         <span class="material-symbols-outlined">arrow_back</span>
                         <span class="text-sm font-medium">Back to Board</span>
                     </a>
-                    <a href="{{ route('dashboard.tasks.edit', $task) }}" class="flex items-center gap-2 px-5 py-3 rounded-lg bg-primary text-white font-medium shadow-lg shadow-primary/30 hover:bg-primary/90 transition-all duration-300">
+                    <a href="{{ route('dashboard.tasks.edit', $task) }}" class="flex items-center gap-2 px-3 py-2 rounded-lg  text-slate-400 hover:text-primary font-medium hover:text-primary hover:bg-primary/30 transition-all duration-300">
                         <span class="material-symbols-outlined">
                             edit
                         </span>
@@ -50,6 +50,7 @@
                                 </span>
                                 <span class="text-lg font-medium text-slate-600 dark:text-slate-300">
                                     {{ ucfirst(str_replace('_', ' ', $task->status)) }}
+                                </span>
                             </div>
                             <div class="flex items-center gap-3">
                                 <span class="material-symbols-outlined text-red-500">
@@ -69,6 +70,7 @@
                                 </span>
                                 <span class="text-lg font-medium text-slate-600 dark:text-slate-300">
                                     {{ ucfirst(str_replace('_', ' ', $task->priority)) }}
+                                </span>
                             </div>                           
                         </div>
                     </div>
@@ -79,7 +81,12 @@
                         <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-teal-100 dark:bg-teal-900/50 text-teal-800 dark:text-teal-300">
                             {{ $task->board->name }}
                         </span>
-                        
+                        <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-2">
+                            Author
+                        </h2>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-teal-100 dark:bg-teal-900/50 text-teal-800 dark:text-teal-300">
+                            {{ $task->board->name }}
+                        </span>      
                     </div>
 
                     <!-- Description -->

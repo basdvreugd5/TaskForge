@@ -97,7 +97,9 @@
                         <!-- Checklist -->
                         <div>
                             <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-5">Checklist</h2>
-                            <div x-data="{ subtasks: {{ json_encode(old('checklist', $task->checklist ?? [])) }} }" class="space-y-3">
+                            <div x-data='{
+                                    subtasks: @json(old("checklist", $task->checklist))
+                            }' class="space-y-3">
                                 <!-- Loop over subtasks -->
                                 <template x-for="(subtask, index) in subtasks" :key="index">
                                     <div class="flex items-center space-x-4 p-3 rounded-lg bg-white dark:bg-border-dark/30 shadow-sm border border-slate-200 dark:border-slate-800">

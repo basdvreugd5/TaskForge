@@ -68,6 +68,13 @@ class TaskController extends Controller
     {
         $this->authorize('update', $task);
 
+        $task->checklist = collect($task->checklist ?? [])->map(function ($item) {
+            return [
+                'title' => $item['title'] ?? '',
+                'is_completed' => (bool) ($item['is_completed'] ?? false),
+            ];
+        })->toArray();
+
         $board = $task->board;
         return view('dashboard.tasks.edit', compact('task', 'board'));
     }
@@ -120,7 +127,7 @@ class TaskController extends Controller
         $checklist = $task->checklist ?? [];
 
         if (isset($checklist[$validated['index']])) {
-            $checklist[$validated['index']]['is_completed'] = $validated['is_completed'];
+            $checklist[$validated['index']]['is_completed'] = (bool) $validated['is_completed'];
         }
 
         $task->update(['checklist' => $checklist]);
