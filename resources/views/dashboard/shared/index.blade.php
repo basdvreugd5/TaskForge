@@ -70,9 +70,9 @@
                             $role = in_array($role, ['owner','editor','viewer']) ? $role : 'viewer';
 
                             $borderColorClass = [
-                                'owner' => 'border-pastel-pink dark:border-pink-900/50',
-                                'editor' => 'border-pastel-blue dark:border-blue-900/50',
-                                'viewer' => 'border-pastel-green dark:border-green-900/50',
+                                'owner' => 'border-pastel-pink dark:border-pink-900/50', //redundant no owners in this view
+                                'editor' => 'border-pastel-blue dark:border-blue-900/50 hover:border-blue-500/50',
+                                'viewer' => 'border-pastel-green dark:border-green-900/50 hover:border-green-500/50',
                             ][$role];
 
                             $iconColorClass = [

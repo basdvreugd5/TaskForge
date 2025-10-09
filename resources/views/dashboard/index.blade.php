@@ -54,7 +54,7 @@
                         @foreach($boards as $board)
                         <li>
                             <a href="{{ route('dashboard.boards.show', $board) }}" class= "">
-                                <div class="bg-card-light dark:bg-card-dark rounded-xl p-5 border-2 border-pastel-pink dark:border-pink-900/50 flex flex-col gap-4 shadow-sm hover:shadow-lg transition-shadow duration-300 min-h-[280px]">
+                                <div class="bg-card-light dark:bg-card-dark rounded-xl p-5 border-2 border-pastel-pink dark:border-pink-900/50 flex flex-col gap-4 shadow-sm hover:shadow-lg hover:border-pink-500/100 transition-shadow duration-300 min-h-[280px]">
                                     <a href="{{ route('dashboard.boards.show', $board) }}" class= "flex flex-col flex-grow">
                                         <div class="flex items-start justify-between">
                                             <h3 class="text-lg font-bold text-slate-900 dark:text-white pr-4">
