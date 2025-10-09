@@ -51,23 +51,23 @@ class DatabaseSeeder extends Seeder
 
             }
 
-            $member1 = $potentialCollaborators->shift();
-            $member2 = $potentialCollaborators->shift();
-            if ($member1) {
-                $collaborationBoard->collaborators()->attach($member1->id, ['role' => 'member']);
+            $viewer1 = $potentialCollaborators->shift();
+            $viewer2 = $potentialCollaborators->shift();
+            if ($viewer1) {
+                $collaborationBoard->collaborators()->attach($viewer1->id, ['role' => 'viewer']);
             }
-            if ($member2) {
-                $collaborationBoard->collaborators()->attach($member2->id, ['role' => 'member']);
+            if ($viewer2) {
+                $collaborationBoard->collaborators()->attach($viewer2->id, ['role' => 'viewer']);
             }
 
             $this->attachTags($collaborationBoard, $globalTags);
         });
     }
 
-    protected function attachTags(Board $board, $tags) : void 
+    protected function attachTags(Board $board, $tags): void
     {
         $board->tasks->each(function ($task) use ($tags) {
-            $task->tags()->attach($tags->random(rand(1, 3))->pluck('id')->toArray());        
+            $task->tags()->attach($tags->random(rand(1, 3))->pluck('id')->toArray());
         });
     }
 }
