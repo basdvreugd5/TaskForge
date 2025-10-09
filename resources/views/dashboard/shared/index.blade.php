@@ -68,28 +68,25 @@
                             $isOwner = $board->user_id === Auth::id();
                             $role = $isOwner ? 'owner' : ($board->pivot->role ?? 'viewer');
                             $role = in_array($role, ['owner','editor','viewer']) ? $role : 'viewer';
-
-                            $borderColorClass = [
-                                'owner' => 'border-pastel-pink dark:border-pink-900/50', //redundant no owners in this view
-                                'editor' => 'border-pastel-blue dark:border-blue-900/50 hover:border-blue-500/50',
-                                'viewer' => 'border-pastel-green dark:border-green-900/50 hover:border-green-500/50',
-                            ][$role];
-
-                            $iconColorClass = [
-                                'owner' => 'text-neon-pink',
-                                'editor' => 'text-neon-blue',
-                                'viewer' => 'text-neon-green',
-                            ][$role];
                         @endphp
-
                         <li>
                             <a href="{{ route('dashboard.boards.show', $board) }}">
-                                <div class="bg-card-light dark:bg-card-dark rounded-xl p-5 border-2 flex flex-col gap-4 shadow-sm hover:shadow-lg transition-shadow duration-300 min-h-[280px] {{ $borderColorClass }}">
+                                <div @class([
+                                    'bg-card-light dark:bg-card-dark rounded-xl p-5 border-2 flex flex-col gap-4 shadow-sm hover:shadow-lg transition-shadow duration-300 min-h-[280px]',
+                                    'border-pastel-pink dark:border-pink-900/50' => $role === 'owner',
+                                    'border-pastel-blue dark:border-blue-900/50 hover:border-blue-500/50' => $role === 'editor',
+                                    'border-pastel-green dark:border-green-900/50 hover:border-green-500/50' => $role === 'viewer',
+                                ])>
                                     <div class="flex items-start justify-between">
                                         <h3 class="text-lg font-bold text-slate-900 dark:text-white pr-4">
                                             {{ $board->name }}
                                         </h3>
-                                        <span class="material-symbols-outlined mt-1 {{ $iconColorClass }}">
+                                        <span @class([
+                                            'material-symbols-outlined mt-1',
+                                            'text-neon-pink' => $role === 'owner',
+                                            'text-neon-blue' => $role === 'editor',
+                                            'text-neon-green' => $role === 'viewer',
+                                            ])>
                                             @if($isOwner)
                                                 lock_open
                                             @else
