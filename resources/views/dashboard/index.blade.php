@@ -1,5 +1,5 @@
 <x-app-layout>
-    
+    {{-- ===== HEADER SLOT ===== --}}    
     <x-slot name="header">
         <div class="mb-8">
         <h1 class="text-3xl font-bold text-slate-900 dark:text-white">
@@ -10,7 +10,7 @@
     
     </x-slot>
 
-    
+    {{-- ===== MAIN CONTENT ===== --}}  
         <div class="">
            <!-- Tabs + New Task Button -->
             <div class="border-b border-slate-200 dark:border-slate-800 mb-6">
@@ -43,13 +43,14 @@
                 <input class="form-input w-full rounded-lg border-slate-200 dark:border-slate-800 bg-white dark:bg-border-dark/30 focus:ring-primary focus:border-primary pl-12 py-3 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500" placeholder="Search..." type="text">
             </div>
 
-            
+            <!-- Title / Message -->
             <div class="mb-10">
                 <h2 class="text-2xl font-bold text-slate-900 mb-4 dark:text-white">My Boards</h2>
 
                 @if($boards->isEmpty())
                     <p class="text-gray-500 dark:text-gray-400">You don’t have any boards yet.</p>
                 @else
+                    <!-- Board Cards -->
                     <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                         @foreach($boards as $board)
                         <li>
@@ -60,7 +61,10 @@
                                             <h3 class="text-lg font-bold text-slate-900 dark:text-white pr-4">
                                                 {{ $board->name }}
                                             </h3>
-                                            <span class="material-symbols-outlined text-pink-500 dark:text-pink-400 mt-1">
+                                             @php
+                                            $shared = $board->collaborators_count > 1;
+                                            @endphp
+                                            <span class="text-pink-500 dark:text-pink-400 mt-1 material-symbols-outlined">
                                                 @if ($board->collaborators_count > 1) 
                                                     group
                                                 @else
@@ -101,7 +105,8 @@
                     </ul>
                 @endif
             </div>
-
+            
+            <!-- Task Table -->
             <div>
                 <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">Today's Focus</h2>
                 <div class="rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-card-dark/40 overflow-hidden shadow-sm">
