@@ -13,13 +13,14 @@ trait HasBoardRole
             return 'owner';
         }
 
-        $collaborator = $board->collaborators()->where('user_id', $user->id)->first();
+        // $collaborator = $board->collaborators()->where('user_id', $user->id)->first();
+        $collaborator = $board->collaborators()->firstWhere('id', $user->id);
 
         return $collaborator ? $collaborator->pivot->role : null;
 
     }
 
-    protected function hasAcces(User $user, Board $board): bool
+    protected function hasAccess(User $user, Board $board): bool
     {
         return $this->getRole($user, $board) !== null;
     }

@@ -18,6 +18,7 @@ class CollaboratorController extends Controller
      */
     public function store(CollaboratorStoreRequest $request, Board $board)
     {
+        $this->authorize('addCollaborator', $board);
 
         $collaborator = User::where('email', $request->email)->first();
 

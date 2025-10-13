@@ -25,7 +25,7 @@ class TaskPolicy
      */
     public function view(User $user, Task $task): Response
     {
-        return $this->hasAcces($user, $task->board)
+        return $this->hasAccess($user, $task->board)
             ? Response::allow()
             : Response::deny('You do not have acces to this task.');
     }

@@ -25,7 +25,7 @@ class BoardPolicy
     public function view(User $user, Board $board): Response
     {
 
-        return $this->hasAcces($user, $board) !== null
+        return $this->hasAccess($user, $board)
             ? Response::allow()
             : Response::deny('You do not have access to this board.');
     }

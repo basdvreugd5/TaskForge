@@ -8,11 +8,15 @@ use Illuminate\Support\Facades\Auth;
 
 class BoardController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Board::class, 'board');
+    }
+
     // Show
     public function show(Board $board)
     {
-        $this->authorize('view', $board);
-
+        // $this->authorize('view', $board);
         $board->load(['tasks' => function ($query) {
             $query->whereIn('status', ['open', 'in_progress', 'review', 'done']);
         }]);
@@ -51,16 +55,12 @@ class BoardController extends Controller
     // Edit
     public function edit(Board $board)
     {
-        $this->authorize('update', $board);
-
         return view('dashboard.boards.edit', compact('board'));
     }
 
     // Update
     public function update(Request $request, Board $board)
     {
-        $this->authorize('update', $board);
-
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
@@ -78,8 +78,6 @@ class BoardController extends Controller
     // Destroy
     public function destroy(Board $board)
     {
-        $this->authorize('delete', $board);
-
         $board->delete();
 
         return redirect()->route('dashboard.index')
@@ -103,6 +101,8 @@ class BoardController extends Controller
 
     public function manageCollaborators(Board $board)
     {
+        $this->authorize('addCollaborator', $board);
+
         return view('dashboard.boards.collaborators.manage', compact('board'));
     }
 }
