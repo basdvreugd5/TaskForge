@@ -3,9 +3,9 @@
 
         {{-- ===== MAIN CONTENT ===== --}}
         <main class="flex-1 overflow-y-auto p-6 lg:p-10">
-            <div class="max-w-7xl mx-auto">
+            <x-container class="max-w-7xl mx-auto">
                 <!-- Board Title + Description -->
-                <div class="mb-8">
+                <x-section class="mb-8">
                     <h1 class="text-3xl font-bold text-slate-900 dark:text-white">{{ $board->name }}</h1>
                     <p class="text-slate-500 dark:text-slate-400 mt-1">{{ $board->description }}</p>
 
@@ -17,14 +17,14 @@
                             </span>
                         </p>
                     @endif
-                </div>
-                <div class="mb-8">
+                </x-section>
+                <x-section class="mb-8">
                     <form action="{{ route('dashboard.boards.manage.collaborators', $board) }}" method="GET">
                         <x-action-button type="submit" icon="manage_accounts">
                             Manage
                         </x-action-button>
                     </form>
-                </div>
+                </x-section>
 
                 <x-tab-bar>
                     <x-tab-bar.link active label="Kanban" />
@@ -73,7 +73,7 @@
                         </div>
                     @endforeach
                 </div>
-            </div>
+            </x-container>
         </main>
 
 

@@ -3,15 +3,10 @@
 
         <!-- Main -->
         <main class="flex-1 p-6 lg:p-10">
-            <div class="max-w-4xl mx-auto">
+            <x-container class="max-w-4xl mx-auto">
 
                 <!-- Back to Boards Button -->
-                <div class="flex items-center justify-between mb-8">
-                    {{-- <a href="{{ url()->previous() }}"
-                        class="flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
-                        <span class="material-symbols-outlined">arrow_back</span>
-                        <span class="text-sm font-medium">Back to Board</span>
-                    </a> --}}
+                <x-section class="flex items-center justify-between mb-8">
                     <form action="{{ url()->previous() }}" method="GET">
                         <x-action-button type="submit" icon="arrow_back">
                             Back to Board
@@ -30,7 +25,7 @@
                             </x-action-button>
                         </form>
                     </div>
-                </div>
+                </x-section>
 
                 <!-- Task Card -->
                 <div class="bg-white dark:bg-card-dark rounded-xl shadow-lg p-8 md:p-12 space-y-12">
@@ -156,7 +151,7 @@
                         </div>
                     </form>
                 </div>
-            </div>
+            </x-container>
         </main>
     </div>
 </x-app-layout>

@@ -12,7 +12,7 @@
     </x-slot>
 
     {{-- ===== MAIN CONTENT ===== --}}
-    <div class="max-w-7xl mx-auto mb-8">
+    <x-container>
         <!-- Tabs + New Task Button -->
         <x-tab-bar>
             <x-tab-bar.link active label="My Boards" />
@@ -31,7 +31,8 @@
         <x-search-input placeholder="Search boards..." class="mb-8" />
 
         <!-- Boards List -->
-        <div class="mb-10">
+
+        <x-section>
             <x-section-title>My Boards</x-section-title>
 
             @if ($boards->isEmpty())
@@ -41,57 +42,14 @@
                 <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                     @foreach ($boards as $board)
                         <li>
-                            <a href="{{ route('dashboard.boards.show', $board) }}">
-                                <div
-                                    class="bg-card-light dark:bg-card-dark rounded-xl p-5 border-2 flex flex-col gap-4 shadow-sm hover:shadow-lg transition-shadow duration-300 min-h-[280px] border-pastel-pink dark:border-pink-900/50">
-                                    <div class="flex items-start justify-between gap-4">
-                                        <h3 class="text-lg font-bold text-slate-900 dark:text-white pr-4">
-                                            {{ $board->name }}
-                                        </h3>
-
-                                        <span class="text-pink-500 dark:text-pink-400 mt-1 material-symbols-outlined">
-                                            {{ $board->collaborators_count > 1 ? 'group' : 'person' }}
-
-                                        </span>
-                                    </div>
-                                    <p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-3">
-                                        {{ $board->description }}
-                                    </p>
-
-                                    <div
-                                        class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800 mt-auto">
-                                        <div class="flex items-center gap-2">
-                                            <img class="w-8 h-8 rounded-full"
-                                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_zaJu3CUequj9yYD9CgvVtH3Q7W-85gh0QGgZ5Rp6lx4RZMdE_r4NGfIhvXJwvwCVxVp-AULmmIl4bylfDOXtF87luU88ml4ZMMM4wv7HL9ig0kFpK0YcHPSOSdZgdRUWfnf31wXL1Sun7tp2c1Fw9FzLQDTOl4QEUVdfAEwJDADeSdYiPkILz-ai0kfIEKqAMZU2M_9IGsVluTFFLTIPK_OUH7xII4IsodZLF0QmEC8H6OpXLEaqAGe7Hh_7Iw5LZJr0gq7X9zo">
-                                            <div>
-                                                <p class="text-xs text-slate-500 dark:text-slate-500">
-                                                    @if ($board->collaborators_count > 1)
-                                                        Shared by
-                                                    @else
-                                                        Owned by
-                                                    @endif
-                                                </p>
-                                                <p class="text-sm font-medium text-slate-700 dark:text-slate-300">
-                                                    {{ $board->user->name }}
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        <form action="{{ route('dashboard.boards.manage.collaborators', $board) }}"
-                                            method="GET">
-                                            <x-action-button type="submit" icon="manage_accounts">
-                                                Manage
-                                            </x-action-button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </a>
+                            <x-board-card :board="$board" show-manage="true" />
                         </li>
                     @endforeach
                 </ul>
             @endif
-        </div>
-    </div>
+        </x-section>
+
+    </x-container>
 
     <!-- Task Table -->
     @php
@@ -108,7 +66,7 @@
         ];
 
     @endphp
-    <div class="max-w-7xl mx-auto mb-8">
+    <x-container>
         <x-section-title>Today's Focus</x-section-title>
         <x-table>
             <x-table.head>
@@ -144,6 +102,6 @@
         <div class="mt-4">
             {{ $tasks->links() }}
         </div>
-    </div>
+    </x-container>
 
 </x-app-layout>
