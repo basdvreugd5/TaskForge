@@ -40,30 +40,24 @@
         </div>
 
         <!-- Search Tasks -->
-        <div class="relative mb-8">
-            <span
-                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500">
-                search
-            </span>
-            <input
-                class="form-input w-full rounded-lg border-slate-200 dark:border-slate-800 bg-white dark:bg-border-dark/30 focus:ring-primary focus:border-primary pl-12 py-3 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
-                placeholder="Search..." type="text">
-        </div>
+        <x-search-input placeholder="Search boards..." class="mb-8" />
 
         <!-- Title / Message -->
         <div class="mb-10">
             <h2 class="text-2xl font-bold text-slate-900 mb-4 dark:text-white">My Boards</h2>
 
             @if ($boards->isEmpty())
-                <p class="text-gray-500 dark:text-gray-400">You don’t have any boards yet.</p>
+                <p class="text-gray-500 dark:text-gray-400">
+                    You don’t have any boards yet.
+                </p>
             @else
                 <!-- Board Cards -->
                 <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                     @foreach ($boards as $board)
-                        <li class="h-full">
-                            <a href="{{ route('dashboard.boards.show', $board) }}" class="">
+                        <li>
+                            <a href="{{ route('dashboard.boards.show', $board) }}">
                                 <div
-                                    class="flex-1 justify-between bg-card-light dark:bg-card-dark rounded-xl p-5 border-2 border-pastel-pink dark:border-pink-900/50 flex flex-col gap-4 shadow-sm hover:shadow-lg hover:border-pink-500/100 transition-shadow duration-300 min-h-[280px]">
+                                    class="bg-card-light dark:bg-card-dark rounded-xl p-5 border-2 flex flex-col gap-4 shadow-sm hover:shadow-lg transition-shadow duration-300 min-h-[280px] border-pastel-pink dark:border-pink-900/50">
                                     <div class="flex items-start justify-between gap-4">
                                         <h3 class="text-lg font-bold text-slate-900 dark:text-white pr-4">
                                             {{ $board->name }}
@@ -74,12 +68,12 @@
 
                                         </span>
                                     </div>
-                                    <p class="text-sm text-slate-600 dark:text-slate-400 flex-grow line-clamp-3">
+                                    <p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-3">
                                         {{ $board->description }}
                                     </p>
 
                                     <div
-                                        class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800">
+                                        class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800 mt-auto">
                                         <div class="flex items-center gap-2">
                                             <img class="w-8 h-8 rounded-full"
                                                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_zaJu3CUequj9yYD9CgvVtH3Q7W-85gh0QGgZ5Rp6lx4RZMdE_r4NGfIhvXJwvwCVxVp-AULmmIl4bylfDOXtF87luU88ml4ZMMM4wv7HL9ig0kFpK0YcHPSOSdZgdRUWfnf31wXL1Sun7tp2c1Fw9FzLQDTOl4QEUVdfAEwJDADeSdYiPkILz-ai0kfIEKqAMZU2M_9IGsVluTFFLTIPK_OUH7xII4IsodZLF0QmEC8H6OpXLEaqAGe7Hh_7Iw5LZJr0gq7X9zo">
@@ -96,13 +90,17 @@
                                                 </p>
                                             </div>
                                         </div>
-                                        <a href="{{ route('dashboard.boards.manage.collaborators', $board) }}"
-                                            class="flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors rounded-lg px-3 py-1.5 -my-1.5 -mx-3 hover:bg-slate-100 dark:hover:bg-slate-800">
-                                            <span class="material-symbols-outlined text-base">
-                                                manage_accounts
-                                            </span>
-                                            Manage
-                                        </a>
+
+                                        <form action="{{ route('dashboard.boards.manage.collaborators', $board) }}"
+                                            method="GET">
+                                            <button type="submit"
+                                                class="flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors rounded-lg px-3 py-1.5 -my-1.5 -mx-3 hover:bg-slate-100 dark:hover:bg-slate-800">
+                                                <span class="material-symbols-outlined text-base">
+                                                    manage_accounts
+                                                </span>
+                                                Manage
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </a>
