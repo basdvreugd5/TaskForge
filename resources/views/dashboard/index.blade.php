@@ -112,67 +112,62 @@
     <!-- Task Table -->
     <div class="max-w-7xl mx-auto mb-8">
         <x-section-title>Today's Focus</x-section-title>
-        <div
-            class="rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-card-dark/40 overflow-hidden shadow-sm">
-            <div class="overflow-x-auto">
-                <table class="w-full text-sm text-left">
-                    <thead
-                        class="bg-slate-50 dark:bg-card-dark/80 text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                        <tr>
-                            <th class="px-6 py-4 font-medium" scope="col">Task</th>
-                            <th class="px-6 py-4 font-medium" scope="col">Board</th>
-                            <th class="px-6 py-4 font-medium" scope="col">Status</th>
-                            <th class="px-6 py-4 font-medium" scope="col">Priority</th>
-                            <th class="px-6 py-4 font-medium" scope="col">Due Date</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-200 dark:divide-slate-800/60">
-                        @forelse($tasks as $task)
-                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
-                                <td class="px-6 py-4 whitespace-nowrap font-medium text-slate-900 dark:text-white">
-                                    {{ $task->title }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap font-medium text-slate-900 dark:text-white">
-                                    {{ $task->board->name }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span @class([
-                                        'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
-                                        'bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-300' =>
-                                            $task->status === 'open',
-                                        'bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300' =>
-                                            $task->status === 'in_progress',
-                                        'bg-green-100 dark:bg-green-700 text-green-800 dark:text-green-300' =>
-                                            $task->status === 'done',
-                                        'bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-300' =>
-                                            $task->status === 'review',
-                                    ])>
-                                        {{ ucfirst(str_replace('_', ' ', $task->status)) }}
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span @class([
-                                        'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
-                                        'bg-green-100 dark:bg-green-700 text-green-800 dark:text-green-300' =>
-                                            $task->priority === 'low',
-                                        'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-300' =>
-                                            $task->priority === 'medium',
-                                        'bg-red-100 dark:bg-red-700 text-red-800 dark:text-red-300' =>
-                                            $task->priority === 'high',
-                                    ])>
-                                        {{ ucfirst(str_replace('_', ' ', $task->priority)) }}
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 text-center text-slate-900 dark:text-white">
-                                    {{ $task->hard_deadline->format('M jS') }}
-                                </td>
-                            </tr>
-                        @empty
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        <x-table>
+            <thead
+                class="bg-slate-50 dark:bg-card-dark/80 text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                <tr>
+                    <th class="px-6 py-4 font-medium" scope="col">Task</th>
+                    <th class="px-6 py-4 font-medium" scope="col">Board</th>
+                    <th class="px-6 py-4 font-medium" scope="col">Status</th>
+                    <th class="px-6 py-4 font-medium" scope="col">Priority</th>
+                    <th class="px-6 py-4 font-medium" scope="col">Due Date</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200 dark:divide-slate-800/60">
+                @forelse($tasks as $task)
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                        <td class="px-6 py-4 whitespace-nowrap font-medium text-slate-900 dark:text-white">
+                            {{ $task->title }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap font-medium text-slate-900 dark:text-white">
+                            {{ $task->board->name }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span @class([
+                                'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
+                                'bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-300' =>
+                                    $task->status === 'open',
+                                'bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300' =>
+                                    $task->status === 'in_progress',
+                                'bg-green-100 dark:bg-green-700 text-green-800 dark:text-green-300' =>
+                                    $task->status === 'done',
+                                'bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-300' =>
+                                    $task->status === 'review',
+                            ])>
+                                {{ ucfirst(str_replace('_', ' ', $task->status)) }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span @class([
+                                'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
+                                'bg-green-100 dark:bg-green-700 text-green-800 dark:text-green-300' =>
+                                    $task->priority === 'low',
+                                'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-300' =>
+                                    $task->priority === 'medium',
+                                'bg-red-100 dark:bg-red-700 text-red-800 dark:text-red-300' =>
+                                    $task->priority === 'high',
+                            ])>
+                                {{ ucfirst(str_replace('_', ' ', $task->priority)) }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-center text-slate-900 dark:text-white">
+                            {{ $task->hard_deadline->format('M jS') }}
+                        </td>
+                    </tr>
+                @empty
+                @endforelse
+            </tbody>
+        </x-table>
         <div class="mt-4">
             {{ $tasks->links() }}
         </div>
