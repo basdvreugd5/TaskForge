@@ -3,32 +3,32 @@
 namespace App\Http\Controllers;
 
 use App\Models\Board;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BoardController extends Controller
 {
-    //Show
-    public function show(Board $board) 
+    // Show
+    public function show(Board $board)
     {
-        $this->authorize('view', $board); 
-        
-        $board->load(['tasks' => function($query) {
+        $this->authorize('view', $board);
+
+        $board->load(['tasks' => function ($query) {
             $query->whereIn('status', ['open', 'in_progress', 'review', 'done']);
         }]);
-        
+
         return view('dashboard.boards.show', compact('board'));
     }
 
-    //Create
-    public function create() 
+    // Create
+    public function create()
     {
         return view('dashboard.boards.create', [
-            'board' => new Board(),
+            'board' => new Board,
         ]);
     }
 
-    //Store
+    // Store
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -45,17 +45,18 @@ class BoardController extends Controller
         $board->collaborators()->attach(Auth::id(), ['role' => 'owner']);
 
         return redirect()->route('dashboard.boards.show', $board)
-                         ->with('success', 'Board created successfully!');
+            ->with('success', 'Board created successfully!');
     }
 
-    //Edit
+    // Edit
     public function edit(Board $board)
     {
-        $this->authorize('update', $board); 
+        $this->authorize('update', $board);
+
         return view('dashboard.boards.edit', compact('board'));
     }
 
-    //Update
+    // Update
     public function update(Request $request, Board $board)
     {
         $this->authorize('update', $board);
@@ -67,22 +68,22 @@ class BoardController extends Controller
 
         $board->update([
             'name' => $validated['name'],
-            'description' => $validated['description']
+            'description' => $validated['description'],
         ]);
 
         return redirect()->route('dashboard.boards.show', $board)
-                         ->with('success', 'Board updated successfully!');
+            ->with('success', 'Board updated successfully!');
     }
 
-    //Destroy
-    public function destroy(Board $board) 
+    // Destroy
+    public function destroy(Board $board)
     {
         $this->authorize('delete', $board);
 
         $board->delete();
 
         return redirect()->route('dashboard.index')
-                         ->with('success', 'Board deleted successfully');
+            ->with('success', 'Board deleted successfully');
     }
 
     public function shared()

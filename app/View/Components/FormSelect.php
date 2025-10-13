@@ -9,9 +9,13 @@ use Illuminate\View\Component;
 class FormSelect extends Component
 {
     public $name;
+
     public $label;
+
     public $options;
+
     public $selected;
+
     /**
      * Create a new component instance.
      */

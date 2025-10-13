@@ -2,8 +2,8 @@
 
 namespace App\Traits;
 
-use App\Models\User;
 use App\Models\Board;
+use App\Models\User;
 
 trait HasBoardRole
 {
@@ -16,7 +16,7 @@ trait HasBoardRole
         $collaborator = $board->collaborators()->where('user_id', $user->id)->first();
 
         return $collaborator ? $collaborator->pivot->role : null;
-                            
+
     }
 
     protected function hasAcces(User $user, Board $board): bool

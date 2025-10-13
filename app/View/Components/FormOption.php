@@ -9,9 +9,13 @@ use Illuminate\View\Component;
 class FormOption extends Component
 {
     public $value;
+
     public $text;
+
     public $selected;
+
     public $name;
+
     /**
      * Create a new component instance.
      */
@@ -26,13 +30,14 @@ class FormOption extends Component
 
     private function isSelected($explicit)
     {
-        if(!is_null($explicit)) {
+        if (! is_null($explicit)) {
             return (string) $explicit === (string) $this->value;
         }
 
         if ($this->name && old($this->name) !== null) {
             return (string) old($this->name) === (string) $this->value;
         }
+
         return false;
     }
 

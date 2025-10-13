@@ -7,16 +7,17 @@
 
                 <!-- Back to Boards Button & Edit Task Button -->
                 <div class="flex items-center justify-between mb-8">
-                    <a href="{{ route('dashboard.boards.show', $task->board) }}" 
-                       class="flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
+                    <a href="{{ route('dashboard.boards.show', $task->board) }}"
+                        class="flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
                         <span class="material-symbols-outlined">arrow_back</span>
                         <span class="text-sm font-medium">Back to Board</span>
                     </a>
-                    <a href="{{ route('dashboard.tasks.edit', $task) }}" class="flex items-center gap-2 px-3 py-2 rounded-lg  text-slate-400 hover:text-primary font-medium hover:text-primary hover:bg-primary/30 transition-all duration-300">
+                    <a href="{{ route('dashboard.tasks.edit', $task) }}"
+                        class="flex items-center gap-2 px-3 py-2 rounded-lg  text-slate-400 hover:text-primary font-medium hover:text-primary hover:bg-primary/30 transition-all duration-300">
                         <span class="material-symbols-outlined">
                             edit
                         </span>
-                         Edit Task 
+                        Edit Task
                     </a>
                 </div>
 
@@ -34,16 +35,20 @@
                                     @switch($task->status)
                                         @case('open')
                                             task_alt
-                                            @break
+                                        @break
+
                                         @case('in_progress')
                                             hourglass_top
-                                            @break
+                                        @break
+
                                         @case('review')
                                             rate_review
-                                            @break
+                                        @break
+
                                         @case('done')
                                             check_circle
-                                            @break
+                                        @break
+
                                         @default
                                             help_outline
                                     @endswitch
@@ -57,13 +62,16 @@
                                     @switch($task->priority)
                                         @case('low')
                                             arrow_downward_alt
-                                            @break
+                                        @break
+
                                         @case('medium')
                                             drag_handle
-                                            @break
+                                        @break
+
                                         @case('high')
                                             priority_high
-                                            @break
+                                        @break
+
                                         @default
                                             flag
                                     @endswitch
@@ -71,22 +79,24 @@
                                 <span class="text-lg font-medium text-slate-600 dark:text-slate-300">
                                     {{ ucfirst(str_replace('_', ' ', $task->priority)) }}
                                 </span>
-                            </div>                           
+                            </div>
                         </div>
                     </div>
                     <div class="mt-8">
                         <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-2">
                             Project
                         </h2>
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-teal-100 dark:bg-teal-900/50 text-teal-800 dark:text-teal-300">
+                        <span
+                            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-teal-100 dark:bg-teal-900/50 text-teal-800 dark:text-teal-300">
                             {{ $task->board->name }}
                         </span>
                         <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-2">
                             Author
                         </h2>
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-teal-100 dark:bg-teal-900/50 text-teal-800 dark:text-teal-300">
+                        <span
+                            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-teal-100 dark:bg-teal-900/50 text-teal-800 dark:text-teal-300">
                             {{ $task->board->name }}
-                        </span>      
+                        </span>
                     </div>
 
                     <!-- Description -->
@@ -107,8 +117,10 @@
                             </h3>
                             <div class="space-y-3">
                                 <!-- Hard Deadline -->
-                                <div class="flex items-center gap-3 rounded-lg bg-orange-100/50 dark:bg-orange-900/30 p-3 border-l-4 border-orange-500/60 dark:border-orange-400/60">
-                                    <span class="material-symbols-outlined text-orange-600 dark:text-orange-400 text-xl">
+                                <div
+                                    class="flex items-center gap-3 rounded-lg bg-orange-100/50 dark:bg-orange-900/30 p-3 border-l-4 border-orange-500/60 dark:border-orange-400/60">
+                                    <span
+                                        class="material-symbols-outlined text-orange-600 dark:text-orange-400 text-xl">
                                         error_outline
                                     </span>
                                     <div>
@@ -121,7 +133,8 @@
                                     </div>
                                 </div>
                                 <!-- Soft Due Date -->
-                                <div class="flex items-center gap-3 rounded-lg bg-blue-100/50 dark:bg-blue-900/30 p-3 border-l-4 border-blue-400/50 dark:border-blue-600/50">
+                                <div
+                                    class="flex items-center gap-3 rounded-lg bg-blue-100/50 dark:bg-blue-900/30 p-3 border-l-4 border-blue-400/50 dark:border-blue-600/50">
                                     <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-xl">
                                         event_available
                                     </span>
@@ -144,7 +157,8 @@
                             </h3>
                             <div class="flex flex-wrap gap-3 items-center">
                                 @forelse($task->tags ?? [] as $tag)
-                                    <span class="inline-flex items-center px-4 py-1.5 rounded-full text-base font-medium bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-300">
+                                    <span
+                                        class="inline-flex items-center px-4 py-1.5 rounded-full text-base font-medium bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-300">
                                         {{ $tag->name }}
                                     </span>
                                 @empty
@@ -152,7 +166,8 @@
                                 @endforelse
 
                                 <!-- Add Tag Button -->
-                                <button class="flex items-center justify-center size-9 rounded-full bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
+                                <button
+                                    class="flex items-center justify-center size-9 rounded-full bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
                                     <span class="material-symbols-outlined text-slate-600 dark:text-slate-300 text-xl">
                                         add
                                     </span>
@@ -175,13 +190,14 @@
                         </div>
 
                         <div class="space-y-4">
-                            @foreach($task->checklist ?? [] as $i => $item)
-                                <label class="flex items-center space-x-4 p-4 rounded-lg bg-slate-100/70 dark:bg-border-dark/30 hover:bg-slate-200/70 dark:hover:bg-border-dark/50 transition-colors cursor-pointer shadow-sm">
-                                    <input type="checkbox"
-                                           @checked($item['is_completed'])
-                                           data-index="{{ $i }}"
-                                           class="subtask-checkbox h-6 w-6 rounded-md border-slate-400 dark:border-border-dark text-primary focus:ring-primary/50 bg-slate-200 dark:bg-slate-700">
-                                    <span class="text-lg text-slate-600 dark:text-slate-400 {{ $item['is_completed'] ? 'line-through' : '' }}">
+                            @foreach ($task->checklist ?? [] as $i => $item)
+                                <label
+                                    class="flex items-center space-x-4 p-4 rounded-lg bg-slate-100/70 dark:bg-border-dark/30 hover:bg-slate-200/70 dark:hover:bg-border-dark/50 transition-colors cursor-pointer shadow-sm">
+                                    <input type="checkbox" @checked($item['is_completed'])
+                                        data-index="{{ $i }}"
+                                        class="subtask-checkbox h-6 w-6 rounded-md border-slate-400 dark:border-border-dark text-primary focus:ring-primary/50 bg-slate-200 dark:bg-slate-700">
+                                    <span
+                                        class="text-lg text-slate-600 dark:text-slate-400 {{ $item['is_completed'] ? 'line-through' : '' }}">
                                         {{ $item['title'] }}
                                     </span>
                                 </label>
@@ -225,7 +241,8 @@
                     let data = await response.json();
                     let completed = data.checklist.filter(i => i.is_completed).length;
                     let total = data.checklist.length;
-                    document.querySelector('.subtask-progress').textContent = `${completed} of ${total} completed`;
+                    document.querySelector('.subtask-progress').textContent =
+                        `${completed} of ${total} completed`;
                 }
             });
         });

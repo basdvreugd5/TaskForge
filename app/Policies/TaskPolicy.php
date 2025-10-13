@@ -2,15 +2,16 @@
 
 namespace App\Policies;
 
-use App\Models\Task;
 use App\Models\Board;
+use App\Models\Task;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 use App\Traits\HasBoardRole;
+use Illuminate\Auth\Access\Response;
 
 class TaskPolicy
 {
     use HasBoardRole;
+
     /**
      * Determine whether the user can view any models.
      */
@@ -36,7 +37,7 @@ class TaskPolicy
     {
         $role = $this->getRole($user, $board);
 
-        return in_array($role,['owner', 'editor'])
+        return in_array($role, ['owner', 'editor'])
             ? Response::allow()
             : Response::deny('You do not have acces to this task.');
 
@@ -49,9 +50,9 @@ class TaskPolicy
     {
         $role = $this->getRole($user, $task->board);
 
-        return in_array($role,['owner', 'editor'])
+        return in_array($role, ['owner', 'editor'])
             ? Response::allow()
-            : Response::deny('You do not have acces to this task.');   
+            : Response::deny('You do not have acces to this task.');
     }
 
     /**
@@ -61,7 +62,7 @@ class TaskPolicy
     {
         $role = $this->getRole($user, $task->board);
 
-        return in_array($role,['owner', 'editor'])
+        return in_array($role, ['owner', 'editor'])
             ? Response::allow()
             : Response::deny('You do not have acces to this task.');
     }

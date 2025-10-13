@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -23,10 +24,30 @@ class CollaboratorStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // 'exists' ensures the email belongs to a registered user
             'email' => ['required', 'email', 'exists:users,email'],
-            // Validate role against only the allowed pivot roles (editor, viewer).
-            'role' => ['required', Rule::in(['editor', 'viewer'])], 
+            'role' => ['required', Rule::in(['editor', 'viewer'])],
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $board = $this->route('board');
+            $collaborator = User::where('email', $this->email)->first();
+
+            if (! $collaborator) {
+                $validator->errors()->add('error', 'No user found with that email adress.');
+
+                return;
+            }
+
+            if ($collaborator->id === $board->user_id) {
+                $validator->errors()->add('email', 'The board owner cannot be added as a collaborator');
+            }
+
+            if ($board->collaborators()->where('user_id', $collaborator->id)->exists()) {
+                $validator->errors()->add('email', 'This user is already a collaborator');
+            }
+        });
     }
 }

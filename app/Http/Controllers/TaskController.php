@@ -2,33 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
 use App\Models\Board;
-use Illuminate\Http\Request; 
+use App\Models\Task;
+use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    //Index
-
-    //Show
+    /**
+     * Display the selected task.
+     */
     public function show(Task $task)
     {
         $this->authorize('view', $task);
 
         $task->load(['board.tasks']);
-        return view ('dashboard.tasks.show', compact('task'));
+
+        return view('dashboard.tasks.show', compact('task'));
     }
-    //Create
+
+    /**
+     * Create a new task.
+     */
     public function create(Board $board)
     {
         $this->authorize('create', [Task::class, $board]);
 
         return view('dashboard.tasks.create', [
-            'task' => new Task(),
+            'task' => new Task,
             'board' => $board,
         ]);
     }
-    //Store
+
+    /**
+     * Store the task on the board.
+     */
     public function store(Request $request, Board $board)
     {
         $this->authorize('create', [Task::class, $board]);
@@ -63,7 +70,10 @@ class TaskController extends Controller
 
         return redirect()->route('dashboard.tasks.show', $task);
     }
-    //Edit
+
+    /**
+     * Edit the task details.
+     */
     public function edit(Task $task)
     {
         $this->authorize('update', $task);
@@ -76,10 +86,13 @@ class TaskController extends Controller
         })->toArray();
 
         $board = $task->board;
+
         return view('dashboard.tasks.edit', compact('task', 'board'));
     }
 
-    //Update
+    /**
+     * Update the task details.
+     */
     public function update(Request $request, Task $task)
     {
         $this->authorize('update', $task);
@@ -111,17 +124,19 @@ class TaskController extends Controller
         ]);
 
         return redirect()->route('dashboard.tasks.show', $task)
-                        ->with('success', 'Task updated successfully!');
+            ->with('success', 'Task updated successfully!');
     }
 
-    //Update Checklist
+    /**
+     * Update the checklist.
+     */
     public function updateChecklist(Request $request, Task $task)
     {
         $this->authorize('update', $task);
 
         $validated = $request->validate([
             'index' => 'required|integer',
-            'is_completed' => 'required|boolean'
+            'is_completed' => 'required|boolean',
         ]);
 
         $checklist = $task->checklist ?? [];
@@ -138,7 +153,9 @@ class TaskController extends Controller
         ]);
     }
 
-    //Delete
+    /**
+     * Delete the task.
+     */
     public function destroy(Task $task)
     {
         $this->authorize('delete', $task);
@@ -146,8 +163,7 @@ class TaskController extends Controller
         $task->delete();
 
         return redirect()
-        ->route('dashboard.boards.show', $board)
-        ->with('succes', 'Task deleted succesfully');
+            ->route('dashboard.boards.show', $board)
+            ->with('succes', 'Task deleted succesfully');
     }
-
 }
