@@ -44,12 +44,10 @@
 
         <!-- Boards List -->
         <div class="mb-10">
-            <h2 class="text-2xl font-bold text-slate-900 mb-4 dark:text-white">My Boards</h2>
+            <x-section-title>My Boards</x-section-title>
 
             @if ($boards->isEmpty())
-                <p class="text-gray-500 dark:text-gray-400">
-                    You don’t have any boards yet.
-                </p>
+                <x-section-paragraph>You don’t have any boards yet.</x-section-paragraph>
             @else
                 <!-- Board Cards -->
                 <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
@@ -113,7 +111,7 @@
 
     <!-- Task Table -->
     <div class="max-w-7xl mx-auto mb-8">
-        <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">Today's Focus</h2>
+        <x-section-title>Today's Focus</x-section-title>
         <div
             class="rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-card-dark/40 overflow-hidden shadow-sm">
             <div class="overflow-x-auto">

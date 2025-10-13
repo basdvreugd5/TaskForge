@@ -13,7 +13,7 @@
 
     {{-- ===== MAIN CONTENT ===== --}}
     <div class="max-w-7xl mx-auto mb-8">
-        <!-- Tabs + New Board Button -->
+        <!-- Tabs -->
         <div class="border-b border-slate-200 dark:border-slate-800 mb-6">
             <div class="flex justify-between items-center">
                 <nav class="flex gap-8">
@@ -37,12 +37,10 @@
 
         <!-- Shared Boards List -->
         <div class="mb-10">
-            <h2 class="text-2xl font-bold text-slate-900 mb-4 dark:text-white">Boards shared with me</h2>
+            <x-section-title>Boards shared with me</x-section-title>
 
             @if ($sharedBoards->isEmpty())
-                <p class="text-gray-500 dark:text-gray-400">
-                    No boards have been shared with you yet.
-                </p>
+                <x-section-paragraph>No boards have been shared with you yet.</x-section-paragraph>
             @else
                 <!-- Board Cards -->
                 <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
