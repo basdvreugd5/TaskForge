@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="flex h-screen flex-col">
 
-        <!-- Main -->
+        {{-- ===== MAIN CONTENT ===== --}}
         <main class="flex-1 overflow-y-auto p-6 lg:p-10">
             <div class="max-w-7xl mx-auto">
                 <!-- Board Title + Description -->
@@ -16,18 +16,21 @@
                                 {{ $board->collaborators->pluck('name')->implode(', ') }}
                             </span>
                         </p>
-                    
                     @endif
-
-
                 </div>
                 <div class="mb-8">
-                                        <a href="{{ route('dashboard.boards.manage.collaborators', $board) }}" class="flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors rounded-lg px-3 py-1.5 -my-1.5 -mx-3">
+                    {{-- <a href="{{ route('dashboard.boards.manage.collaborators', $board) }}" class="flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors rounded-lg px-3 py-1.5 -my-1.5 -mx-3">
                                             <span class="material-symbols-outlined text-base">
                                                 manage_accounts
                                             </span>
                                             Manage
-                                        </a>
+                                        </a> --}}
+
+                    <form action="{{ route('dashboard.boards.manage.collaborators', $board) }}" method="GET">
+                        <x-action-button type="submit" icon="manage_accounts">
+                            Manage
+                        </x-action-button>
+                    </form>
                 </div>
 
                 <!-- Tabs + New Task Button -->
@@ -37,21 +40,34 @@
                             <a class="flex items-center justify-center border-b-2 border-primary text-primary pb-3">
                                 <p class="text-sm font-bold">Kanban</p>
                             </a>
-                            <a class="flex items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary hover:border-primary/50 transition-colors pb-3">
+                            <a
+                                class="flex items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary hover:border-primary/50 transition-colors pb-3">
                                 <p class="text-sm font-bold">Timeline</p>
                             </a>
                         </nav>
                         <div class="flex items-center gap-4">
-                            <a href="{{ route('dashboard.boards.edit', $board) }}" class="flex items-center gap-2 text-sm font-medium text-role-editor-light dark:text-role-editor hover:text-neon-blue dark:hover:text-neon-blue transition-colors rounded-lg px-3 py-1.5 -my-1.5 -mx-3">
+                            {{-- <a href="{{ route('dashboard.boards.edit', $board) }}"
+                                class="flex items-center gap-2 text-sm font-medium text-role-editor-light dark:text-role-editor hover:text-neon-blue dark:hover:text-neon-blue transition-colors rounded-lg px-3 py-1.5 -my-1.5 -mx-3">
                                 <span class="material-symbols-outlined text-role-editor-light">edit</span>
                                 <p class="text-sm font-bold">Edit Board</p>
-                                
-                            </a>
-                            <a href="{{ route('dashboard.boards.tasks.create', $board) }}" class="flex items-center gap-2 text-sm font-medium text-role-viewer-light dark:text-role-viewer hover:text-neon-green dark:hover:text-neon-green transition-colors rounded-lg px-3 py-1.5 -my-1.5 -mx-3">
+
+                            </a> --}}
+                            <form action="{{ route('dashboard.boards.edit', $board) }}" method="GET">
+                                <x-action-button type="submit" icon="edit">
+                                    Edit Board
+                                </x-action-button>
+                            </form>
+                            {{-- <a href="{{ route('dashboard.boards.tasks.create', $board) }}"
+                                class="flex items-center gap-2 text-sm font-medium text-role-viewer-light dark:text-role-viewer hover:text-neon-green dark:hover:text-neon-green transition-colors rounded-lg px-3 py-1.5 -my-1.5 -mx-3">
                                 <span class="material-symbols-outlined text-role-viewer-light">add</span>
                                 <p class="text-sm font-bold">New Task</p>
-                                
-                            </a>
+                                </a> --}}
+                            <form action="{{ route('dashboard.boards.tasks.create', $board) }}" method="GET">
+                                <x-action-button type="submit" icon="add">
+                                    New Task
+                                </x-action-button>
+                            </form>
+
                         </div>
                     </div>
                 </div>
@@ -88,6 +104,6 @@
             </div>
         </main>
 
-        
+
     </div>
 </x-app-layout>

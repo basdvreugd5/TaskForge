@@ -30,11 +30,11 @@
                     </a>
                 </nav>
                 <div class="flex items-center gap-2">
-                    <a href="{{ route('dashboard.boards.create') }}"
-                        class="flex items-center gap-2 text-sm font-medium text-role-viewer-light dark:text-role-viewer hover:text-neon-green dark:hover:text-neon-green transition-colors rounded-lg px-3 py-1.5 -my-1.5 -mx-3">
-                        <span class="material-symbols-outlined text-role-viewer-light">add</span>
-                        New Board
-                    </a>
+                    <form action="{{ route('dashboard.boards.create') }}" method="GET">
+                        <x-action-button type="submit" icon="add">
+                            New Board
+                        </x-action-button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -91,13 +91,16 @@
 
                                         <form action="{{ route('dashboard.boards.manage.collaborators', $board) }}"
                                             method="GET">
-                                            <button type="submit"
+                                            <x-action-button type="submit" icon="manage_accounts">
+                                                Manage
+                                            </x-action-button>
+                                            {{-- <button type="submit"
                                                 class="flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors rounded-lg px-3 py-1.5 -my-1.5 -mx-3 hover:bg-slate-100 dark:hover:bg-slate-800">
                                                 <span class="material-symbols-outlined text-base">
                                                     manage_accounts
                                                 </span>
                                                 Manage
-                                            </button>
+                                            </button> --}}
                                         </form>
                                     </div>
                                 </div>
@@ -110,10 +113,54 @@
     </div>
 
     <!-- Task Table -->
+    @php
+        $statusColors = [
+            'open' => 'slate',
+            'in_progress' => 'blue',
+            'done' => 'green',
+            'review' => 'purple',
+        ];
+        $priorityColors = [
+            'low' => 'green',
+            'medium' => 'yellow',
+            'high' => 'red',
+        ];
+
+    @endphp
     <div class="max-w-7xl mx-auto mb-8">
         <x-section-title>Today's Focus</x-section-title>
         <x-table>
-            <thead
+            <x-table.head>
+                <x-table.row>
+                    <x-table.header-cell>Task</x-table.header-cell>
+                    <x-table.header-cell>Board</x-table.header-cell>
+                    <x-table.header-cell>Status</x-table.header-cell>
+                    <x-table.header-cell>Priority</x-table.header-cell>
+                    <x-table.header-cell>Due Date</x-table.header-cell>
+                </x-table.row>
+            </x-table.head>
+
+            <tbody class="divide-y divide-slate-200 dark:divide-slate-800/60">
+                @foreach ($tasks as $task)
+                    <x-table.row>
+                        <x-table.cell>{{ $task->title }}</x-table.cell>
+                        <x-table.cell>{{ $task->board->name }}</x-table.cell>
+                        <x-table.cell>
+                            <x-badge :color="$statusColors[$task->status] ?? 'slate'">
+                                {{ ucfirst(str_replace('_', ' ', $task->status)) }}
+                            </x-badge>
+                        </x-table.cell>
+                        <x-table.cell>
+                            <x-badge :color="$priorityColors[$task->priority] ?? 'slate'">
+                                {{ ucfirst(str_replace('_', ' ', $task->priority)) }}
+                            </x-badge>
+                        </x-table.cell>
+                        <x-table.cell>{{ $task->hard_deadline->format('M jS') }}</x-table.cell>
+                    </x-table.row>
+                @endforeach
+            </tbody>
+        </x-table>
+        {{-- <thead
                 class="bg-slate-50 dark:bg-card-dark/80 text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                 <tr>
                     <th class="px-6 py-4 font-medium" scope="col">Task</th>
@@ -164,7 +211,7 @@
                 @empty
                 @endforelse
             </tbody>
-        </x-table>
+        </x-table> --}}
         <div class="mt-4">
             {{ $tasks->links() }}
         </div>
