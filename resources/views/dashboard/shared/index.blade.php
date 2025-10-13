@@ -8,11 +8,11 @@
             <p class="text-slate-500 dark:text-slate-400 mt-1">
                 Welcome back, {{ Auth::user()->name }}! Let's get things done.
             </p>
-
+        </div>
     </x-slot>
 
     {{-- ===== MAIN CONTENT ===== --}}
-    <div class="">
+    <div class="max-w-7xl mx-auto mb-8">
         <!-- Tabs + New Board Button -->
         <div class="border-b border-slate-200 dark:border-slate-800 mb-6">
             <div class="flex justify-between items-center">

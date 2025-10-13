@@ -8,11 +8,11 @@
             <p class= "text-slate-500 dark:text-slate-400 mt-1">
                 Welcome back, {{ Auth::user()->name }}! Let's get things done.
             </p>
-
+        </div>
     </x-slot>
 
     {{-- ===== MAIN CONTENT ===== --}}
-    <div class="">
+    <div class="max-w-7xl mx-auto mb-8">
         <!-- Tabs + New Task Button -->
         <div class="border-b border-slate-200 dark:border-slate-800 mb-6">
             <div class="flex justify-between items-center">
@@ -42,7 +42,7 @@
         <!-- Search Tasks -->
         <x-search-input placeholder="Search boards..." class="mb-8" />
 
-        <!-- Title / Message -->
+        <!-- Boards List -->
         <div class="mb-10">
             <h2 class="text-2xl font-bold text-slate-900 mb-4 dark:text-white">My Boards</h2>
 
@@ -112,7 +112,7 @@
     </div>
 
     <!-- Task Table -->
-    <div>
+    <div class="max-w-7xl mx-auto mb-8">
         <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">Today's Focus</h2>
         <div
             class="rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-card-dark/40 overflow-hidden shadow-sm">
