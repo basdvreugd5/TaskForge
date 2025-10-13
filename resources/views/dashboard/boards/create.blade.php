@@ -7,11 +7,6 @@
 
                 <!-- Back to Boards Button & Edit Task Button -->
                 <div class="flex items-center justify-between mb-8">
-                    {{-- <a href="{{ url()->previous() }}" 
-                       class="flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
-                        <span class="material-symbols-outlined">arrow_back</span>
-                        <span class="text-sm font-medium">Back to Board</span>
-                    </a> --}}
                     <form action="{{ url()->previous() }}" method="GET">
                         <x-action-button type="submit" icon="arrow_back">
                             Back to Board

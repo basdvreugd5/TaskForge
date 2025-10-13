@@ -14,30 +14,18 @@
     {{-- ===== MAIN CONTENT ===== --}}
     <div class="max-w-7xl mx-auto mb-8">
         <!-- Tabs + New Task Button -->
-        <div class="border-b border-slate-200 dark:border-slate-800 mb-6">
-            <div class="flex justify-between items-center">
-                <nav class="flex gap-8">
-                    <a class="flex items-center justify-center border-b-2 border-primary text-primary pb-3">
-                        <p class="text-sm font-bold">My Boards</p>
-                    </a>
-                    <a href="{{ route('dashboard.shared') }}"
-                        class="flex items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary hover:border-primary/50 transition-colors pb-3">
-                        <p class="text-sm font-bold">Shared Boards</p>
-                    </a>
-                    <a
-                        class="flex items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary hover:border-primary/50 transition-colors pb-3">
-                        <p class="text-sm font-bold">Timeline Overview</p>
-                    </a>
-                </nav>
-                <div class="flex items-center gap-2">
-                    <form action="{{ route('dashboard.boards.create') }}" method="GET">
-                        <x-action-button type="submit" icon="add">
-                            New Board
-                        </x-action-button>
-                    </form>
-                </div>
-            </div>
-        </div>
+        <x-tab-bar>
+            <x-tab-bar.link active label="My Boards" />
+            <x-tab-bar.link label="Shared Boards" href="{{ route('dashboard.shared') }}" />
+            <x-tab-bar.link label="Timeline Overview" />
+            <x-slot name="actions">
+                <form action="{{ route('dashboard.boards.create') }}" method="GET">
+                    <x-action-button type="submit" icon="add">
+                        New Board
+                    </x-action-button>
+                </form>
+            </x-slot>
+        </x-tab-bar>
 
         <!-- Search Tasks -->
         <x-search-input placeholder="Search boards..." class="mb-8" />
@@ -94,13 +82,6 @@
                                             <x-action-button type="submit" icon="manage_accounts">
                                                 Manage
                                             </x-action-button>
-                                            {{-- <button type="submit"
-                                                class="flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors rounded-lg px-3 py-1.5 -my-1.5 -mx-3 hover:bg-slate-100 dark:hover:bg-slate-800">
-                                                <span class="material-symbols-outlined text-base">
-                                                    manage_accounts
-                                                </span>
-                                                Manage
-                                            </button> --}}
                                         </form>
                                     </div>
                                 </div>
@@ -160,58 +141,6 @@
                 @endforeach
             </tbody>
         </x-table>
-        {{-- <thead
-                class="bg-slate-50 dark:bg-card-dark/80 text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                <tr>
-                    <th class="px-6 py-4 font-medium" scope="col">Task</th>
-                    <th class="px-6 py-4 font-medium" scope="col">Board</th>
-                    <th class="px-6 py-4 font-medium" scope="col">Status</th>
-                    <th class="px-6 py-4 font-medium" scope="col">Priority</th>
-                    <th class="px-6 py-4 font-medium" scope="col">Due Date</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-200 dark:divide-slate-800/60">
-                @forelse($tasks as $task)
-                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
-                        <td class="px-6 py-4 whitespace-nowrap font-medium text-slate-900 dark:text-white">
-                            {{ $task->title }}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap font-medium text-slate-900 dark:text-white">
-                            {{ $task->board->name }}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            @php
-                                $statusColors = [
-                                    'open' => 'slate',
-                                    'in_progress' => 'blue',
-                                    'done' => 'green',
-                                    'review' => 'purple',
-                                ];
-                            @endphp
-                            <x-badge :color="$statusColors[$task->status] ?? 'slate'">
-                                {{ ucfirst(str_replace('_', ' ', $task->status)) }}
-                            </x-badge>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            @php
-                                $priorityColors = [
-                                    'low' => 'green',
-                                    'medium' => 'yellow',
-                                    'high' => 'red',
-                                ];
-                            @endphp
-                            <x-badge :color="$priorityColors[$task->priority] ?? 'slate'">
-                                {{ ucfirst(str_replace('_', ' ', $task->priority)) }}
-                            </x-badge>
-                        </td>
-                        <td class="px-6 py-4 text-center text-slate-900 dark:text-white">
-                            {{ $task->hard_deadline->format('M jS') }}
-                        </td>
-                    </tr>
-                @empty
-                @endforelse
-            </tbody>
-        </x-table> --}}
         <div class="mt-4">
             {{ $tasks->links() }}
         </div>

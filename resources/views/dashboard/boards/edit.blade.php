@@ -7,11 +7,6 @@
 
                 <!-- Back to Boards Button & Edit Task Button -->
                 <div class="flex items-center justify-between mb-8">
-                    {{-- <a href="{{ url()->previous() }}"
-                        class="flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
-                        <span class="material-symbols-outlined">arrow_back</span>
-                        <span class="text-sm font-medium">Back to Board</span>
-                    </a> --}}
                     <form action="{{ url()->previous() }}" method="GET">
                         <x-action-button type="submit" icon="arrow_back">
                             Back to Board
@@ -22,9 +17,6 @@
                             onsubmit="return confirm('Are you sure you want to delete this board?');">
                             @csrf
                             @method('DELETE')
-                            {{-- <button type="submit" class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700">
-                                Delete Board
-                            </button> --}}
                             <x-action-button type="submit" icon="delete" variant="danger">
                                 Delete Board
                             </x-action-button>

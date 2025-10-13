@@ -14,23 +14,11 @@
     {{-- ===== MAIN CONTENT ===== --}}
     <div class="max-w-7xl mx-auto mb-8">
         <!-- Tabs -->
-        <div class="border-b border-slate-200 dark:border-slate-800 mb-6">
-            <div class="flex justify-between items-center">
-                <nav class="flex gap-8">
-                    <a href="{{ route('dashboard.index') }}"
-                        class="flex items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary hover:border-primary/50 transition-colors pb-3">
-                        <p class="text-sm font-bold">My Boards</p>
-                    </a>
-                    <a class="flex items-center justify-center border-b-2 border-primary text-primary pb-3">
-                        <p class="text-sm font-bold">Shared Boards</p>
-                    </a>
-                    <a href="#"
-                        class="flex items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary hover:border-primary/50 transition-colors pb-3">
-                        <p class="text-sm font-bold">Timeline Overview</p>
-                    </a>
-                </nav>
-            </div>
-        </div>
+        <x-tab-bar>
+            <x-tab-bar.link label="My Boards" href="{{ route('dashboard.index') }}" />
+            <x-tab-bar.link active label="Shared Boards" />
+            <x-tab-bar.link label="Timeline Overview" />
+        </x-tab-bar>
 
         <!-- Search Boards -->
         <x-search-input placeholder="Search shared boards..." class="mb-8" />
