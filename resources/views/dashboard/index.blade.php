@@ -133,32 +133,29 @@
                             {{ $task->board->name }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span @class([
-                                'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
-                                'bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-300' =>
-                                    $task->status === 'open',
-                                'bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300' =>
-                                    $task->status === 'in_progress',
-                                'bg-green-100 dark:bg-green-700 text-green-800 dark:text-green-300' =>
-                                    $task->status === 'done',
-                                'bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-300' =>
-                                    $task->status === 'review',
-                            ])>
+                            @php
+                                $statusColors = [
+                                    'open' => 'slate',
+                                    'in_progress' => 'blue',
+                                    'done' => 'green',
+                                    'review' => 'purple',
+                                ];
+                            @endphp
+                            <x-badge :color="$statusColors[$task->status] ?? 'slate'">
                                 {{ ucfirst(str_replace('_', ' ', $task->status)) }}
-                            </span>
+                            </x-badge>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span @class([
-                                'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
-                                'bg-green-100 dark:bg-green-700 text-green-800 dark:text-green-300' =>
-                                    $task->priority === 'low',
-                                'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-300' =>
-                                    $task->priority === 'medium',
-                                'bg-red-100 dark:bg-red-700 text-red-800 dark:text-red-300' =>
-                                    $task->priority === 'high',
-                            ])>
+                            @php
+                                $priorityColors = [
+                                    'low' => 'green',
+                                    'medium' => 'yellow',
+                                    'high' => 'red',
+                                ];
+                            @endphp
+                            <x-badge :color="$priorityColors[$task->priority] ?? 'slate'">
                                 {{ ucfirst(str_replace('_', ' ', $task->priority)) }}
-                            </span>
+                            </x-badge>
                         </td>
                         <td class="px-6 py-4 text-center text-slate-900 dark:text-white">
                             {{ $task->hard_deadline->format('M jS') }}
