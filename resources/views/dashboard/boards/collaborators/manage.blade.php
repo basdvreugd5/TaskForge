@@ -7,11 +7,11 @@
 
                 <!-- Back to Boards Button -->
                 <div class="flex items-center justify-between mb-8">
-                    <a href="{{ route('dashboard.boards.show', $board) }}"
-                        class="flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
-                        <span class="material-symbols-outlined">arrow_back</span>
-                        <span class="text-sm font-medium">Back to Board</span>
-                    </a>
+                    <form action="{{ url()->previous() }}" method="GET">
+                        <x-action-button type="submit" icon="arrow_back">
+                            Back to Board
+                        </x-action-button>
+                    </form>
                 </div>
 
                 <div class="bg-card-light dark:bg-card-dark rounded-xl w-full max-w-2xl shadow-xl">
@@ -38,6 +38,13 @@
                         <div class="p-4 mx-6 mt-4 bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-700 text-red-700 dark:text-red-300 rounded-lg font-medium"
                             role="alert">
                             {{ session('error') }}
+                        </div>
+                    @endif
+
+                    @if ($errors->has('email'))
+                        <div class="p-4 mx-6 mt-4 bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-700 text-red-700 dark:text-red-300 rounded-lg font-medium"
+                            role="alert">
+                            {{ $errors->first('email') }}
                         </div>
                     @endif
 
@@ -135,12 +142,9 @@
                                         class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
                                         person_add
                                     </span>
-                                    <input name="email"
-                                        class="w-full pl-10 pr-4 py-2.5 rounded-lg bg-background-light dark:bg-background-dark border border-slate-300 dark:border-slate-700 focus:ring-2 focus:ring-primary focus:border-primary transition"
-                                        placeholder="Enter user email..." type="email" required>
-                                    @error('email')
-                                        <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
-                                    @enderror
+                                    <x-text-input name="email" type="email" placeholder="Enter user email..."
+                                        class="w-full pl-10 pr-4 py-2.5" required>
+                                    </x-text-input>
                                 </div>
 
                                 <!-- Role Select -->
