@@ -3,7 +3,7 @@
 
         <!-- Main Content Area -->
         <main class="flex-1 p-6 lg:p-10">
-            <div class="max-w-4xl mx-auto">
+            <x-container class="max-w-4xl mx-auto">
 
                 <!-- Back to Boards Button -->
                 <div class="flex items-center justify-between mb-8">
@@ -166,7 +166,7 @@
                         </form>
                     </div>
                 </div>
-            </div>
+            </x-container>
         </main>
     </div>
 </x-app-layout>

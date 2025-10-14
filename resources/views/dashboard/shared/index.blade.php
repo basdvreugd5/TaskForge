@@ -12,7 +12,7 @@
     </x-slot>
 
     {{-- ===== MAIN CONTENT ===== --}}
-    <x-container>
+    <x-container class="max-w-7xl mx-auto mb-8">
         <!-- Tabs -->
         <x-tab-bar>
             <x-tab-bar.link label="My Boards" href="{{ route('dashboard.index') }}" />

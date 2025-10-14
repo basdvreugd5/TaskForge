@@ -12,7 +12,7 @@
     </x-slot>
 
     {{-- ===== MAIN CONTENT ===== --}}
-    <x-container>
+    <x-container class="max-w-7xl mx-auto mb-8">
         <!-- Tabs + New Task Button -->
         <x-tab-bar>
             <x-tab-bar.link active label="My Boards" />
@@ -66,7 +66,7 @@
         ];
 
     @endphp
-    <x-container>
+    <x-container class="max-w-7xl mx-auto mb-8">
         <x-section-title>Today's Focus</x-section-title>
         <x-table>
             <x-table.head>

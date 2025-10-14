@@ -1,4 +1,4 @@
-@props(['icon', 'color' => 'default', 'disabled' => false, 'type' => 'button'])
+@props(['icon', 'color' => 'default', 'disabled' => false, 'type' => 'button', 'size' => 'xl'])
 
 @php
     $base = 'p-2 rounded-full transition-colors ';
@@ -18,7 +18,7 @@
 @endphp
 
 <button type="{{ $type }}" {{ $disabled ? 'disabled' : '' }} {{ $attributes->merge(['class' => $classes]) }}>
-    <span class="material-symbols-outlined !text-xl">
+    <span class="material-symbols-outlined {{ $size === 'base' ? 'text-base' : '!text-' . $size }}">
         {{ $icon }}
     </span>
 </button>

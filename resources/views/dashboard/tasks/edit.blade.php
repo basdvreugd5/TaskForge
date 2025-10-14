@@ -17,9 +17,6 @@
                             onsubmit="return confirm('Are you sure you want to delete this task?');">
                             @csrf
                             @method('DELETE')
-                            {{-- <button type="submit" class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700">
-                                Delete Task
-                            </button> --}}
                             <x-action-button type="submit" icon="delete" variant="danger">
                                 Delete Task
                             </x-action-button>
@@ -38,17 +35,14 @@
                         <!-- Title -->
                         <div>
                             <x-input-label for="task-title" value="Task Title"
-                                class="block text-xl font-semibold text-slate-800 dark:text-slate-200 mb-2" />
+                                class="block text-xl font-semibold text-slate-800 dark:text-slate-200 mb-1" />
                             <x-text-input id="task-title" name="title" type="text"
-                                value="{{ old('title', $task->title) }}" class="form-input text-3xl font-bold" />
-                        </div>
+                                value="{{ old('title', $task->title) }}" class="form-input text-sm mb-4" />
 
-                        <!-- Description -->
-                        <div>
                             <x-input-label for="task-description" value="Description"
-                                class="block text-xl font-semibold text-slate-800 dark:text-slate-200 mb-2" />
-                            <textarea id="task-description" name="description" rows="5"
-                                class="form-textarea w-full w-full px-4 py-3 bg-slate-100 dark:bg-border-dark/30 border border-slate-200 dark:border-slate-700 rounded-lg text-lg text-slate-800 dark:text-slate-200 focus:ring-primary focus:border-primary transition-shadow leading-relaxed w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary/50">{{ old('description', $task->description) }}</textarea>
+                                class="block text-xl font-semibold text-slate-800 dark:text-slate-200 mb-1" />
+                            <textarea id="task-description" name="description" rows="3"
+                                class="form-textarea text-sm w-full pr-4 py-2.5 rounded-lg bg-background-light dark:bg-background-dark border border-slate-300 dark:border-slate-700 focus:ring-2 focus:ring-primary focus:border-primary transition">{{ old('description', $task->description) }}</textarea>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -118,10 +112,8 @@
                                         <input type="text" x-model="subtask.title"
                                             :name="`checklist[${index}][title]`" placeholder="Write a subtask..."
                                             class="form-input !p-2 !bg-transparent !border-0 focus:!ring-2 focus:!ring-primary/50 text-slate-700 dark:text-slate-300 flex-grow">
-                                        <button type="button" @click="subtasks.splice(index, 1)"
-                                            class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400">
-                                            <span class="material-symbols-outlined text-base">delete</span>
-                                        </button>
+                                        <x-icon-button icon="delete" type="submit" size="base"
+                                            @click="subtasks.splice(index, 1)" :disabled="false" />
                                     </div>
                                 </template>
 
