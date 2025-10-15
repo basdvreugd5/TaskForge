@@ -7,11 +7,6 @@
 
                 <!-- Back to Boards Button & Edit Task Button -->
                 <div class="flex items-center justify-between mb-8">
-                    {{-- <a href="{{ url()->previous() }}" 
-                       class="flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
-                        <span class="material-symbols-outlined">arrow_back</span>
-                        <span class="text-sm font-medium">Back to Board</span>
-                    </a> --}}
                     <form action="{{ url()->previous() }}" method="GET">
                         <x-action-button type="submit" icon="arrow_back">
                             Back to Board
@@ -20,22 +15,20 @@
                 </div>
 
                 <!-- Task Card -->
-                <div class="bg-white dark:bg-card-dark rounded-xl shadow-lg p-8 md:p-12 space-y-12">
+                <x-card class="" variant=form>
                     <form action="{{ route('dashboard.boards.tasks.store', $board) }}" method="POST" class="space-y-10">
                         @csrf
                         <input type="hidden" name="board_id" value="{{ $board->id }}">
-                        <!-- Title + Board -->
+                        <!-- Title - Description -->
                         <div>
                             <x-input-label for="task-title" value="Task Title"
-                                class="block text-xl font-semibold text-slate-800 dark:text-slate-200 mb-2" />
+                                class="block text-xl font-semibold text-slate-800 dark:text-slate-200 mb-1" />
                             <x-text-input id="task-title" name="title" type="text"
-                                class="form-input text-3xl font-bold" placeholder="Name your task..!" />
-                        </div>
-                        <div>
+                                class="form-input leading relaxed text-sm mb-4" placeholder="Name your task..!" />
                             <x-input-label for="task-description" value="Description"
-                                class="block text-xl font-semibold text-slate-800 dark:text-slate-200 mb-2" />
+                                class="block text-xl font-semibold text-slate-800 dark:text-slate-200 mb-1" />
                             <x-text-input id="task-description" name="description" type="textarea" rows="5"
-                                class="form-textarea leading-relaxed " placeholder="Describe your task..!">
+                                class="form-textarea leading-relaxed text-sm" placeholder="Describe your task..!">
                             </x-text-input>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -141,11 +134,8 @@
                                 class="px-6 py-3 rounded-lg text-white bg-primary hover:bg-primary/90 font-semibold transition-colors shadow-lg shadow-primary/20"
                                 type="submit">Save Changes</button>
                         </div>
-
-
-
                     </form>
-                </div>
+                </x-card>
             </div>
         </main>
     </div>

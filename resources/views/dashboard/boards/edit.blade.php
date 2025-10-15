@@ -22,7 +22,7 @@
                 </x-section>
 
                 <!-- Card -->
-                <div class="bg-card-light dark:bg-card-dark rounded-xl w-full max-w-2xl shadow-xl">
+                <x-card class="" variant=wide>
                     <!-- Session Status Messages (Success/Error) -->
                     @if (session('success'))
                         <x-alert type="success" :message="session('success')" />
@@ -64,7 +64,7 @@
                                 type="submit">Save Changes</button>
                         </x-section>
                     </form>
-                </div>
+                </x-card>
             </x-container>
         </main>
     </div>

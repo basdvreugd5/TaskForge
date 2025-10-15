@@ -15,7 +15,7 @@
                 </div>
 
                 <!-- Task Card -->
-                <div class="bg-card-light dark:bg-card-dark rounded-xl w-full max-w-2xl shadow-xl">
+                <x-card class="" variant=wide>
                     <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
                         <div>
                             <h2 class="text-xl font-bold text-slate-900 dark:text-white">
@@ -40,8 +40,7 @@
                                 class="block text-base font-semibold text-slate-800 dark:text-slate-200 mb-2" />
                             <x-text-input id="board-description" name="description" type="textarea" rows="4"
                                 class="form-textarea leading-relaxed text-sm font-thin "
-                                placeholder="Describe your Board..!">
-                            </x-text-input>
+                                placeholder="Describe your Board..!" />
                         </x-section>
 
 
@@ -53,7 +52,7 @@
                                 type="submit">Save Changes</button>
                         </x-section>
                     </form>
-                </div>
+                </x-card>
             </x-container>
         </main>
     </div>

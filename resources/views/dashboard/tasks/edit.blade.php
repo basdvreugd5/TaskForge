@@ -23,26 +23,23 @@
                 </x-section>
 
                 <!-- Task Card -->
-                <div class="bg-white dark:bg-card-dark rounded-xl shadow-lg p-8 md:p-12 space-y-12">
+                <x-card class="" variant=form>
                     <form id="update-task-form" action="{{ route('dashboard.tasks.update', $task) }}" method="POST"
                         class="space-y-10">
                         @csrf
                         @method('PUT')
                         <input type="hidden" name="board_id" value="{{ $board->id }}">
-
-                        <!-- Title -->
+                        <!-- Title - Description -->
                         <div>
                             <x-input-label for="task-title" value="Task Title"
                                 class="block text-xl font-semibold text-slate-800 dark:text-slate-200 mb-1" />
                             <x-text-input id="task-title" name="title" type="text"
                                 value="{{ old('title', $task->title) }}" class="form-input text-sm mb-4" />
-
                             <x-input-label for="task-description" value="Description"
                                 class="block text-xl font-semibold text-slate-800 dark:text-slate-200 mb-1" />
                             <textarea id="task-description" name="description" rows="3"
                                 class="form-textarea text-sm w-full pr-4 py-2.5 rounded-lg bg-background-light dark:bg-background-dark border border-slate-300 dark:border-slate-700 focus:ring-2 focus:ring-primary focus:border-primary transition">{{ old('description', $task->description) }}</textarea>
                         </div>
-
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <!-- Due Dates -->
                             <div>
@@ -79,7 +76,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <!-- Status & Priority -->
                             <div>
                                 <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4">Details</h3>
@@ -92,7 +88,6 @@
                                 <x-form-select name="priority" label="Priority" :options="['low' => 'Low', 'medium' => 'Medium', 'high' => 'High']" :selected="old('priority', $task->priority)" />
                             </div>
                         </div>
-
                         <!-- Checklist -->
                         <div>
                             <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-5">Checklist</h2>
@@ -114,7 +109,6 @@
                                             @click="subtasks.splice(index, 1)" :disabled="false" />
                                     </div>
                                 </template>
-
                                 <!-- Add new subtask -->
                                 <button type="button" @click="subtasks.push({ title: '', is_completed: false })"
                                     class="w-full flex items-center justify-center gap-2 p-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 rounded-lg transition-colors border-2 border-dashed border-slate-300 dark:border-slate-700">
@@ -123,10 +117,8 @@
                                 </button>
                             </div>
                         </div>
-
                         <!-- Action Buttons -->
                         <div class="mt-12 flex justify-between items-center">
-
                             <!-- Cancel + Save on the right -->
                             <div class="flex gap-4">
                                 <a href="{{ route('dashboard.boards.show', $board) }}"
@@ -140,7 +132,7 @@
                             </div>
                         </div>
                     </form>
-                </div>
+                </x-card>
             </x-container>
         </main>
     </div>

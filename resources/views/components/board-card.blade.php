@@ -5,12 +5,9 @@
     $role = in_array($role, ['owner', 'editor', 'viewer']) ? $role : 'viewer';
 
     $roleColors = [
-        'owner' =>
-            'border-pastel-pink dark:border-pink-900/50 text-pink-500 dark:text-pink-400 hover:border-pink-500/50',
-        'editor' =>
-            'border-pastel-blue dark:border-blue-900/50 text-blue-500 dark:text-blue-400 hover:border-blue-500/50',
-        'viewer' =>
-            'border-pastel-green dark:border-green-900/50 text-green-500 dark:text-green-400 hover:border-green-500/50',
+        'owner' => ' text-pink-500 dark:text-pink-400 ',
+        'editor' => ' text-blue-500 dark:text-blue-400 ',
+        'viewer' => ' text-green-500 dark:text-green-400 ',
     ];
 
     if ($context === 'shared') {
@@ -20,21 +17,30 @@
     } else {
         $icon = 'group';
     }
-
+    $roleClass = '';
 @endphp
+@switch($role)
+    @case('owner')
+        @php $roleClass = 'border-pastel-pink dark:border-pink-900/50 text-pink-500 dark:text-pink-400 hover:border-pink-500/50'; @endphp
+    @break
+
+    @case('editor')
+        @php $roleClass = 'border-pastel-blue dark:border-blue-900/50 text-blue-500 dark:text-blue-400 hover:border-blue-500/50'; @endphp
+    @break
+
+    @case('viewer')
+        @php $roleClass = 'border-pastel-green dark:border-green-900/50 text-green-500 dark:text-green-400 hover:border-green-500/50'; @endphp
+    @break
+
+    @default
+@endswitch
 
 <a href="{{ route('dashboard.boards.show', $board) }}">
-    <div
-        class="bg-card-light dark:bg-card-dark rounded-xl p-5 border-2 flex flex-col gap-4 shadow-sm hover:shadow-lg transition-shadow duration-300 min-h-[280px]
-        @switch($role)
-            @case('owner') border-pastel-pink dark:border-pink-900/50 text-pink-500 dark:text-pink-400 hover:border-pink-500/50 @break
-            @case('editor') border-pastel-blue dark:border-blue-900/50 text-blue-500 dark:text-blue-400 hover:border-blue-500/50 @break
-            @case('viewer') border-pastel-green dark:border-green-900/50 text-green-500 dark:text-green-400 hover:border-green-500/50 @break
-        @endswitch">
+    <x-card class="{{ $roleClass }}">
 
         <div class="flex items-start justify-between">
             <h3 class="text-lg font-bold text-slate-900 dark:text-white pr-4">
-                {{ $board->name }}
+                {{ Str::limit($board->name, 30) }}
             </h3>
 
             <span class="material-symbols-outlined mt-1{{ $roleColors[$role] ?? '' }}">
@@ -79,5 +85,5 @@
                 </form>
             @endif
         </div>
-    </div>
+    </x-card>
 </a>

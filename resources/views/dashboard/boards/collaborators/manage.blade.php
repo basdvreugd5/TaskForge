@@ -14,7 +14,7 @@
                     </form>
                 </div>
 
-                <div class="bg-card-light dark:bg-card-dark rounded-xl w-full max-w-2xl shadow-xl">
+                <x-card class="" variant=wide>
                     <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
                         <div>
                             <h2 class="text-xl font-bold text-slate-900 dark:text-white">
@@ -169,7 +169,7 @@
                             </div>
                         </form>
                     </div>
-                </div>
+                </x-card>
             </x-container>
         </main>
     </div>
