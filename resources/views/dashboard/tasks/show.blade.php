@@ -161,10 +161,9 @@
                             </h3>
                             <div class="flex flex-wrap gap-3 items-center">
                                 @forelse($task->tags ?? [] as $tag)
-                                    <span
-                                        class="inline-flex items-center px-4 py-1.5 rounded-full text-base font-medium bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-300">
+                                    <x-badge color="green" size="lg">
                                         {{ $tag->name }}
-                                    </span>
+                                    </x-badge>
                                 @empty
                                     <p class="text-slate-500 dark:text-slate-400 text-sm">No tags</p>
                                 @endforelse
