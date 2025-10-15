@@ -13,6 +13,7 @@
 
     {{-- ===== MAIN CONTENT ===== --}}
     <x-container class="max-w-7xl mx-auto mb-8">
+
         <!-- Tabs + New Task Button -->
         <x-tab-bar>
             <x-tab-bar.link active label="My Boards" />
@@ -31,7 +32,6 @@
         <x-search-input placeholder="Search boards..." class="mb-8" />
 
         <!-- Boards List -->
-
         <x-section>
             <x-section-title>My Boards</x-section-title>
 
@@ -48,24 +48,23 @@
                 </ul>
             @endif
         </x-section>
-
     </x-container>
 
     <!-- Task Table -->
     @php
-        $statusColors = [
-            'open' => 'slate',
-            'in_progress' => 'blue',
-            'done' => 'green',
+        $statusColorMap = [
+            'open' => 'blue',
+            'in_progress' => 'yellow',
             'review' => 'purple',
+            'done' => 'green',
         ];
-        $priorityColors = [
+        $priorityColorMap = [
             'low' => 'green',
             'medium' => 'yellow',
             'high' => 'red',
         ];
-
     @endphp
+
     <x-container class="max-w-7xl mx-auto mb-8">
         <x-section-title>Today's Focus</x-section-title>
         <x-table>
@@ -85,13 +84,13 @@
                         <x-table.cell>{{ $task->title }}</x-table.cell>
                         <x-table.cell>{{ $task->board->name }}</x-table.cell>
                         <x-table.cell>
-                            <x-badge :color="$statusColors[$task->status] ?? 'slate'">
+                            <x-badge color="{{ $statusColorMap[$task->status] ?? 'slate' }}">
                                 {{ ucfirst(str_replace('_', ' ', $task->status)) }}
                             </x-badge>
                         </x-table.cell>
                         <x-table.cell>
-                            <x-badge :color="$priorityColors[$task->priority] ?? 'slate'">
-                                {{ ucfirst(str_replace('_', ' ', $task->priority)) }}
+                            <x-badge color="{{ $priorityColorMap[$task->priority] ?? 'slate' }}">
+                                {{ ucfirst($task->priority) }}
                             </x-badge>
                         </x-table.cell>
                         <x-table.cell>{{ $task->hard_deadline->format('M jS') }}</x-table.cell>
@@ -103,5 +102,4 @@
             {{ $tasks->links() }}
         </div>
     </x-container>
-
 </x-app-layout>

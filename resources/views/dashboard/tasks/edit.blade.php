@@ -12,16 +12,14 @@
                             Back to Board
                         </x-action-button>
                     </form>
-                    <div class="mt-6">
-                        <form action="{{ route('dashboard.tasks.destroy', $task) }}" method="POST"
-                            onsubmit="return confirm('Are you sure you want to delete this task?');">
-                            @csrf
-                            @method('DELETE')
-                            <x-action-button type="submit" icon="delete" variant="danger">
-                                Delete Task
-                            </x-action-button>
-                        </form>
-                    </div>
+                    <form action="{{ route('dashboard.tasks.destroy', $task) }}" method="POST"
+                        onsubmit="return confirm('Are you sure you want to delete this task?');">
+                        @csrf
+                        @method('DELETE')
+                        <x-action-button type="submit" icon="delete" variant="danger">
+                            Delete Task
+                        </x-action-button>
+                    </form>
                 </x-section>
 
                 <!-- Task Card -->

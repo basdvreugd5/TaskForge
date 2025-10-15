@@ -7,24 +7,11 @@
 
                 <!-- Back to Boards Button & Edit Task Button -->
                 <div class="flex items-center justify-between mb-8">
-                    {{-- <a href="{{ route('dashboard.boards.show', $task->board) }}"
-                        class="flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
-                        <span class="material-symbols-outlined">arrow_back</span>
-                        <span class="text-sm font-medium">Back to Board</span>
-                    </a> --}}
                     <form action="{{ route('dashboard.boards.show', $task->board) }}" method="GET">
                         <x-action-button type="submit" icon="arrow_back">
                             Back to Board
                         </x-action-button>
                     </form>
-                    {{-- <a href="{{ route('dashboard.tasks.edit', $task) }}"
-                        class="flex items-center gap-2 px-3 py-2 rounded-lg  text-slate-400 hover:text-primary font-medium hover:text-primary hover:bg-primary/30 transition-all duration-300">
-                        <span class="material-symbols-outlined">
-                            edit
-                        </span>
-                        Edit Task
-                    </a> --}}
-
                     <form action="{{ route('dashboard.tasks.edit', $task) }}" method="GET">
                         <x-action-button type="submit" icon="edit">
                             Edit Task
@@ -97,17 +84,23 @@
                         <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-2">
                             Project
                         </h2>
-                        <span
+                        {{-- <span
                             class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-teal-100 dark:bg-teal-900/50 text-teal-800 dark:text-teal-300">
                             {{ $task->board->name }}
-                        </span>
-                        <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-2">
+                        </span> --}}
+                        <x-badge color="{{ 'blue' }}">
+                            {{ ucfirst($task->board->name) }}
+                        </x-badge>
+                        <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-2 mt-4">
                             Author
                         </h2>
-                        <span
+                        {{-- <span
                             class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-teal-100 dark:bg-teal-900/50 text-teal-800 dark:text-teal-300">
-                            {{ $task->board->name }}
-                        </span>
+                            {{ $task->board->user->name }}
+                        </span> --}}
+                        <x-badge color="{{ 'teal' }}">
+                            {{ ucfirst($task->board->user->name) }}
+                        </x-badge>
                     </div>
 
                     <!-- Description -->

@@ -11,25 +11,37 @@
                             Back to Board
                         </x-action-button>
                     </form>
-                    <div class="mt-6">
-                        <form action="{{ route('dashboard.boards.destroy', $board) }}" method="POST"
-                            onsubmit="return confirm('Are you sure you want to delete this board?');">
-                            @csrf
-                            @method('DELETE')
-                            <x-action-button type="submit" icon="delete" variant="danger">
-                                Delete Board
-                            </x-action-button>
-                        </form>
-                    </div>
+                    <form action="{{ route('dashboard.boards.destroy', $board) }}" method="POST"
+                        onsubmit="return confirm('Are you sure you want to delete this board?');">
+                        @csrf
+                        @method('DELETE')
+                        <x-action-button type="submit" icon="delete" variant="danger">
+                            Delete Board
+                        </x-action-button>
+                    </form>
                 </x-section>
 
-                <!-- Task Card -->
+                <!-- Card -->
                 <div class="bg-card-light dark:bg-card-dark rounded-xl w-full max-w-2xl shadow-xl">
+                    <!-- Session Status Messages (Success/Error) -->
+                    @if (session('success'))
+                        <x-alert type="success" :message="session('success')" />
+                    @endif
+
+                    @if (session('error'))
+                        <x-alert type="error" :message="session('error')" />
+                    @endif
+
+                    @if ($errors->any())
+                        @foreach ($errors->all() as $error)
+                            <x-alert type="error" :message="$error" />
+                        @endforeach
+                    @endif
+
                     <form class="p-6 max-h-[60vh] overflow-y-auto" method="POST"
                         action="{{ route('dashboard.boards.update', $board) }}" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-
                         <!-- Title + Board -->
                         <x-section>
                             <x-input-label for="board-name" value="Board Name"
@@ -54,7 +66,6 @@
                     </form>
                 </div>
             </x-container>
-    </div>
-    </main>
+        </main>
     </div>
 </x-app-layout>
