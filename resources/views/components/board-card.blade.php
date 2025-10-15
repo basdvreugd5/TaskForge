@@ -43,8 +43,8 @@
 
         </div>
 
-        <p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-3">
-            {{ $board->description }}
+        <p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-5">
+            {{ Str::limit($board->description, 180) }}
         </p>
         <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800 mt-auto">
             <div class="flex items-center gap-2">
@@ -56,7 +56,7 @@
                         {{ $role === 'owner' ? 'Owned by' : 'Shared by' }}
                     </p>
                     <p class="text-sm font-medium text-slate-700 dark:text-slate-300">
-                        {{ $board->user->name }}
+                        {{ Str::limit($board->user->name, 10) }}
                     </p>
                 </div>
             </div>
