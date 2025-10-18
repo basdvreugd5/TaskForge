@@ -2,8 +2,6 @@
     'color' => 'slate',
     'size' => 'md',
     'class' => '',
-    'icon' => null,
-    'variant' => null,
 ])
 
 @php

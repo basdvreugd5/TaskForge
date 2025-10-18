@@ -56,8 +56,8 @@
                                             <span
                                                 class="material-symbols-outlined text-orange-600 dark:text-orange-400 text-xl">error_outline</span>
                                             <input class="form-input !bg-transparent !border-0 !p-0 !ring-0"
-                                                id="hard-deadline" name="hard_deadline" type="date"
-                                                value="{{ old('hard_deadline', $task->hard_deadline?->format('Y-m-d') ?? '') }}">
+                                                id="hard-deadline" name="hard_deadline" type="datetime-local"
+                                                value="{{ old('hard_deadline', $task->hard_deadline?->format('Y-m-d\TH:i') ?? '') }}">
                                         </div>
                                     </div>
                                     <div class="relative">
@@ -70,8 +70,8 @@
                                             <span
                                                 class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-xl">event_available</span>
                                             <input class="form-input !bg-transparent !border-0 !p-0 !ring-0"
-                                                id="soft-due-date" name="soft_due_date" type="date"
-                                                value="{{ old('soft_due_date', $task->soft_due_date?->format('Y-m-d') ?? '') }}">
+                                                id="soft-due-date" name="soft_due_date" type="datetime-local"
+                                                value="{{ old('soft_due_date', $task->soft_due_date?->format('Y-m-d\TH:i') ?? '') }}">
                                         </div>
                                     </div>
                                 </div>

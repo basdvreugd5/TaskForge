@@ -15,7 +15,7 @@ class TaskController extends Controller
     {
         $this->authorize('view', $task);
 
-        $task->load(['board.tasks']);
+        $task->load(['board.tasks', 'tags']);
 
         return view('dashboard.tasks.show', compact('task'));
     }

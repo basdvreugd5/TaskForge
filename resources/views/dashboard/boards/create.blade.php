@@ -1,59 +1,47 @@
 <x-app-layout>
-    <div class="flex h-screen flex-col">
-
-        <!-- Main -->
-        <main class="flex-1 p-6 lg:p-10">
-            <x-container class="max-w-4xl mx-auto">
-
-                <!-- Back to Boards Button & Edit Task Button -->
-                <div class="flex items-center justify-between mb-8">
-                    <form action="{{ url()->previous() }}" method="GET">
-                        <x-action-button type="submit" icon="arrow_back">
-                            Back to Board
-                        </x-action-button>
-                    </form>
+    <x-container class="max-w-4xl mx-auto p-6 lg:p-10">
+        <!-- Back to Boards Button & Edit Task Button -->
+        <div class="flex items-center justify-between mb-8">
+            <form action="{{ url()->previous() }}" method="GET">
+                <x-action-button type="submit" icon="arrow_back">
+                    Back to Board
+                </x-action-button>
+            </form>
+        </div>
+        <!-- Task Card -->
+        <x-card class="" variant=wide>
+            <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white">
+                        Create Board
+                    </h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">
+                        For "{{ Auth::user()->name }}" .
+                    </p>
                 </div>
-
-                <!-- Task Card -->
-                <x-card class="" variant=wide>
-                    <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
-                        <div>
-                            <h2 class="text-xl font-bold text-slate-900 dark:text-white">
-                                Create Board
-                            </h2>
-                            <p class="text-sm text-slate-500 dark:text-slate-400">
-                                For "{{ Auth::user()->name }}" .
-                            </p>
-                        </div>
-                    </div>
-                    <form class="p-6 max-h-[60vh] overflow-y-auto" method="POST"
-                        action="{{ route('dashboard.boards.store') }}" enctype="multipart/form-data">
-                        @csrf
-
-                        <!-- Title + Board -->
-                        <x-section>
-                            <x-input-label for="board-name" value="Board Name"
-                                class="block text-base font-semibold text-slate-800 dark:text-slate-200 mb-2" />
-                            <x-text-input id="board-name" name="name" type="text" placeholder="Name your Board!"
-                                class="form-input text-sm font-thin mb-4" />
-                            <x-input-label for="board-description" value="Description"
-                                class="block text-base font-semibold text-slate-800 dark:text-slate-200 mb-2" />
-                            <x-text-input id="board-description" name="description" type="textarea" rows="4"
-                                class="form-textarea leading-relaxed text-sm font-thin "
-                                placeholder="Describe your Board..!" />
-                        </x-section>
-
-
-                        <x-section class="flex flex-col justify-end  sm:flex-row gap-4 mb-2">
-                            <a href="{{ route('dashboard.index') }}"
-                                class ="px-6 py-3 rounded-lg text-slate-700 dark:text-slate-300 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 font-semibold transition-colors">Cancel</a>
-                            <button
-                                class="bg-primary text-white font-bold py-2.5 px-6 rounded-lg hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
-                                type="submit">Save Changes</button>
-                        </x-section>
-                    </form>
-                </x-card>
-            </x-container>
-        </main>
-    </div>
+            </div>
+            <form class="p-6 max-h-[60vh] overflow-y-auto" method="POST" action="{{ route('dashboard.boards.store') }}"
+                enctype="multipart/form-data">
+                @csrf
+                <!-- Title + Board -->
+                <x-section>
+                    <x-input-label for="board-name" value="Board Name"
+                        class="block text-base font-semibold text-slate-800 dark:text-slate-200 mb-2" />
+                    <x-text-input id="board-name" name="name" type="text" placeholder="Name your Board!"
+                        class="form-input text-sm font-thin mb-4" />
+                    <x-input-label for="board-description" value="Description"
+                        class="block text-base font-semibold text-slate-800 dark:text-slate-200 mb-2" />
+                    <x-text-input id="board-description" name="description" type="textarea" rows="4"
+                        class="form-textarea leading-relaxed text-sm font-thin " placeholder="Describe your Board..!" />
+                </x-section>
+                <x-section class="flex flex-col justify-end  sm:flex-row gap-4 mb-2">
+                    <a href="{{ route('dashboard.index') }}"
+                        class ="px-6 py-3 rounded-lg text-slate-700 dark:text-slate-300 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 font-semibold transition-colors">Cancel</a>
+                    <button
+                        class="bg-primary text-white font-bold py-2.5 px-6 rounded-lg hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
+                        type="submit">Save Changes</button>
+                </x-section>
+            </form>
+        </x-card>
+    </x-container>
 </x-app-layout>

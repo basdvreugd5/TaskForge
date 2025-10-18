@@ -3,7 +3,7 @@
     <x-slot name="header">
         <div class="mb-8">
             <h1 class="text-3xl font-bold text-slate-900 dark:text-white">
-                {{ __('Dashboard') }}
+                Dashboard
             </h1>
             <p class= "text-slate-500 dark:text-slate-400 mt-1">
                 Welcome back, {{ Auth::user()->name }}! Let's get things done.
@@ -93,7 +93,7 @@
                                 {{ ucfirst($task->priority) }}
                             </x-badge>
                         </x-table.cell>
-                        <x-table.cell>{{ $task->hard_deadline->format('M jS') }}</x-table.cell>
+                        <x-table.cell>{{ \Carbon\Carbon::parse($task->hard_deadline)->format('d F H:i') }}</x-table.cell>
                     </x-table.row>
                 @endforeach
             </tbody>
