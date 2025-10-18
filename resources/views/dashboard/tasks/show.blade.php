@@ -140,7 +140,7 @@
                     </div>
                 </div>
                 <!-- Tags -->
-                <div>
+                {{-- <div>
                     <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4">
                         Tags
                     </h3>
@@ -161,33 +161,81 @@
                         </button>
                     </div>
                 </div>
-            </div>
-            <!-- Subtasks -->
-            <div>
-                <div class="flex items-center justify-between mb-5">
-                    <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">
-                        Subtasks
-                    </h2>
-                    <p class="subtask-progress text-base text-slate-500 dark:text-slate-400 font-medium">
-                        {{ collect($task->checklist)->where('is_completed', true)->count() }}
-                        of
-                        {{ count($task->checklist ?? []) }} completed
-                    </p>
-                </div>
-                <div class="space-y-4">
-                    @foreach ($task->checklist ?? [] as $i => $item)
-                        <label
-                            class="flex items-center space-x-4 p-4 rounded-lg bg-slate-100/70 dark:bg-border-dark/30 hover:bg-slate-200/70 dark:hover:bg-border-dark/50 transition-colors cursor-pointer shadow-sm">
-                            <input type="checkbox" @checked($item['is_completed']) data-index="{{ $i }}"
-                                class="subtask-checkbox h-6 w-6 rounded-md border-slate-400 dark:border-border-dark text-primary focus:ring-primary/50 bg-slate-200 dark:bg-slate-700">
-                            <span
-                                class="text-lg text-slate-600 dark:text-slate-400 {{ $item['is_completed'] ? 'line-through' : '' }}">
-                                {{ $item['title'] }}
+            </div> --}}
+                <!-- Tags -->
+                <div x-data="{ open: false }">
+                    <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4">Tags</h3>
+
+                    <div class="flex flex-wrap gap-3 items-center">
+                        @forelse($task->tags as $tag)
+                            <div class="relative group inline-flex items-center">
+                                <x-badge color="green" size="lg">
+                                    {{ $tag->name }}
+                                </x-badge>
+
+                                <form method="POST" action="{{ route('dashboard.tasks.tags.detach', [$task, $tag]) }}"
+                                    class="absolute  left-1 hidden group-hover:block">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="backdrop-blur-sm rounded-full p-0.5 px-4  shadow hover:bg-red-500/40 hover:text-white transition-all">
+                                        <span class="material-symbols-outlined text-xs">
+                                            delete
+                                        </span>
+                                    </button>
+                                </form>
+                            </div>
+                        @empty
+                            <p class="text-slate-500 dark:text-slate-400 text-xs">No tags</p>
+                        @endforelse
+
+                        <!-- Add Tag Button -->
+                        <button @click="open = !open"
+                            class="flex items-center justify-center size-9 rounded-full bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
+                            <span class="material-symbols-outlined text-slate-600 dark:text-slate-300 text-xl">
+                                add
                             </span>
-                        </label>
-                    @endforeach
+                        </button>
+                    </div>
+
+                    <!-- Add Tag Form -->
+                    <form x-show="open" x-cloak method="POST"
+                        action="{{ route('dashboard.tasks.tags.attach', $task) }}" class="mt-3 flex gap-2">
+                        @csrf
+                        <input type="text" name="name" placeholder="New tag name"
+                            class="border rounded px-2 py-1 text-sm w-40 dark:bg-slate-700 dark:text-white">
+                        <button type="submit"
+                            class="bg-green-500 text-white text-sm px-3 py-1 rounded hover:bg-green-600">
+                            Add
+                        </button>
+                    </form>
                 </div>
-            </div>
+                <!-- Subtasks -->
+                <div>
+                    <div class="flex items-center justify-between mb-5">
+                        <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">
+                            Subtasks
+                        </h2>
+                        <p class="subtask-progress text-base text-slate-500 dark:text-slate-400 font-medium">
+                            {{ collect($task->checklist)->where('is_completed', true)->count() }}
+                            of
+                            {{ count($task->checklist ?? []) }} completed
+                        </p>
+                    </div>
+                    <div class="space-y-4">
+                        @foreach ($task->checklist ?? [] as $i => $item)
+                            <label
+                                class="flex items-center space-x-4 p-4 rounded-lg bg-slate-100/70 dark:bg-border-dark/30 hover:bg-slate-200/70 dark:hover:bg-border-dark/50 transition-colors cursor-pointer shadow-sm">
+                                <input type="checkbox" @checked($item['is_completed']) data-index="{{ $i }}"
+                                    class="subtask-checkbox h-6 w-6 rounded-md border-slate-400 dark:border-border-dark text-primary focus:ring-primary/50 bg-slate-200 dark:bg-slate-700">
+                                <span
+                                    class="text-lg text-slate-600 dark:text-slate-400 {{ $item['is_completed'] ? 'line-through' : '' }}">
+                                    {{ $item['title'] }}
+                                </span>
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
         </x-card>
     </x-container>
 

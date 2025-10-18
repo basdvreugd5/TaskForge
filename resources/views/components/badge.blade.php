@@ -65,6 +65,6 @@
         $finalClasses = trim($sizeClass . ' ' . $colorClass . ' ' . $class);
     @endphp
 
-    <span {{ $attributes->merge(['class' => "rounded-full text-sm font-medium $finalClasses"]) }}>
+    <span {{ $attributes->merge(['class' => "cursor-default rounded-full text-sm font-medium $finalClasses"]) }}>
         {{ $slot }}
     </span>
