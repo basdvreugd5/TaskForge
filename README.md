@@ -52,6 +52,8 @@ npm install
 Run the database migrations to create the necessary tables, including users and tasks.
 ```bash
 php artisan migrate
+# OR for development
+# php artisan migrate:fresh --seed
 ```
 ### **5\. Compile Assets**
 
