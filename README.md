@@ -1,8 +1,8 @@
-# ** TaskForge**
+#  TaskForge
 
 TaskForge is a modern, responsive web application built on the Laravel framework designed to help individuals and teams manage their to-do lists and projects efficiently.
 
-## ** Key Features**
+##  Key Features
 
 Based on common task management requirements and a modern framework like Laravel, TaskForge includes the following core functionalities:
 
@@ -12,7 +12,7 @@ Based on common task management requirements and a modern framework like Laravel
 * **Categorization:** Organize tasks using custom tags or categories.  
 * **Responsive UI:** A clean, mobile-friendly user interface built with Blade and Tailwind CSS.
 
-## **🛠 Technology Stack**
+## ** Technology Stack**
 
 TaskForge is built using a modern, robust, and scalable set of technologies:
 
