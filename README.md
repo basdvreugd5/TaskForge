@@ -57,9 +57,9 @@ php artisan migrate
 
 Compile the frontend assets (Tailwind CSS and JavaScript):
 
-```npm run dev  ``
-```\# OR for production  ``
-\# npm run build 
+```npm run dev  
+\# OR for production  
+\# npm run build ``
 
 ### **6\. Run the Application**
 
