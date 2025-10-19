@@ -35,8 +35,8 @@ cd TaskForge
 
 Copy the example environment file and generate an application key.
 
-```cp .env.example .env  
-php artisan key:generate```
+cp .env.example .env  
+php artisan key:generate
 
 Next, open the newly created .env file and configure your database connection settings (e.g., DB\_DATABASE, DB\_USERNAME, DB\_PASSWORD).
 
@@ -57,9 +57,9 @@ php artisan migrate
 
 Compile the frontend assets (Tailwind CSS and JavaScript):
 
-npm run dev  
-\# OR for production  
-\# npm run build
+```npm run dev  ``
+```\# OR for production  ``
+\# npm run build 
 
 ### **6\. Run the Application**
 
