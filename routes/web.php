@@ -25,9 +25,8 @@ Route::middleware(['auth', 'verified'])
         Route::get('/shared', [BoardController::class, 'shared'])->name('shared');
 
         // Timeline Page -- WORK IN PROGRESS
-        Route::get('/timeline', function () {
-            return view('dashboard.timeline');
-        })->name('timeline');
+        Route::get('/timeline', [App\Http\Controllers\TimelineController::class, 'index'])
+            ->name('timeline');
 
         // Board routes
         Route::prefix('boards')->name('boards.')->group(function () {

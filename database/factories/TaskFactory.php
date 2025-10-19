@@ -36,10 +36,10 @@ class TaskFactory extends Factory
             'title' => fake()->sentence(3),
             'description' => fake()->paragraph(),
             'hard_deadline' => $hardDeadline,
-            'soft_due_date' => Carbon::instance($this->faker->dateTimeBetween('-1 month', $hardDeadline)),
+            'soft_due_date' => Carbon::instance($this->faker->dateTimeBetween($hardDeadline->copy()->subDays(5), $hardDeadline)),
             'status' => $status,
             'priority' => $priority,
-            'checklist' => collect(range(1, rand(2, 5)))->map(function() {
+            'checklist' => collect(range(1, rand(2, 5)))->map(function () {
                 return [
                     'title' => $this->faker->words(3, true),
                     'is_completed' => $this->faker->boolean(30),
