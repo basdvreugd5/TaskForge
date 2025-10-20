@@ -4,6 +4,7 @@ use App\Http\Controllers\BoardController;
 use App\Http\Controllers\CollaboratorController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TaskController;
 use App\Models\Board;
 use App\Models\Task;
@@ -23,6 +24,8 @@ Route::middleware(['auth', 'verified'])
         Route::get('/', [DashboardController::class, 'index'])->name('index');
 
         Route::get('/shared', [BoardController::class, 'shared'])->name('shared');
+
+        Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 
         // Timeline Page -- WORK IN PROGRESS
         Route::get('/timeline', [App\Http\Controllers\TimelineController::class, 'index'])

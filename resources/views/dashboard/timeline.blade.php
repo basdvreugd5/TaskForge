@@ -1,7 +1,7 @@
 <x-app-layout>
     {{-- Main component container --}}
     <div x-data="calendarBoard({ boards: @js($boards) })" x-init="init()"
-        class="rounded-xl border border-slate-200 dark:border-white/10 dark:bg-card-dark  overflow-hidden shadow-sm p-4 sm:p-6">
+        class="rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-card-dark overflow-hidden shadow-sm p-4 sm:p-6">
 
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <div class="flex items-center gap-2">

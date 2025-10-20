@@ -29,7 +29,15 @@
         </x-tab-bar>
 
         <!-- Search Tasks -->
-        <x-search-input placeholder="Search boards..." class="mb-8" />
+        <form action="{{ route('dashboard.search.index') }}" method="GET" class="mb-8">
+            <x-search-input 
+    placeholder="Search boards..." 
+    name="search" 
+    class="w-full" 
+    value="{{ request('search') }}" 
+/>
+            <button type="submit" class="hidden">Search</button>
+        </form>
 
         <!-- Boards List -->
         <x-section>
@@ -39,13 +47,14 @@
                 <x-section-paragraph>You don’t have any boards yet.</x-section-paragraph>
             @else
                 <!-- Board Cards -->
-                <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <ul id="boards-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                     @foreach ($boards as $board)
                         <li>
                             <x-board-card :board="$board" show-manage="true" />
                         </li>
                     @endforeach
                 </ul>
+                
             @endif
         </x-section>
     </x-container>
@@ -102,4 +111,5 @@
             {{ $tasks->links() }}
         </div>
     </x-container>
+
 </x-app-layout>
