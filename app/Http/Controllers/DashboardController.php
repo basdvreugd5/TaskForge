@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\BoardFilter;
+use App\Models\Board;
 use App\Models\Task;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -10,23 +13,29 @@ class DashboardController extends Controller
     /**
      * Display the main dashboard view.
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
 
-        $boards = $user->boards()
+        $filters = $request->only('search', 'type');
+        $filters['type'] = $filters['type'] ?? 'owned';
+
+        $boards = (new BoardFilter)
+            ->apply(Board::query(), $filters)
             ->with('user')
             ->withCount('tasks')
             ->withCount('collaborators')
             ->get();
 
-        $tasks = Task::whereIn('board_id', $user->boards()->pluck('id'))
+        // limit tasks to the filtered boards (use the boards we just found)
+        $boardIds = $boards->pluck('id')->toArray();
+
+        $tasks = Task::whereIn('board_id', $boardIds)
             ->with('board')
             ->orderBy('hard_deadline', 'asc')
-            ->paginate(5);
+            ->paginate(5)
+            ->withQueryString();
 
-        // Note: update this logic later to include tasks from collaborated boards!
-
-        return view('dashboard.index', compact('user', 'boards', 'tasks'));
+        return view('dashboard.index', compact('user', 'boards', 'tasks', 'filters'));
     }
 }

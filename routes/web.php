@@ -8,7 +8,6 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TaskController;
 use App\Models\Board;
 use App\Models\Task;
-use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,8 +22,7 @@ Route::middleware(['auth', 'verified'])
         // Dashboard home
         Route::get('/', [DashboardController::class, 'index'])->name('index');
 
-        Route::get('/shared', [BoardController::class, 'shared'])->name('shared');
-
+        // Search Page
         Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 
         // Timeline Page -- WORK IN PROGRESS
@@ -43,12 +41,10 @@ Route::middleware(['auth', 'verified'])
             Route::delete('{board}', [BoardController::class, 'destroy'])->name('destroy');
             Route::get('{board}', [BoardController::class, 'show'])->name('show');
 
-            // FIX: Route for a user to leave a board. This route name resolves to 'dashboard.boards.leave'.
             Route::delete('{board}/leave', [CollaboratorController::class, 'leaveBoard'])->name('leave');
         });
 
-        // Collaborator-specific management routes (adding, updating, removing other users)
-        // Note: The board ID is part of the group prefix.
+        // Collaborator routes
         Route::prefix('boards/{board}')->name('collaborators.')->group(function () {
             Route::post('collaborators', [CollaboratorController::class, 'store'])->name('store');
             Route::put('collaborators/{collaborator}', [CollaboratorController::class, 'update'])->name('update');

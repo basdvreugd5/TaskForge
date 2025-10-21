@@ -1,7 +1,19 @@
 @props(['board', 'role' => null, 'showManage' => false, 'showLeave' => false, 'context' => 'default'])
 
 @php
-    $role ??= $board->pivot->role ?? ($board->user_id === Auth::id() ? 'owner' : 'viewer');
+    if (!$role) {
+        $role = $board->pivot->role ?? null;
+
+        if (!$role) {
+            $collaborator = $board->collaborators->firstWhere('id', auth()->id());
+            if ($collaborator) {
+                $role = $collaborator->pivot->role ?? null;
+            }
+        }
+
+        $role = $role ?? ($board->user_id === auth()->id() ? 'owner' : 'viewer');
+    }
+
     $role = in_array($role, ['owner', 'editor', 'viewer']) ? $role : 'viewer';
 
     $roleColors = [

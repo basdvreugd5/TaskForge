@@ -95,7 +95,7 @@ class BoardController extends Controller
             ->withCount('tasks')
             ->get();
 
-        return view('dashboard.shared.index', compact('sharedBoards'));
+        return view('dashboard.index', ['type' => 'owned'], compact('sharedBoards'));
 
     }
 

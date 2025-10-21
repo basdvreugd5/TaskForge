@@ -24,8 +24,8 @@ class CollaboratorStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'email', 'exists:users,email'],
-            'role' => ['required', Rule::in(['editor', 'viewer'])],
+            'email' => ['required', 'email', 'exists:users,email', 'max:255', 'min:5', 'string'],
+            'role' => ['required', Rule::in(['editor', 'viewer']), 'string'],
         ];
     }
 

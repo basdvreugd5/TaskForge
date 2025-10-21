@@ -91,7 +91,7 @@ class CollaboratorController extends Controller
             }
 
             // Redirect back to the shared boards list after successfully leaving
-            return redirect()->route('dashboard.shared')->with('success', 'You have successfully left the board: '.$board->name);
+            return redirect()->route('dashboard.index', ['type' => 'shared'])->with('success', 'You have successfully left the board: '.$board->name);
 
         } catch (\Exception $e) {
             // Log the full error for server-side debugging

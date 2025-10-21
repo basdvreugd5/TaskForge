@@ -1,6 +1,6 @@
         <div class="relative flex items-center {{ $class ?? '' }}">
             <span
-                class="material-symbols-outlined absolute left-4 top-[15%] -translate-y-52%] text-slate-400 dark:text-slate-500 pointer-events-none">
+                class="material-symbols-outlined absolute left-4 -translate-y-52%] text-slate-400 dark:text-slate-500 pointer-events-none">
                 search
             </span>
             <input

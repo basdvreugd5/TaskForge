@@ -14,10 +14,12 @@
     {{-- ===== MAIN CONTENT ===== --}}
     <x-container class="max-w-7xl mx-auto mb-8">
 
-        <!-- Tabs + New Task Button -->
+        <!-- Tabs + New Board Button -->
         <x-tab-bar>
-            <x-tab-bar.link active label="My Boards" />
-            <x-tab-bar.link label="Shared Boards" href="{{ route('dashboard.shared') }}" />
+            <x-tab-bar.link :active="request('type') === 'owned' || request('type') === null" label="My Boards"
+                href="{{ route('dashboard.index', ['type' => 'owned']) }}" />
+            <x-tab-bar.link :active="request('type') === 'shared'" label="Shared Boards"
+                href="{{ route('dashboard.index', ['type' => 'shared']) }}" />
             <x-tab-bar.link label="Timeline Overview" />
             <x-slot name="actions">
                 <form action="{{ route('dashboard.boards.create') }}" method="GET">
@@ -28,14 +30,11 @@
             </x-slot>
         </x-tab-bar>
 
-        <!-- Search Tasks -->
+        <!-- Search Boards -->
         <form action="{{ route('dashboard.search.index') }}" method="GET" class="mb-8">
-            <x-search-input 
-    placeholder="Search boards..." 
-    name="search" 
-    class="w-full" 
-    value="{{ request('search') }}" 
-/>
+            <input type="hidden" name="type" value="{{ request('type', 'owned') }}">
+            <x-search-input placeholder="Search boards..." name="search" class="w-full"
+                value="{{ request('search') }}" />
             <button type="submit" class="hidden">Search</button>
         </form>
 
@@ -50,11 +49,15 @@
                 <ul id="boards-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                     @foreach ($boards as $board)
                         <li>
-                            <x-board-card :board="$board" show-manage="true" />
+                            @if ($board->user_id === auth()->id())
+                                <x-board-card :board="$board" show-manage />
+                            @else
+                                <x-board-card :board="$board" show-leave />
+                            @endif
                         </li>
                     @endforeach
                 </ul>
-                
+
             @endif
         </x-section>
     </x-container>
