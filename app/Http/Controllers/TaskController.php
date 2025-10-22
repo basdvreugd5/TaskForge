@@ -10,6 +10,8 @@ class TaskController extends Controller
 {
     /**
      * Display the selected task.
+     *
+     * @return \Illuminate\Contracts\View\View
      */
     public function show(Task $task)
     {
@@ -19,9 +21,12 @@ class TaskController extends Controller
 
         return view('dashboard.tasks.show', compact('task'));
     }
+    // ------------------------------------------------------------------------------------------------------
 
     /**
      * Create a new task.
+     *
+     * @return \Illuminate\Contracts\View\View
      */
     public function create(Board $board)
     {
@@ -32,9 +37,12 @@ class TaskController extends Controller
             'board' => $board,
         ]);
     }
+    // ------------------------------------------------------------------------------------------------------
 
     /**
      * Store the task on the board.
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request, Board $board)
     {
@@ -70,9 +78,12 @@ class TaskController extends Controller
 
         return redirect()->route('dashboard.tasks.show', $task);
     }
+    // ------------------------------------------------------------------------------------------------------
 
     /**
      * Edit the task details.
+     *
+     * @return \Illuminate\Contracts\View\View
      */
     public function edit(Task $task)
     {
@@ -89,9 +100,12 @@ class TaskController extends Controller
 
         return view('dashboard.tasks.edit', compact('task', 'board'));
     }
+    // ------------------------------------------------------------------------------------------------------
 
     /**
      * Update the task details.
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Task $task)
     {
@@ -126,9 +140,12 @@ class TaskController extends Controller
         return redirect()->route('dashboard.tasks.show', $task)
             ->with('success', 'Task updated successfully!');
     }
+    // ------------------------------------------------------------------------------------------------------
 
     /**
      * Update the checklist.
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function updateChecklist(Request $request, Task $task)
     {
@@ -152,9 +169,12 @@ class TaskController extends Controller
             'checklist' => $checklist,
         ]);
     }
+    // ------------------------------------------------------------------------------------------------------
 
     /**
      * Delete the task.
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Task $task)
     {
@@ -166,4 +186,5 @@ class TaskController extends Controller
             ->route('dashboard.boards.show', $board)
             ->with('succes', 'Task deleted succesfully');
     }
+    // ------------------------------------------------------------------------------------------------------
 }

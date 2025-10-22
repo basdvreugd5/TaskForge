@@ -13,14 +13,14 @@ class DashboardController extends Controller
     /**
      * Display the main dashboard view.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function index(Request $request)
     {
         $user = Auth::user();
 
         $filters = $request->only('search', 'type');
-        $filters['type'] = $filters['type'] ?? 'owned';
+        $filters['type'] ??= 'owned';
 
         $boards = (new BoardFilter)
             ->apply(Board::query(), $filters)

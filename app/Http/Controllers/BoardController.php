@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BoardStoreRequest;
+use App\Http\Requests\BoardUpdateRequest;
 use App\Models\Board;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -21,10 +22,11 @@ class BoardController extends Controller
 
     /**
      * Display the specified board along with its tasks.
+     *
+     * @return \Illuminate\Contracts\View\View
      */
     public function show(Board $board)
     {
-        // $this->authorize('view', $board);
         $board->load(['tasks' => function ($query) {
             $query->whereIn('status', ['open', 'in_progress', 'review', 'done']);
         }]);
@@ -35,6 +37,8 @@ class BoardController extends Controller
 
     /**
      * Show the form for creating a new board.
+     *
+     * @return \Illuminate\Contracts\View\View
      */
     public function create()
     {
@@ -46,15 +50,14 @@ class BoardController extends Controller
 
     /**
      * Store a newly created board.
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request): RedirectResponse
+    public function store(BoardStoreRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'name' => 'required|string|min:10|max:255',
-            'description' => 'nullable|string|min:20|max:1000',
-        ]);
+        $validated = $request->validated();
 
-        DB::transaction(function () use ($validated, &$board) {
+        $board = DB::transaction(function () use ($validated) {
             $board = Board::create([
                 'name' => $validated['name'],
                 'description' => $validated['description'],
@@ -64,6 +67,8 @@ class BoardController extends Controller
             $board->collaborators()->syncWithoutDetaching([
                 Auth::id() => ['role' => 'owner'],
             ]);
+
+            return $board;
         });
 
         return redirect()->route('dashboard.boards.show', $board)
@@ -73,6 +78,8 @@ class BoardController extends Controller
 
     /**
      * Show the form for editing the specified board.
+     *
+     * @return \Illuminate\Contracts\View\View
      */
     public function edit(Board $board)
     {
@@ -82,13 +89,12 @@ class BoardController extends Controller
 
     /**
      * Update the specified board.
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Board $board): RedirectResponse
+    public function update(BoardUpdateRequest $request, Board $board): RedirectResponse
     {
-        $validated = $request->validate([
-            'name' => 'required|string|min:10|max:255',
-            'description' => 'nullable|string|min:20|max:1000',
-        ]);
+        $validated = $request->validated();
 
         $board->update([
             'name' => $validated['name'],
@@ -102,8 +108,10 @@ class BoardController extends Controller
 
     /**
      * Remove the specified board.
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Board $board)
+    public function destroy(Board $board): RedirectResponse
     {
         $board->delete();
 
@@ -114,6 +122,8 @@ class BoardController extends Controller
 
     /**
      * Show the collaborator management view for the specified board.
+     *
+     * @return \Illuminate\Contracts\View\View
      */
     public function manageCollaborators(Board $board)
     {
@@ -121,4 +131,5 @@ class BoardController extends Controller
 
         return view('dashboard.boards.collaborators.manage', compact('board'));
     }
+    // ------------------------------------------------------------------------------------------------------
 }

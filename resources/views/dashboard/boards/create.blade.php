@@ -20,6 +20,20 @@
                     </p>
                 </div>
             </div>
+            <!-- Session Status Messages (Success/Error) -->
+            @if (session('success'))
+                <x-alert type="success" :message="session('success')" />
+            @endif
+
+            @if (session('error'))
+                <x-alert type="error" :message="session('error')" />
+            @endif
+
+            @if ($errors->any())
+                @foreach ($errors->all() as $error)
+                    <x-alert type="error" :message="$error" />
+                @endforeach
+            @endif
             <form class="p-6 max-h-[60vh] overflow-y-auto" method="POST" action="{{ route('dashboard.boards.store') }}"
                 enctype="multipart/form-data">
                 @csrf

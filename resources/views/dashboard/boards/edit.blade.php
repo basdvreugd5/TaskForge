@@ -18,6 +18,16 @@
         </x-section>
         <!-- Card -->
         <x-card class="" variant=wide>
+            <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white">
+                        Edit Board.
+                    </h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">
+                        For "{{ $board->name }}" board
+                    </p>
+                </div>
+            </div>
             <!-- Session Status Messages (Success/Error) -->
             @if (session('success'))
                 <x-alert type="success" :message="session('success')" />

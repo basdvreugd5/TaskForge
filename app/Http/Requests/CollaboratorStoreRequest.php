@@ -5,16 +5,20 @@ namespace App\Http\Requests;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Validator;
 
 class CollaboratorStoreRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Determine if the user can add a collaborator.
+     *
+     * @return bool
      */
     public function authorize(): bool
     {
-        return $this->user()->can('addCollaborator', $this->route('board'));
+        return $this->user()?->can('addCollaborator', $this->route('board')) ?? false;
     }
+    // ------------------------------------------------------------------------------------------------------
 
     /**
      * Get the validation rules that apply to the request.
@@ -28,26 +32,34 @@ class CollaboratorStoreRequest extends FormRequest
             'role' => ['required', Rule::in(['editor', 'viewer']), 'string'],
         ];
     }
+    // ------------------------------------------------------------------------------------------------------
 
-    public function withValidator($validator)
+    /**
+     * Get the validation callbacks that should run after validation.
+     *
+     * @return array<int, callable>
+     */
+    public function after(): array
     {
-        $validator->after(function ($validator) {
-            $board = $this->route('board');
-            $collaborator = User::firstWhere('email', $this->email);
+        return [
+            function (Validator $validator) {
+                $board = $this->route('board');
+                $collaborator = User::firstWhere('email', $this->email);
 
-            if (! $collaborator) {
-                $validator->errors()->add('error', 'No user found with that email adress.');
+                if (! $collaborator) {
+                    $validator->errors()->add('error', 'No user found with that email adress.');
 
-                return;
-            }
+                    return;
+                }
 
-            if ($collaborator->id === $board->user_id) {
-                $validator->errors()->add('email', 'The board owner cannot be added as a collaborator');
-            }
+                if ($collaborator->id === $board->user_id) {
+                    $validator->errors()->add('email', 'The board owner cannot be added as a collaborator');
+                }
 
-            if ($board->collaborators()->where('user_id', $collaborator->id)->exists()) {
-                $validator->errors()->add('email', 'This user is already a collaborator');
-            }
-        });
+                if ($board->collaborators()->where('user_id', $collaborator->id)->exists()) {
+                    $validator->errors()->add('email', 'This user is already a collaborator');
+                }
+            },
+        ];
     }
 }

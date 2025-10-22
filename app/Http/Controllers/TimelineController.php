@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\Auth;
 
 class TimelineController extends Controller
 {
+    /**
+     * Timeline view
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function index()
     {
         $this->authorize('viewAny', \App\Models\Board::class);

@@ -19,6 +19,7 @@ class TaskPolicy
     {
         return true;
     }
+    // ------------------------------------------------------------------------------------------------------
 
     /**
      * Determine whether the user can view the model.
@@ -29,6 +30,7 @@ class TaskPolicy
             ? Response::allow()
             : Response::deny('You do not have acces to this task.');
     }
+    // ------------------------------------------------------------------------------------------------------
 
     /**
      * Determine whether the user can create models.
@@ -42,6 +44,7 @@ class TaskPolicy
             : Response::deny('You do not have acces to this task.');
 
     }
+    // ------------------------------------------------------------------------------------------------------
 
     /**
      * Determine whether the user can update the model.
@@ -54,6 +57,7 @@ class TaskPolicy
             ? Response::allow()
             : Response::deny('You do not have acces to this task.');
     }
+    // ------------------------------------------------------------------------------------------------------
 
     /**
      * Determine whether the user can delete the model.
@@ -66,6 +70,7 @@ class TaskPolicy
             ? Response::allow()
             : Response::deny('You do not have acces to this task.');
     }
+    // ------------------------------------------------------------------------------------------------------
 
     /**
      * Determine whether the user can restore the model.
@@ -74,6 +79,7 @@ class TaskPolicy
     {
         return $this->getRole($user, $task->board) === 'owner';
     }
+    // ------------------------------------------------------------------------------------------------------
 
     /**
      * Determine whether the user can permanently delete the model.
@@ -82,4 +88,5 @@ class TaskPolicy
     {
         return $this->getRole($user, $task->board) === 'owner';
     }
+    // ------------------------------------------------------------------------------------------------------
 }

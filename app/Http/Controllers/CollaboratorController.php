@@ -17,44 +17,30 @@ class CollaboratorController extends Controller
         $this->middleware('can:removeCollaborator,board')->only('destroy');
         $this->middleware('can:leave,board')->only('leaveBoard');
     }
+    // ------------------------------------------------------------------------------------------------------
 
     /**
      * Store a newly added collaborator for the specified board.
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(CollaboratorStoreRequest $request, Board $board): RedirectResponse
     {
         $collaborator = User::where('email', $request->email)->first();
 
-        if (! $collaborator) {
-            return back()->with('error', 'No user found with that email.');
-        }
+        $board->collaborators()->syncWithoutDetaching([
+            $collaborator->id => ['role' => $request->role],
+        ]);
 
-        if ($collaborator->id === $board->user_id) {
-            return back()->with('error', 'The board owner is already a member.');
-        }
+        return back()->with('success', "Collaborator {$collaborator->name} added/updated as {$request->role}.");
 
-        try {
-            $board->collaborators()->syncWithoutDetaching([
-                $collaborator->id => ['role' => $request->role],
-            ]);
-
-            return back()->with('success', "Collaborator {$collaborator->name} added/updated as {$request->role}.");
-        } catch (\Exception $e) {
-            Log::error('Collaborator attach failed', [
-                'board_id' => $board->id,
-                'email' => $request->email,
-                'role' => $request->role,
-                'error' => $e->getMessage(),
-            ]);
-
-            return back()->with('error', 'Could not add collaborator. Please try again.');
-        }
     }
-
     // ------------------------------------------------------------------------------------------------------
 
     /**
      * Remove the specified collaborator from the board.
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Board $board, User $collaborator): RedirectResponse
     {
@@ -74,6 +60,8 @@ class CollaboratorController extends Controller
 
     /**
      * Allows a collaborator to remove themselves (leave) from a board.
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function leaveBoard(Board $board): RedirectResponse
     {
@@ -87,6 +75,7 @@ class CollaboratorController extends Controller
 
         return redirect()->route('dashboard.index', ['type' => 'shared'])->with('success', 'You have successfully left the board: '.$board->name);
     }
+    // ------------------------------------------------------------------------------------------------------
 
     /**
      * Detach a collaborator and centralize error logging.
@@ -105,4 +94,5 @@ class CollaboratorController extends Controller
             return 0;
         }
     }
+    // ------------------------------------------------------------------------------------------------------
 }

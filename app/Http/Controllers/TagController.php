@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class TagController extends Controller
 {
+    /**
+     * Attach tag to task
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function attach(Request $request, Task $task)
     {
         $this->authorize('update', $task);
@@ -22,7 +27,13 @@ class TagController extends Controller
 
         return redirect()->route('dashboard.tasks.show', $task)->with('success', 'Tag attached to task successfully.');
     }
+    // ------------------------------------------------------------------------------------------------------
 
+    /**
+     * Detach a tag from a task.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function detach(Task $task, Tag $tag)
     {
         $this->authorize('update', $task);
@@ -31,4 +42,5 @@ class TagController extends Controller
 
         return redirect()->route('dashboard.tasks.show', $task)->with('success', 'Tag detached from task successfully.');
     }
+    // ------------------------------------------------------------------------------------------------------
 }
