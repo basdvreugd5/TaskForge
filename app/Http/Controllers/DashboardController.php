@@ -12,6 +12,8 @@ class DashboardController extends Controller
 {
     /**
      * Display the main dashboard view.
+     *
+     * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
@@ -27,7 +29,6 @@ class DashboardController extends Controller
             ->withCount('collaborators')
             ->get();
 
-        // limit tasks to the filtered boards (use the boards we just found)
         $boardIds = $boards->pluck('id')->toArray();
 
         $tasks = Task::whereIn('board_id', $boardIds)

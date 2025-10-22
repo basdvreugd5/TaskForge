@@ -3,17 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\Board;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class BoardController extends Controller
 {
+    /**
+     * Authorize resource actions for Board model.
+     */
     public function __construct()
     {
         $this->authorizeResource(Board::class, 'board');
     }
+    // ------------------------------------------------------------------------------------------------------
 
-    // Show
+    /**
+     * Display the specified board along with its tasks.
+     */
     public function show(Board $board)
     {
         // $this->authorize('view', $board);
@@ -23,47 +31,63 @@ class BoardController extends Controller
 
         return view('dashboard.boards.show', compact('board'));
     }
+    // ------------------------------------------------------------------------------------------------------
 
-    // Create
+    /**
+     * Show the form for creating a new board.
+     */
     public function create()
     {
         return view('dashboard.boards.create', [
             'board' => new Board,
         ]);
     }
+    // ------------------------------------------------------------------------------------------------------
 
-    // Store
-    public function store(Request $request)
+    /**
+     * Store a newly created board.
+     */
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string|max:1000',
+            'name' => 'required|string|min:10|max:255',
+            'description' => 'nullable|string|min:20|max:1000',
         ]);
 
-        $board = Board::create([
-            'name' => $validated['name'],
-            'description' => $validated['description'],
-            'user_id' => Auth::id(),
-        ]);
+        DB::transaction(function () use ($validated, &$board) {
+            $board = Board::create([
+                'name' => $validated['name'],
+                'description' => $validated['description'],
+                'user_id' => Auth::id(),
+            ]);
 
-        $board->collaborators()->attach(Auth::id(), ['role' => 'owner']);
+            $board->collaborators()->syncWithoutDetaching([
+                Auth::id() => ['role' => 'owner'],
+            ]);
+        });
 
         return redirect()->route('dashboard.boards.show', $board)
             ->with('success', 'Board created successfully!');
     }
+    // ------------------------------------------------------------------------------------------------------
 
-    // Edit
+    /**
+     * Show the form for editing the specified board.
+     */
     public function edit(Board $board)
     {
         return view('dashboard.boards.edit', compact('board'));
     }
+    // ------------------------------------------------------------------------------------------------------
 
-    // Update
-    public function update(Request $request, Board $board)
+    /**
+     * Update the specified board.
+     */
+    public function update(Request $request, Board $board): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string|max:1000',
+            'name' => 'required|string|min:10|max:255',
+            'description' => 'nullable|string|min:20|max:1000',
         ]);
 
         $board->update([
@@ -74,8 +98,11 @@ class BoardController extends Controller
         return redirect()->route('dashboard.boards.show', $board)
             ->with('success', 'Board updated successfully!');
     }
+    // ------------------------------------------------------------------------------------------------------
 
-    // Destroy
+    /**
+     * Remove the specified board.
+     */
     public function destroy(Board $board)
     {
         $board->delete();
@@ -83,22 +110,11 @@ class BoardController extends Controller
         return redirect()->route('dashboard.index')
             ->with('success', 'Board deleted successfully');
     }
+    // ------------------------------------------------------------------------------------------------------
 
-    public function shared()
-    {
-        $user = Auth::user();
-
-        $sharedBoards = $user->collaboratedBoards()
-            ->wherePivot('role', '!=', 'owner')
-            ->with(['user', 'tasks', 'collaborators'])
-            ->withCount('collaborators')
-            ->withCount('tasks')
-            ->get();
-
-        return view('dashboard.index', ['type' => 'owned'], compact('sharedBoards'));
-
-    }
-
+    /**
+     * Show the collaborator management view for the specified board.
+     */
     public function manageCollaborators(Board $board)
     {
         $this->authorize('addCollaborator', $board);

@@ -38,6 +38,13 @@
                     {{ $errors->first('email') }}
                 </div>
             @endif
+            @if ($errors->has('role'))
+                <div class="p-4 mx-6 mt-4 bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-700 text-red-700 dark:text-red-300 rounded-lg font-medium"
+                    role="alert">
+                    {{ $errors->first('role') }}
+                </div>
+            @endif
+
             <!-- Current Collaborators List -->
             <div class="p-6 max-h-[60vh] overflow-y-auto">
                 <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4">
@@ -135,9 +142,6 @@
                                 <option value="viewer">Viewer</option>
                             </select>
                             {{-- <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span> --}}
-                            @error('role')
-                                <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
-                            @enderror
                         </div>
                         <button type="submit"
                             class="bg-primary text-white font-bold py-2.5 px-6 rounded-lg hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">

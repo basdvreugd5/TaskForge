@@ -5,29 +5,47 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CollaboratorStoreRequest;
 use App\Models\Board;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class CollaboratorController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:addCollaborator,board')->only('store');
+        $this->middleware('can:removeCollaborator,board')->only('destroy');
+        $this->middleware('can:leave,board')->only('leaveBoard');
+    }
+
     /**
      * Store a newly added collaborator for the specified board.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(CollaboratorStoreRequest $request, Board $board)
+    public function store(CollaboratorStoreRequest $request, Board $board): RedirectResponse
     {
-        $this->authorize('addCollaborator', $board);
-
         $collaborator = User::where('email', $request->email)->first();
 
-        try {
-            $board->collaborators()->attach($collaborator->id, ['role' => $request->role]);
+        if (! $collaborator) {
+            return back()->with('error', 'No user found with that email.');
+        }
 
-            return back()->with('success', "Collaborator {$collaborator->name} added as {$request->role}.");
+        if ($collaborator->id === $board->user_id) {
+            return back()->with('error', 'The board owner is already a member.');
+        }
+
+        try {
+            $board->collaborators()->syncWithoutDetaching([
+                $collaborator->id => ['role' => $request->role],
+            ]);
+
+            return back()->with('success', "Collaborator {$collaborator->name} added/updated as {$request->role}.");
         } catch (\Exception $e) {
-            Log::error('Collaborator attach failed', compact('board', 'collaborator', 'e'));
+            Log::error('Collaborator attach failed', [
+                'board_id' => $board->id,
+                'email' => $request->email,
+                'role' => $request->role,
+                'error' => $e->getMessage(),
+            ]);
 
             return back()->with('error', 'Could not add collaborator. Please try again.');
         }
@@ -37,72 +55,54 @@ class CollaboratorController extends Controller
 
     /**
      * Remove the specified collaborator from the board.
-     *
-     * @param  \App\Models\User  $collaborator  (Using route model binding for the collaborator)
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(Board $board, User $collaborator)
+    public function destroy(Board $board, User $collaborator): RedirectResponse
     {
-        $this->authorize('removeCollaborator', $board);
-
         if ($collaborator->id === $board->user_id) {
             return back()->with('error', 'The board owner cannot be removed.');
         }
 
-        try {
-            $deletedCount = $board->collaborators()->detach($collaborator->id);
+        $deletedCount = $this->detachCollaborator($board, $collaborator->id);
 
-            if ($deletedCount === 0) {
-                return back()->with('error', 'Collaborator was not found on this board.');
-            }
-
-            return back()->with('success', 'Collaborator removed successfully: '.$collaborator->name);
-
-        } catch (\Exception $e) {
-            Log::error('Collaborator detach failed: '.$e->getMessage(), ['board_id' => $board->id, 'collaborator_id' => $collaborator->id]);
-
-            // Expose the error message in development/testing environments
-            $errorMessage = app()->environment('local', 'testing')
-               ? 'Database error: '.$e->getMessage()
-               : 'Could not remove collaborator. Please try again.';
-
-            return back()->with('error', $errorMessage);
+        if ($deletedCount === 0) {
+            return back()->with('error', 'Collaborator was not found on this board.');
         }
+
+        return back()->with('success', 'Collaborator removed successfully: '.$collaborator->name);
     }
     // ------------------------------------------------------------------------------------------------------
 
     /**
      * Allows a collaborator to remove themselves (leave) from a board.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function leaveBoard(Board $board)
+    public function leaveBoard(Board $board): RedirectResponse
     {
+        $user = Auth::user();
 
-        $this->authorize('leave', $board);
+        $deletedCount = $this->detachCollaborator($board, $user->id);
 
+        if ($deletedCount === 0) {
+            return back()->with('error', 'You were not found as a collaborator on this board.');
+        }
+
+        return redirect()->route('dashboard.index', ['type' => 'shared'])->with('success', 'You have successfully left the board: '.$board->name);
+    }
+
+    /**
+     * Detach a collaborator and centralize error logging.
+     */
+    private function detachCollaborator(Board $board, int $userId): int
+    {
         try {
-            $user = Auth::user();
-
-            $deletedCount = $board->collaborators()->detach($user->id);
-
-            if ($deletedCount === 0) {
-                return back()->with('error', 'You were not found as a collaborator on this board.');
-            }
-
-            // Redirect back to the shared boards list after successfully leaving
-            return redirect()->route('dashboard.index', ['type' => 'shared'])->with('success', 'You have successfully left the board: '.$board->name);
-
+            return $board->collaborators()->detach($userId);
         } catch (\Exception $e) {
-            // Log the full error for server-side debugging
-            Log::error('Collaborator self-detach failed: '.$e->getMessage(), ['board_id' => $board->id, 'user_id' => Auth::id()]);
+            Log::error('Collaborator detach failed', [
+                'board_id' => $board->id,
+                'user_id' => $userId,
+                'error' => $e->getMessage(),
+            ]);
 
-            // Expose the error message in development/testing environments
-            $errorMessage = app()->environment('local', 'testing')
-               ? 'Database error: '.$e->getMessage()
-               : 'Could not leave the board. Please try again.';
-
-            return back()->with('error', $errorMessage);
+            return 0;
         }
     }
 }
