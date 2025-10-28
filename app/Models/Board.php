@@ -27,4 +27,11 @@ class Board extends Model
     {
         return $this->hasMany(Task::class);
     }
+
+    public function loadActiveTasks(): void
+    {
+        $this->load(['tasks' => function ($query) {
+            $query->whereIn('status', ['open', 'in_progress', 'review', 'done']);
+        }]);
+    }
 }
