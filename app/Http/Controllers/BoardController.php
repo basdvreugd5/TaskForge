@@ -118,18 +118,4 @@ class BoardController extends Controller
         return redirect()->route('dashboard.index')
             ->with('success', 'Board deleted successfully');
     }
-    // ------------------------------------------------------------------------------------------------------
-
-    /**
-     * Show the collaborator management view for the specified board.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function manageCollaborators(Board $board)
-    {
-        $this->authorize('addCollaborator', $board);
-
-        return view('dashboard.boards.collaborators.manage', compact('board'));
-    }
-    // ------------------------------------------------------------------------------------------------------
 }

@@ -85,7 +85,7 @@
                     </x-action-button>
                 </form>
             @elseif ($showLeave)
-                <form action="{{ route('dashboard.boards.leave', $board) }}" method="POST"
+                <form action="{{ route('dashboard.boards.boards.leave', $board) }}" method="POST"
                     onsubmit="return confirm('Are you sure you want to leave the board: {{ $board->name }}?')">
                     @csrf
                     @method('DELETE')

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskStoreRequest;
+use App\Http\Requests\TaskUpdateRequest;
 use App\Models\Board;
 use App\Models\Task;
-use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
@@ -44,21 +45,9 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request, Board $board)
+    public function store(TaskStoreRequest $request, Board $board)
     {
-        $this->authorize('create', [Task::class, $board]);
-
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string|max:1220',
-            'status' => 'required|string|in:open,in_progress,review,done',
-            'priority' => 'required|string|in:low,medium,high',
-            'hard_deadline' => 'required|date',
-            'soft_due_date' => 'nullable|date',
-            'checklist' => 'nullable|array',
-            'checklist.*.title' => 'required_with:checklist|string|max:255',
-            'checklist.*.is_completed' => 'boolean',
-        ]);
+        $validated = $request->validated();
 
         $task = Task::create([
             'title' => $validated['title'],
@@ -107,20 +96,9 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Task $task)
+    public function update(TaskUpdateRequest $request, Task $task)
     {
-        $this->authorize('update', $task);
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string|max:1220',
-            'status' => 'required|string|in:open,in_progress,review,done',
-            'priority' => 'required|string|in:low,medium,high',
-            'hard_deadline' => 'required|date',
-            'soft_due_date' => 'nullable|date',
-            'checklist' => 'nullable|array',
-            'checklist.*.title' => 'required_with:checklist|string|max:255',
-            'checklist.*.is_completed' => 'boolean',
-        ]);
+        $validated = $request->validated();
 
         $task->update([
             'title' => $validated['title'],
@@ -139,35 +117,6 @@ class TaskController extends Controller
 
         return redirect()->route('dashboard.tasks.show', $task)
             ->with('success', 'Task updated successfully!');
-    }
-    // ------------------------------------------------------------------------------------------------------
-
-    /**
-     * Update the checklist.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function updateChecklist(Request $request, Task $task)
-    {
-        $this->authorize('update', $task);
-
-        $validated = $request->validate([
-            'index' => 'required|integer',
-            'is_completed' => 'required|boolean',
-        ]);
-
-        $checklist = $task->checklist ?? [];
-
-        if (isset($checklist[$validated['index']])) {
-            $checklist[$validated['index']]['is_completed'] = (bool) $validated['is_completed'];
-        }
-
-        $task->update(['checklist' => $checklist]);
-
-        return response()->json([
-            'success' => true,
-            'checklist' => $checklist,
-        ]);
     }
     // ------------------------------------------------------------------------------------------------------
 

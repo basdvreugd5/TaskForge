@@ -101,7 +101,7 @@
                                     {{-- Remove Collaborator Button --}}
                                     @if (!$isOwner && !$isCurrentUser)
                                         <form method="POST"
-                                            action="{{ route('dashboard.collaborators.destroy', [$board, $collaborator]) }}">
+                                            action="{{ route('dashboard.boards.collaborators.destroy', [$board, $collaborator]) }}">
                                             @csrf
                                             @method('DELETE')
                                             <x-icon-button icon="delete" type="submit" color="red"
@@ -121,7 +121,7 @@
                 <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4">
                     Add New Collaborator
                 </h3>
-                <form method="POST" action="{{ route('dashboard.collaborators.store', $board) }}">
+                <form method="POST" action="{{ route('dashboard.boards.collaborators.store', $board) }}">
                     @csrf
                     <div class="flex flex-col sm:flex-row gap-4">
                         <!-- Email Input -->

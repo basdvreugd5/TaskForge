@@ -1,10 +1,14 @@
 <?php
 
+use App\Http\Controllers\Board\ManageCollaboratorsController;
 use App\Http\Controllers\BoardController;
-use App\Http\Controllers\CollaboratorController;
+use App\Http\Controllers\Collaborator\AddCollaboratorController;
+use App\Http\Controllers\Collaborator\LeaveBoardController;
+use App\Http\Controllers\Collaborator\RemoveCollaboratorController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\Task\UpdateChecklistController;
 use App\Http\Controllers\TaskController;
 use App\Models\Board;
 use App\Models\Task;
@@ -34,21 +38,21 @@ Route::middleware(['auth', 'verified'])
             Route::get('create', [BoardController::class, 'create'])->name('create');
             Route::post('/', [BoardController::class, 'store'])->name('store');
             Route::get('{board}/edit', [BoardController::class, 'edit'])->name('edit');
-
-            Route::get('{board}/manage-collaborators', [BoardController::class, 'manageCollaborators'])->name('manage.collaborators');
-
             Route::put('{board}', [BoardController::class, 'update'])->name('update');
             Route::delete('{board}', [BoardController::class, 'destroy'])->name('destroy');
             Route::get('{board}', [BoardController::class, 'show'])->name('show');
 
-            Route::delete('{board}/leave', [CollaboratorController::class, 'leaveBoard'])->name('leave');
+            Route::get('{board}/manage-collaborators', ManageCollaboratorsController::class)->name('manage.collaborators');
+
+            Route::delete('boards/{board}/leave', LeaveBoardController::class)
+                ->name('boards.leave');
+
         });
 
         // Collaborator routes
-        Route::prefix('boards/{board}')->name('collaborators.')->group(function () {
-            Route::post('collaborators', [CollaboratorController::class, 'store'])->name('store');
-            Route::put('collaborators/{collaborator}', [CollaboratorController::class, 'update'])->name('update');
-            Route::delete('collaborators/{collaborator}', [CollaboratorController::class, 'destroy'])->name('destroy');
+        Route::prefix('boards/{board}/collaborators')->name('boards.collaborators.')->group(function () {
+            Route::post('/', AddCollaboratorController::class)->name('store');
+            Route::delete('{collaborator}', RemoveCollaboratorController::class)->name('destroy');
         });
 
         // Board → Task routes
@@ -61,7 +65,7 @@ Route::middleware(['auth', 'verified'])
         Route::prefix('tasks')->name('tasks.')->group(function () {
             Route::get('{task}/edit', [TaskController::class, 'edit'])->name('edit');
             Route::put('{task}', [TaskController::class, 'update'])->name('update');
-            Route::put('{task}/checklist', [TaskController::class, 'updateChecklist'])->name('checklist.update');
+            Route::put('{task}/checklist', UpdateChecklistController::class)->name('checklist.update');
             Route::delete('{task}', [TaskController::class, 'destroy'])->name('destroy');
             Route::get('{task}', [TaskController::class, 'show'])->name('show');
         });
