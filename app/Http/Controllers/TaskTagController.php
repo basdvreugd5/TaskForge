@@ -2,18 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Tag\AttachTagToTaskAction;
+use App\Actions\Tag\DetachTagFromTaskAction;
 use App\Models\Tag;
 use App\Models\Task;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-class TagController extends Controller
+class TaskTagController extends Controller
 {
     /**
      * Attach tag to task
      *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Task  $task
+     * @param  \App\Actions\Tag\AttachTagToTaskAction  $attachTagToTaskAction
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function attach(Request $request, Task $task)
+    public function store(Request $request, Task $task, AttachTagToTaskAction $attachTagToTaskAction): RedirectResponse
     {
         $this->authorize('update', $task);
 
@@ -21,9 +27,7 @@ class TagController extends Controller
             'name' => 'required|string:max:64',
         ]);
 
-        $tag = Tag::firstOrCreate(['name' => $validated['name']]);
-
-        $task->tags()->syncWithoutDetaching([$tag->id]);
+        $attachTagToTaskAction->execute($task, $validated['name']);
 
         return redirect()->route('dashboard.tasks.show', $task)->with('success', 'Tag attached to task successfully.');
     }
@@ -32,13 +36,16 @@ class TagController extends Controller
     /**
      * Detach a tag from a task.
      *
+     * @param  \App\Models\Task  $task
+     * @param  \App\Models\Tag  $tag
+     * @param  \App\Actions\Tag\DetachTagFromTaskAction  $detachTagFromTaskAction
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function detach(Task $task, Tag $tag)
+    public function destroy(Task $task, Tag $tag, DetachTagFromTaskAction $detachTagFromTaskAction): RedirectResponse
     {
         $this->authorize('update', $task);
 
-        $task->tags()->detach($tag->id);
+        $detachTagFromTaskAction->execute($task, $tag);
 
         return redirect()->route('dashboard.tasks.show', $task)->with('success', 'Tag detached from task successfully.');
     }

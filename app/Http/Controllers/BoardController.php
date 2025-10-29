@@ -85,10 +85,9 @@ class BoardController extends Controller
     /**
      * Update the specified board.
      *
-     * @parm \App\Http\Requests\BoardUpdateRequest $request
-     * @parm \App\Models\Board $board
-     * @parm \App\Actions\Board\UpdateBoardAction $updateBoardAction
-     *
+     * @param  \App\Http\Requests\BoardUpdateRequest  $request
+     * @param  \App\Models\Board  $board
+     * @param  \App\Actions\Board\UpdateBoardAction  $updateBoardAction
      * @return \Illuminate\Http\RedirectResponse
      *
      * @phpstan-parm array<string, mixed> $validated

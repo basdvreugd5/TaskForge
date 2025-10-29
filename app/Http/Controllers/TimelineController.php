@@ -14,7 +14,7 @@ class TimelineController extends Controller
      */
     public function index()
     {
-        $this->authorize('viewAny', \App\Models\Board::class);
+        $this->authorize('viewAny', Board::class);
 
         $boards = Board::with(['tasks' => function ($query) {
             $query->select('id', 'board_id', 'title', 'soft_due_date', 'hard_deadline', 'status', 'priority');

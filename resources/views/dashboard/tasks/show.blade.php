@@ -173,7 +173,8 @@
                                     {{ $tag->name }}
                                 </x-badge>
 
-                                <form method="POST" action="{{ route('dashboard.tasks.tags.detach', [$task, $tag]) }}"
+                                <form method="POST"
+                                    action="{{ route('dashboard.tasks.tags.destroy', [$task, $tag]) }}"
                                     class="absolute  left-1 hidden group-hover:block">
                                     @csrf
                                     @method('DELETE')
@@ -200,7 +201,7 @@
 
                     <!-- Add Tag Form -->
                     <form x-show="open" x-cloak method="POST"
-                        action="{{ route('dashboard.tasks.tags.attach', $task) }}" class="mt-3 flex gap-2">
+                        action="{{ route('dashboard.tasks.tags.store', $task) }}" class="mt-3 flex gap-2">
                         @csrf
                         <input type="text" name="name" placeholder="New tag name"
                             class="border rounded px-2 py-1 text-sm w-40 dark:bg-slate-700 dark:text-white">

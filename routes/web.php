@@ -10,8 +10,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\Task\UpdateChecklistController;
 use App\Http\Controllers\TaskController;
-use App\Models\Board;
-use App\Models\Task;
+use App\Http\Controllers\TaskTagController;
+use App\Http\Controllers\TimelineController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,31 +23,30 @@ Route::middleware(['auth', 'verified'])
     ->name('dashboard.')
     ->group(function () {
 
-        // Dashboard home
+        // ... Dashboard, Search, Timeline routes ...
         Route::get('/', [DashboardController::class, 'index'])->name('index');
-
-        // Search Page
         Route::get('/search', [SearchController::class, 'index'])->name('search.index');
+        Route::get('/timeline', [TimelineController::class, 'index'])->name('timeline');
 
-        // Timeline Page -- WORK IN PROGRESS
-        Route::get('/timeline', [App\Http\Controllers\TimelineController::class, 'index'])
-            ->name('timeline');
+        // ----------------------------------------------------------------------
+        // RESOURCE & CUSTOM ROUTES
+        // ----------------------------------------------------------------------
 
-        // Board routes
-        Route::prefix('boards')->name('boards.')->group(function () {
-            Route::get('create', [BoardController::class, 'create'])->name('create');
-            Route::post('/', [BoardController::class, 'store'])->name('store');
-            Route::get('{board}/edit', [BoardController::class, 'edit'])->name('edit');
-            Route::put('{board}', [BoardController::class, 'update'])->name('update');
-            Route::delete('{board}', [BoardController::class, 'destroy'])->name('destroy');
-            Route::get('{board}', [BoardController::class, 'show'])->name('show');
+        // Board Resource
+        Route::resource('boards', BoardController::class)->only(['create', 'store', 'edit', 'update', 'destroy', 'show']);
 
-            Route::get('{board}/manage-collaborators', ManageCollaboratorsController::class)->name('manage.collaborators');
+        // Custom Board Routes
+        Route::get('boards/{board}/manage-collaborators', ManageCollaboratorsController::class)->name('boards.manage.collaborators');
+        Route::delete('boards/{board}/leave', LeaveBoardController::class)->name('boards.leave');
 
-            Route::delete('boards/{board}/leave', LeaveBoardController::class)
-                ->name('boards.leave');
+        // Task Creation
+        Route::resource('boards.tasks', TaskController::class)->only(['create', 'store']);
 
-        });
+        // Task Management
+        Route::resource('tasks', TaskController::class)->except(['index', 'create', 'store']);
+
+        // Custom Task Route
+        Route::put('tasks/{task}/checklist', UpdateChecklistController::class)->name('tasks.checklist.update');
 
         // Collaborator routes
         Route::prefix('boards/{board}/collaborators')->name('boards.collaborators.')->group(function () {
@@ -55,25 +54,8 @@ Route::middleware(['auth', 'verified'])
             Route::delete('{collaborator}', RemoveCollaboratorController::class)->name('destroy');
         });
 
-        // Board → Task routes
-        Route::prefix('boards/{board}')->name('boards.')->group(function () {
-            Route::get('tasks/create', [TaskController::class, 'create'])->name('tasks.create');
-            Route::post('tasks', [TaskController::class, 'store'])->name('tasks.store');
-        });
-
-        // Direct Task routes
-        Route::prefix('tasks')->name('tasks.')->group(function () {
-            Route::get('{task}/edit', [TaskController::class, 'edit'])->name('edit');
-            Route::put('{task}', [TaskController::class, 'update'])->name('update');
-            Route::put('{task}/checklist', UpdateChecklistController::class)->name('checklist.update');
-            Route::delete('{task}', [TaskController::class, 'destroy'])->name('destroy');
-            Route::get('{task}', [TaskController::class, 'show'])->name('show');
-        });
-
-        Route::post('/tasks/{task}/tags', [App\Http\Controllers\TagController::class, 'attach'])
-            ->name('tasks.tags.attach');
-        Route::delete('/tasks/{task}/tags/{tag}', [App\Http\Controllers\TagController::class, 'detach'])
-            ->name('tasks.tags.detach');
+        // Task Tag routes
+        Route::resource('tasks.tags', TaskTagController::class)->only(['store', 'destroy']);
     });
 
 Route::middleware('auth')->group(function () {
