@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Filters\BoardFilter;
-use App\Models\Board;
-use App\Models\Task;
-use Illuminate\Http\Request;
+use App\Actions\Dashboard\RetrieveDashboardDataAction;
+use App\Http\Requests\DashboardIndexRequest;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -13,30 +11,23 @@ class DashboardController extends Controller
     /**
      * Display the main dashboard view.
      *
+     * @param  \App\Http\Requests\DashboardIndexRequest  $request
+     * @param  \App\Actions\Dashboard\RetrieveDashboardDataAction  $action
      * @return \Illuminate\Contracts\View\View
      */
-    public function index(Request $request)
+    public function index(DashboardIndexRequest $request, RetrieveDashboardDataAction $action)
     {
         $user = Auth::user();
 
-        $filters = $request->only('search', 'type');
-        $filters['type'] ??= 'owned';
+        $filters = $request->getFilters();
 
-        $boards = (new BoardFilter)
-            ->apply(Board::query(), $filters)
-            ->with('user')
-            ->withCount('tasks')
-            ->withCount('collaborators')
-            ->get();
+        $data = $action->execute($filters);
 
-        $boardIds = $boards->pluck('id')->toArray();
-
-        $tasks = Task::whereIn('board_id', $boardIds)
-            ->with('board')
-            ->orderBy('hard_deadline', 'asc')
-            ->paginate(5)
-            ->withQueryString();
-
-        return view('dashboard.index', compact('user', 'boards', 'tasks', 'filters'));
+        return view('dashboard.index', [
+            'user' => $user,
+            'boards' => $data['boards'],
+            'tasks' => $data['tasks'],
+            'filters' => $filters,
+        ]);
     }
 }
