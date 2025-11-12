@@ -9,7 +9,7 @@ use App\Models\Task;
 class RetrieveDashboardDataAction
 {
     /**
-     * Summary of execute
+     * Retrieve dashboard data based on filters.
      *
      * @param  mixed  $filters
      * @return array{boards: \Illuminate\Database\Eloquent\Collection<int, Board>, tasks: mixed}

@@ -7,7 +7,11 @@ use App\Models\Board;
 class UpdateBoardAction
 {
     /**
-     * Executes the board update logic.
+     * Update an existing Board.
+     *
+     * @param  \App\Models\Board  $board
+     * @param  array<string, mixed>  $data
+     * @return \App\Models\Board
      */
     public function execute(Board $board, array $data): Board
     {

@@ -51,19 +51,20 @@ class BoardController extends Controller
     /**
      * Store a newly created board.
      *
-     * @param  \App\Http\Requests\BoardStoreRequest  $request
-     * @param  \App\Actions\Board\CreateBoardAction  $createBoardAction
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  BoardStoreRequest  $request
+     * @param  CreateBoardAction  $action
      *
-     * @phpstan-parm array<string, mixed> $validated
+     * @phpstan-param array<string, mixed> $validated
+     *
+     * @return RedirectResponse
      *
      * @phpstan-return \Illuminate\Http\RedirectResponse
      */
-    public function store(BoardStoreRequest $request, CreateBoardAction $createBoardAction): RedirectResponse
+    public function store(BoardStoreRequest $request, CreateBoardAction $action): RedirectResponse
     {
         $validated = $request->validated();
 
-        $board = $createBoardAction->execute($validated);
+        $board = $action->execute($validated);
 
         return redirect()->route('dashboard.boards.show', $board)
             ->with('success', 'Board created successfully!');
@@ -73,7 +74,7 @@ class BoardController extends Controller
     /**
      * Show the form for editing the specified board.
      *
-     * @param  \App\Models\Board  $board
+     * @param  Board  $board
      * @return \Illuminate\Contracts\View\View
      */
     public function edit(Board $board)
@@ -85,18 +86,21 @@ class BoardController extends Controller
     /**
      * Update the specified board.
      *
-     * @param  \App\Http\Requests\BoardUpdateRequest  $request
-     * @param  \App\Models\Board  $board
-     * @param  \App\Actions\Board\UpdateBoardAction  $updateBoardAction
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  BoardUpdateRequest  $request
+     * @param  Board  $board
+     * @param  UpdateBoardAction  $action
      *
-     * @phpstan-parm array<string, mixed> $validated
+     * @phpstan-param array<string, mixed> $validated
+     *
+     * @return RedirectResponse
+     *
+     * @phpstan-return \Illuminate\Http\RedirectResponse
      */
-    public function update(BoardUpdateRequest $request, Board $board, UpdateBoardAction $updateBoardAction): RedirectResponse
+    public function update(BoardUpdateRequest $request, Board $board, UpdateBoardAction $action): RedirectResponse
     {
         $validated = $request->validated();
 
-        $updateBoardAction->execute($board, $validated);
+        $action->execute($board, $validated);
 
         return redirect()->route('dashboard.boards.show', $board)
             ->with('success', 'Board updated successfully!');
@@ -106,13 +110,15 @@ class BoardController extends Controller
     /**
      * Remove the specified board.
      *
-     * @param  \App\Models\Board  $board
-     * @param  \App\Actions\Board\DeleteBoardAction  $deleteBoardAction
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  Board  $board
+     * @param  DeleteBoardAction  $action
+     * @return RedirectResponse
+     *
+     * @phpstan-return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Board $board, DeleteBoardAction $deleteBoardAction): RedirectResponse
+    public function destroy(Board $board, DeleteBoardAction $action): RedirectResponse
     {
-        $deleteBoardAction->execute($board);
+        $action->execute($board);
 
         return redirect()->route('dashboard.index')
             ->with('success', 'Board deleted successfully');

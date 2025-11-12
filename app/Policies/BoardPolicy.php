@@ -20,7 +20,7 @@ class BoardPolicy
     {
         return true;
     }
-    // ------------------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------
 
     /**
      * Determine whether the user can view the model.
@@ -34,7 +34,7 @@ class BoardPolicy
             ? Response::allow()
             : Response::deny('You do not have access to this board.');
     }
-    // ------------------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------
 
     /**
      * Determine whether the user can create models.
@@ -45,7 +45,7 @@ class BoardPolicy
     {
         return true;
     }
-    // ------------------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------
 
     /**
      * Determine whether the user can update the model.
@@ -60,7 +60,7 @@ class BoardPolicy
             ? Response::allow()
             : Response::deny('You do not have permission to edit this board.');
     }
-    // ------------------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------
 
     /**
      * Determine whether the user can delete the model.
@@ -75,7 +75,7 @@ class BoardPolicy
             ? Response::allow()
             : Response::deny('You do not have permission to delete this board');
     }
-    // ------------------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------
 
     /**
      * Determine whether the user can restore the model.
@@ -86,7 +86,7 @@ class BoardPolicy
     {
         return $this->getRole($user, $board) === 'owner';
     }
-    // ------------------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------
 
     /**
      * Determine whether the user can permanently delete the model.
@@ -97,10 +97,10 @@ class BoardPolicy
     {
         return $this->getRole($user, $board) === 'owner';
     }
-    // ------------------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------
 
     /**
-     * Summary of addCollaborator
+     * Determine whether the user can add a collaborator.
      *
      * @return bool
      */
@@ -108,10 +108,10 @@ class BoardPolicy
     {
         return $this->getRole($user, $board) === 'owner';
     }
-    // ------------------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------
 
     /**
-     * Summary of removeCollaborator
+     * Determine whether the user can remove a collaborator.
      *
      * @return bool
      */
@@ -119,10 +119,10 @@ class BoardPolicy
     {
         return $this->getRole($user, $board) === 'owner';
     }
-    // ------------------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------
 
     /**
-     * Summary of leave
+     * Determine whether the user can leave the board.
      *
      * @return bool
      */
@@ -130,5 +130,15 @@ class BoardPolicy
     {
         return $this->getRole($user, $board) !== 'owner';
     }
-    // ------------------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------
+
+    /**
+     * Determine whether the user can view collaborators.
+     *
+     * @return bool
+     */
+    public function viewCollaborators(User $user, Board $board): bool
+    {
+        return $this->getRole($user, $board) === 'owner';
+    }
 }

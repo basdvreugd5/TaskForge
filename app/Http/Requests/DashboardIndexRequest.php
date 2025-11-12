@@ -30,7 +30,7 @@ class DashboardIndexRequest extends FormRequest
     // ----------------------------------------------------------
 
     /**
-     * Summary of getFilters
+     * Get the filters from the request.
      *
      * @return array
      */

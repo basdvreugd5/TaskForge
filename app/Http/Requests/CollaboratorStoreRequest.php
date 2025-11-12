@@ -53,11 +53,11 @@ class CollaboratorStoreRequest extends FormRequest
                 }
 
                 if ($collaborator->id === $board->user_id) {
-                    $validator->errors()->add('email', 'The board owner cannot be added as a collaborator');
+                    $validator->errors()->add('email', 'The board owner can not be added as a collaborator');
                 }
 
                 if ($board->collaborators()->where('user_id', $collaborator->id)->exists()) {
-                    $validator->errors()->add('email', 'This user is already a collaborator');
+                    $validator->errors()->add('email', 'That user is already a collaborator');
                 }
             },
         ];

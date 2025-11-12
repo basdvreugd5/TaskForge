@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Collaborator;
 
+use App\Actions\Collaborator\RemoveCollaboratorAction;
 use App\Http\Controllers\Controller;
 use App\Models\Board;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Log;
 
 class RemoveCollaboratorController extends Controller
 {
@@ -15,27 +15,22 @@ class RemoveCollaboratorController extends Controller
         $this->middleware('can:removeCollaborator,board');
     }
 
-    public function __invoke(Board $board, User $collaborator): RedirectResponse
+    /**
+     * Remove a collaborator from the given board.
+     *
+     * @param  Board  $board
+     * @param  User  $collaborator
+     * @param  RemoveCollaboratorAction  $removeCollaborator
+     * @return RedirectResponse
+     */
+    public function __invoke(Board $board, User $collaborator, RemoveCollaboratorAction $action): RedirectResponse
     {
-        if ($collaborator->id === $board->user_id) {
-            return back()->with('error', 'The board owner cannot be removed.');
-        }
-
         try {
-            $deleted = $board->collaborators()->detach($collaborator->id);
+            $action->execute($board, $collaborator);
+
+            return back()->with('success', "{$collaborator->name} has been removed from the board.");
         } catch (\Exception $e) {
-            Log::error('Collaborator detach failed', [
-                'board_id' => $board->id,
-                'user_id' => $collaborator->id,
-                'error' => $e->getMessage(),
-            ]);
-            $deleted = 0;
+            return back()->with('error', $e->getMessage());
         }
-
-        if ($deleted === 0) {
-            return back()->with('error', 'Collaborator was not found on this board.');
-        }
-
-        return back()->with('success', "Collaborator {$collaborator->name} removed successfully.");
     }
 }

@@ -9,7 +9,10 @@ use Illuminate\Support\Facades\DB;
 class CreateBoardAction
 {
     /**
-     * Executes the board creation logic.
+     * Create new Board.
+     *
+     * @param  array<string, mixed>  $data
+     * @return \App\Models\Board
      */
     public function execute(array $data): Board
     {

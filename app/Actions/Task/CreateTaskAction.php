@@ -8,7 +8,11 @@ use App\Models\Task;
 class CreateTaskAction
 {
     /**
-     * Executes the task creation logic- create new Task on Board.
+     * Create a new Task.
+     *
+     * @param  \App\Models\Board  $board
+     * @param  array<string, mixed>  $data
+     * @return \App\Models\Task
      */
     public function execute(Board $board, array $data): Task
     {

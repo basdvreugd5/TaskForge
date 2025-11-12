@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\Board\ManageCollaboratorsController;
 use App\Http\Controllers\BoardController;
 use App\Http\Controllers\Collaborator\AddCollaboratorController;
 use App\Http\Controllers\Collaborator\LeaveBoardController;
+use App\Http\Controllers\Collaborator\ManageCollaboratorsController;
 use App\Http\Controllers\Collaborator\RemoveCollaboratorController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;

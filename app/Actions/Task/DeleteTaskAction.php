@@ -8,7 +8,10 @@ use App\Models\Task;
 class DeleteTaskAction
 {
     /**
-     * Executes the logic to delete a Task and returns the parent Board.
+     * Delete a Task and return its parent board.
+     *
+     * @param  \App\Models\Task  $task
+     * @return \App\Models\Board
      */
     public function execute(Task $task): Board
     {

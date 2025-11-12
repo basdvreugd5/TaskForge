@@ -126,6 +126,6 @@ class TaskController extends Controller
 
         return redirect()
             ->route('dashboard.boards.show', $board)
-            ->with('succes', 'Task deleted succesfully');
+            ->with('succes', 'Task deleted successfully');
     }
 }

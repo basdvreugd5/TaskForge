@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Collaborator;
 
+use App\Actions\Collaborator\AddCollaboratorAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CollaboratorStoreRequest;
 use App\Models\Board;
@@ -18,16 +19,21 @@ class AddCollaboratorController extends Controller
     /**
      * Add a collaborator to the specified board.
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  CollaboratorStoreRequest  $request
+     * @param  Board  $board
+     * @param  AddCollaboratorAction  $action
+     * @return RedirectResponse
      */
-    public function __invoke(CollaboratorStoreRequest $request, Board $board): RedirectResponse
+    public function __invoke(CollaboratorStoreRequest $request, Board $board, AddCollaboratorAction $action): RedirectResponse
     {
-        $collaborator = User::where('email', $request->email)->first();
+        try {
+            $collaborator = User::where('email', $request->email)->first();
 
-        $board->collaborators()->syncWithoutDetaching([
-            $collaborator->id => ['role' => $request->role],
-        ]);
+            $action->execute($board, $collaborator, $request->role);
 
-        return back()->with('success', "Collaborator {$collaborator->name} added/updated as {$request->role}.");
+            return back()->with('success', "{$collaborator->name} added as {$request->role}.");
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 }
