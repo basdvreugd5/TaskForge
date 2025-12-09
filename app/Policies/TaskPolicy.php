@@ -28,7 +28,7 @@ class TaskPolicy
     {
         return $this->hasAccess($user, $task->board)
             ? Response::allow()
-            : Response::deny('You do not have acces to this task.');
+            : Response::deny('You do not have access to this task.');
     }
     // ------------------------------------------------------------------------------------------------------
 
@@ -41,7 +41,7 @@ class TaskPolicy
 
         return in_array($role, ['owner', 'editor'])
             ? Response::allow()
-            : Response::deny('You do not have acces to this task.');
+            : Response::deny('You do not have access to this task.');
 
     }
     // ------------------------------------------------------------------------------------------------------
@@ -55,7 +55,7 @@ class TaskPolicy
 
         return in_array($role, ['owner', 'editor'])
             ? Response::allow()
-            : Response::deny('You do not have acces to this task.');
+            : Response::deny('You do not have access to this task.');
     }
     // ------------------------------------------------------------------------------------------------------
 
@@ -68,7 +68,7 @@ class TaskPolicy
 
         return in_array($role, ['owner', 'editor'])
             ? Response::allow()
-            : Response::deny('You do not have acces to this task.');
+            : Response::deny('You do not have access to this task.');
     }
     // ------------------------------------------------------------------------------------------------------
 

@@ -43,7 +43,7 @@ class CollaboratorStoreRequest extends FormRequest
                 $collaborator = User::firstWhere('email', $this->email);
 
                 if (! $collaborator) {
-                    $validator->errors()->add('error', 'No user found with that email adress.');
+                    $validator->errors()->add('error', 'No user found with that email address.');
 
                     return;
                 }
