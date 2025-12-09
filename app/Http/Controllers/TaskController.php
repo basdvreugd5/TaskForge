@@ -9,31 +9,29 @@ use App\Http\Requests\TaskStoreRequest;
 use App\Http\Requests\TaskUpdateRequest;
 use App\Models\Board;
 use App\Models\Task;
+use App\Traits\HandlesControllerExceptions;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class TaskController extends Controller
 {
+    use HandlesControllerExceptions;
+
     /**
-     * Display the selected task.
-     *
-     * @param  \App\Models\Task  $task
-     * @return \Illuminate\Contracts\View\View
+     * Display the specified task.
      */
-    public function show(Task $task)
+    public function show(Task $task): View
     {
-        $this->authorize('view', $task);
 
         $task->load(['board.tasks', 'tags']);
 
         return view('dashboard.tasks.show', compact('task'));
     }
-    // ----------------------------------------------------------
 
     /**
-     * Create a new task.
-     *
-     * @return \Illuminate\Contracts\View\View
+     * Show the form for creating a new task.
      */
-    public function create(Board $board)
+    public function create(Board $board): View
     {
         $this->authorize('create', [Task::class, $board]);
 
@@ -42,90 +40,72 @@ class TaskController extends Controller
             'board' => $board,
         ]);
     }
-    // ----------------------------------------------------------
 
     /**
      * Store the task on the board.
-     *
-     * @param  \App\Http\Requests\TaskStoreRequest  $request
-     * @param  \App\Models\Board  $board
-     * @param  \App\Actions\Task\CreateTaskAction  $createTaskAction
-     *
-     * @phpstan-param array<string, mixed> $validated
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     *
-     * @phpstan-return \Illuminate\Http\RedirectResponse
      */
-    public function store(TaskStoreRequest $request, Board $board, CreateTaskAction $createTaskAction)
+    public function store(TaskStoreRequest $request, Board $board, CreateTaskAction $action): RedirectResponse
     {
-        $validated = $request->validated();
-
-        $task = $createTaskAction->execute($board, $validated);
-
-        return redirect()->route('dashboard.tasks.show', $task);
+        return $this->handleActionException(
+            fn () => $action->execute($board, $request->validated()),
+            'Failed to create the task.',
+            'Task creation failed.',
+            ['board_id' => $board->id],
+            route: 'dashboard.tasks.show',
+            routeParams: [$board->tasks()->latest()->first()],
+            successMessage: 'Task created successfully.'
+        );
     }
-    // ----------------------------------------------------------
 
     /**
-     * Edit the task details.
-     *
-     * @param  \App\Models\Task  $task
-     * @return \Illuminate\Contracts\View\View
+     * Show the Form to edit the task details.
      */
-    public function edit(Task $task)
+    public function edit(Task $task): View
     {
-        $this->authorize('update', $task);
+        $this->authorize('view', $task);
 
-        $task->checklist = collect($task->checklist ?? [])->map(function ($item) {
-            return [
-                'title' => $item['title'] ?? '',
-                'is_completed' => (bool) ($item['is_completed'] ?? false),
-            ];
-        })->toArray();
+        $task->load('board');
+        $task->checklist = $task->formatted_checklist;
 
-        $board = $task->board;
-
-        return view('dashboard.tasks.edit', compact('task', 'board'));
+        return view('dashboard.tasks.edit', [
+            'task' => $task,
+            'board' => $task->board,
+        ]);
     }
-    // ----------------------------------------------------------
 
     /**
      * Update the task details.
-     *
-     * @param  \App\Http\Requests\TaskUpdateRequest  $request
-     * @param  \App\Models\Task  $task
-     * @param  \App\Actions\Task\UpdateTaskAction  $updateTaskAction
-     *
-     * @phpstan-param array<string, mixed> $validated
-     *
-     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(TaskUpdateRequest $request, Task $task, UpdateTaskAction $updateTaskAction)
+    public function update(TaskUpdateRequest $request, Task $task, UpdateTaskAction $action): RedirectResponse
     {
-        $validated = $request->validated();
+        $this->authorize('update', $task);
 
-        $updateTaskAction->execute($task, $validated);
-
-        return redirect()->route('dashboard.tasks.show', $task)
-            ->with('success', 'Task updated successfully!');
+        return $this->handleActionException(
+            fn () => $action->execute($task, $request->validated()),
+            'Failed to update the task.',
+            'Task update failed.',
+            ['task_id' => $task->id],
+            route: 'dashboard.boards.show',
+            routeParams: [$task->board],
+            successMessage: 'Task updated successfully.'
+        );
     }
-    // ----------------------------------------------------------
 
     /**
      * Delete the task.
-     *
-     * @param  \App\Models\Task  $task
-     * @param  \App\Actions\Task\DeleteTaskAction  $deleteTaskAction
-     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Task $task, DeleteTaskAction $deleteTaskAction)
+    public function destroy(Task $task, DeleteTaskAction $action): RedirectResponse
     {
         $this->authorize('delete', $task);
-        $board = $deleteTaskAction->execute($task);
 
-        return redirect()
-            ->route('dashboard.boards.show', $board)
-            ->with('succes', 'Task deleted successfully');
+        return $this->handleActionException(
+            fn () => $action->execute($task),
+            'Failed to delete the task.',
+            'Task deletion failed.',
+            ['task_id' => $task->id],
+            route: 'dashboard.boards.show',
+            routeParams: [$task->board],
+            successMessage: 'Task deleted successfully.'
+        );
     }
 }

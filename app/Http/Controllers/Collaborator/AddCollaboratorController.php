@@ -18,11 +18,6 @@ class AddCollaboratorController extends Controller
 
     /**
      * Add a collaborator to the specified board.
-     *
-     * @param  CollaboratorStoreRequest  $request
-     * @param  Board  $board
-     * @param  AddCollaboratorAction  $action
-     * @return RedirectResponse
      */
     public function __invoke(CollaboratorStoreRequest $request, Board $board, AddCollaboratorAction $action): RedirectResponse
     {

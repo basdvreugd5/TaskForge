@@ -8,10 +8,6 @@ class UpdateTaskAction
 {
     /**
      * Update an existing Task.
-     *
-     * @param  \App\Models\Task  $task
-     * @param  array<string, mixed>  $data
-     * @return \App\Models\Task
      */
     public function execute(Task $task, array $data): Task
     {

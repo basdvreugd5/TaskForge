@@ -13,7 +13,6 @@ class DashboardIndexRequest extends FormRequest
     {
         return true;
     }
-    // ----------------------------------------------------------
 
     /**
      * Get the validation rules that apply to the request.
@@ -27,14 +26,13 @@ class DashboardIndexRequest extends FormRequest
             'type' => 'nullable|in:owned,shared',
         ];
     }
-    // ----------------------------------------------------------
 
     /**
      * Get the filters from the request.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         $filters = $this->only('search', 'type');
         $filters['type'] ??= 'owned';

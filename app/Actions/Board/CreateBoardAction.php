@@ -10,9 +10,6 @@ class CreateBoardAction
 {
     /**
      * Create new Board.
-     *
-     * @param  array<string, mixed>  $data
-     * @return \App\Models\Board
      */
     public function execute(array $data): Board
     {

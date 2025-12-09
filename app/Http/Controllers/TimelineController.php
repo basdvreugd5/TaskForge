@@ -9,10 +9,8 @@ class TimelineController extends Controller
 {
     /**
      * Timeline view
-     *
-     * @return \Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(): \Illuminate\View\View
     {
         $this->authorize('viewAny', Board::class);
 

@@ -13,11 +13,12 @@ trait HasBoardRole
             return 'owner';
         }
 
-        // $collaborator = $board->collaborators()->where('user_id', $user->id)->first();
-        $collaborator = $board->collaborators()->firstWhere('id', $user->id);
+        // Use find() - it's cleaner than firstWhere('id', ...)
+        // This finds the user *within* the relationship
+        $collaborator = $board->collaborators()->find($user->id);
 
+        // Access the pivot data as you had it
         return $collaborator ? $collaborator->pivot->role : null;
-
     }
 
     protected function hasAccess(User $user, Board $board): bool

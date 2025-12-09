@@ -14,7 +14,7 @@ class RetrieveDashboardDataAction
      * @param  mixed  $filters
      * @return array{boards: \Illuminate\Database\Eloquent\Collection<int, Board>, tasks: mixed}
      */
-    public function execute($filters)
+    public function execute($filters): array
     {
         $boards = (new BoardFilter)
             ->apply(Board::query(), $filters)

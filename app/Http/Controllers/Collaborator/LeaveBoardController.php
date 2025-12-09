@@ -16,11 +16,7 @@ class LeaveBoardController extends Controller
     }
 
     /**
-     * Leave from board shared with you.
-     *
-     * @param  Board  $board
-     * @param  LeaveBoardAction  $action
-     * @return RedirectResponse
+     * Allow the authenticated user to leave a shared board.
      */
     public function __invoke(Board $board, LeaveBoardAction $action): RedirectResponse
     {

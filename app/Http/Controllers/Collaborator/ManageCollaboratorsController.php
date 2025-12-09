@@ -10,12 +10,9 @@ class ManageCollaboratorsController extends Controller
     /**
      * Show the collaborator management view for the specified board.
      *
-     * @param  \App\Models\Board  $board
-     * @return \Illuminate\Contracts\View\View
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function __invoke(Board $board)
+    public function __invoke(Board $board): \Illuminate\View\View
     {
         $this->authorize('viewCollaborators', $board);
 

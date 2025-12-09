@@ -9,10 +9,6 @@ class CreateTaskAction
 {
     /**
      * Create a new Task.
-     *
-     * @param  \App\Models\Board  $board
-     * @param  array<string, mixed>  $data
-     * @return \App\Models\Task
      */
     public function execute(Board $board, array $data): Task
     {

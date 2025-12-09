@@ -4,13 +4,12 @@ namespace App\Http\Requests;
 
 use App\Models\Board;
 use Illuminate\Foundation\Http\FormRequest;
-// use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\Validator;
 
 class BoardStoreRequest extends FormRequest
 {
-    /** Determine if the user is authorized to make this request.*
-     *
+    /**
+     * Determine if the user is authorized to make this request.*
      */
     public function authorize(): bool
     {

@@ -11,14 +11,11 @@ class CollaboratorStoreRequest extends FormRequest
 {
     /**
      * Determine if the user can add a collaborator.
-     *
-     * @return bool
      */
     public function authorize(): bool
     {
         return $this->user()?->can('addCollaborator', $this->route('board')) ?? false;
     }
-    // ------------------------------------------------------------------------------------------------------
 
     /**
      * Get the validation rules that apply to the request.
@@ -32,7 +29,6 @@ class CollaboratorStoreRequest extends FormRequest
             'role' => ['required', Rule::in(['editor', 'viewer']), 'string'],
         ];
     }
-    // ------------------------------------------------------------------------------------------------------
 
     /**
      * Get the validation callbacks that should run after validation.

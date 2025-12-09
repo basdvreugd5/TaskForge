@@ -10,7 +10,6 @@ class DeleteBoardAction
     /**
      * Execute the board deletion logic.
      *
-     * @param  \App\Models\Board  $board
      * @return bool True if deleted successfully.
      */
     public function execute(Board $board): bool
