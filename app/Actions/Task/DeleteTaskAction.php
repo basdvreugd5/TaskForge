@@ -17,5 +17,6 @@ class DeleteTaskAction
         $task->delete();
 
         return $board;
+
     }
 }

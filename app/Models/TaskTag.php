@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class TaskTag extends Pivot
 {
-    //
+    //might be deleted later
 }

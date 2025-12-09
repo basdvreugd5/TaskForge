@@ -74,7 +74,7 @@ class Task extends Model
     public function getFormattedChecklistAttribute(): array
     {
         return collect($this->checklist ?? [])
-            ->map(fn ($item) => [
+            ->map(fn($item) => [
                 'title' => $item['title'] ?? '',
                 'is_completed' => (bool) ($item['is_completed'] ?? false),
             ])

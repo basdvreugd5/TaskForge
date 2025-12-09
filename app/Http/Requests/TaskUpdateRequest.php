@@ -47,7 +47,7 @@ class TaskUpdateRequest extends FormRequest
 
                     $validator->errors()->add(
                         'checklist',
-                        'The checklist cannot have more than 10 items.'
+                        'The checklist cannot have more than 10 items.',
                     );
                 }
 
@@ -61,13 +61,13 @@ class TaskUpdateRequest extends FormRequest
                     if ($softTimestamp > $hardTimestamp) {
                         $validator->errors()->add(
                             'soft_due_date',
-                            'The soft due date must not be after the hard deadline.'
+                            'The soft due date must not be after the hard deadline.',
                         );
                     }
                     if ($hardTimestamp < $softTimestamp) {
                         $validator->errors()->add(
                             'hard_deadline',
-                            'The hard deadline must not be before the soft due date.'
+                            'The hard deadline must not be before the soft due date.',
                         );
                     }
                 }

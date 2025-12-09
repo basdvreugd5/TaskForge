@@ -36,7 +36,7 @@ class TaskController extends Controller
         $this->authorize('create', [Task::class, $board]);
 
         return view('dashboard.tasks.create', [
-            'task' => new Task,
+            'task' => new Task(),
             'board' => $board,
         ]);
     }
@@ -47,13 +47,13 @@ class TaskController extends Controller
     public function store(TaskStoreRequest $request, Board $board, CreateTaskAction $action): RedirectResponse
     {
         return $this->handleActionException(
-            fn () => $action->handle($board, $request->validated()),
+            fn() => $action->handle($board, $request->validated()),
             'Failed to create the task.',
             'Task creation failed.',
             ['board_id' => $board->id],
             route: 'dashboard.tasks.show',
             routeParams: [$board->tasks()->latest()->first()],
-            successMessage: 'Task created successfully.'
+            successMessage: 'Task created successfully.',
         );
     }
 
@@ -81,13 +81,13 @@ class TaskController extends Controller
         $this->authorize('update', $task);
 
         return $this->handleActionException(
-            fn () => $action->handle($task, $request->validated()),
+            fn() => $action->handle($task, $request->validated()),
             'Failed to update the task.',
             'Task update failed.',
             ['task_id' => $task->id],
             route: 'dashboard.boards.show',
             routeParams: [$task->board],
-            successMessage: 'Task updated successfully.'
+            successMessage: 'Task updated successfully.',
         );
     }
 
@@ -99,13 +99,13 @@ class TaskController extends Controller
         $this->authorize('delete', $task);
 
         return $this->handleActionException(
-            fn () => $action->handle($task),
+            fn() => $action->handle($task),
             'Failed to delete the task.',
             'Task deletion failed.',
             ['task_id' => $task->id],
             route: 'dashboard.boards.show',
             routeParams: [$task->board],
-            successMessage: 'Task deleted successfully.'
+            successMessage: 'Task deleted successfully.',
         );
     }
 }

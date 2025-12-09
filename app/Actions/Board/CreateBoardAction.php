@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class CreateBoardAction
 {
     /**
-     * Create new Board.
+     * Create a new Board.
      */
     public function handle(array $data): Board
     {

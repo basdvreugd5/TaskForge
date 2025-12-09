@@ -10,11 +10,6 @@ class AddCollaboratorAction
 {
     /**
      * Add a collaborator to a board.
-     *
-     * @param  \App\Models\Board  $board
-     * @param  \App\Models\User  $collaborator
-     * @param  string  $role
-     * @return void
      */
     public function handle(Board $board, User $collaborator, string $role): void
     {

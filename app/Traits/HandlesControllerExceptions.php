@@ -15,7 +15,6 @@ trait HandlesControllerExceptions
      * @param  string|null  $errorMessage  Message for UI feedback.
      * @param  string|null  $logMessage  Optional log message context.
      * @param  array  $context  Additional log context.
-     * @return RedirectResponse
      */
     protected function handleActionException(
         callable $callback,
@@ -33,12 +32,12 @@ trait HandlesControllerExceptions
                 $params = empty($routeParams) ? [$result] : $routeParams;
 
                 return to_route($route, $params)
-                    ->with('success', $successMessage ?? 'Action completed succesfully.');
+                    ->with('success', $successMessage ?? 'Action completed successfully.');
             }
 
             return $result instanceof RedirectResponse
                 ? $result
-                : back()->with('success', $errorMessage ?? 'Action completed succesfully.');
+                : back()->with('success', $errorMessage ?? 'Action completed successfully.');
         } catch (Throwable $e) {
             Log::error($logMessage ?? 'Controller action failed', array_merge($context, [
                 'error' => $e->getMessage(),

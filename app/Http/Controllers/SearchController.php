@@ -20,7 +20,7 @@ class SearchController extends Controller
 
         $filters = $request->only('search', 'type');
 
-        $boards = (new BoardFilter)
+        $boards = (new BoardFilter())
             ->apply(Board::query(), $filters)
             ->where(function ($query) {})
             ->get();

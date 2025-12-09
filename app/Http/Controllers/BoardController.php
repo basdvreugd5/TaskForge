@@ -40,7 +40,7 @@ class BoardController extends Controller
     public function create(): View
     {
         return view('dashboard.boards.create', [
-            'board' => new Board,
+            'board' => new Board(),
         ]);
     }
 
@@ -50,11 +50,11 @@ class BoardController extends Controller
     public function store(BoardStoreRequest $request, CreateBoardAction $action): RedirectResponse
     {
         return $this->handleActionException(
-            fn () => $action->execute($request->validated()),
+            fn() => $action->handle($request->validated()),
             'Failed to create the board.',
             'Board creation failed.',
             route: 'dashboard.boards.show',
-            successMessage: 'Board created successfully!'
+            successMessage: 'Board created successfully!',
         );
     }
 
@@ -72,12 +72,12 @@ class BoardController extends Controller
     public function update(BoardUpdateRequest $request, Board $board, UpdateBoardAction $action): RedirectResponse
     {
         return $this->handleActionException(
-            fn () => $action->execute($board, $request->validated()),
+            fn() => $action->handle($board, $request->validated()),
             errorMessage: 'Failed to update the board.',
             logMessage: 'Board update failed.',
             route: 'dashboard.boards.show',
             routeParams: [$board],
-            successMessage: 'Board updated successfully!'
+            successMessage: 'Board updated successfully!',
         );
     }
 
@@ -87,11 +87,11 @@ class BoardController extends Controller
     public function destroy(Board $board, DeleteBoardAction $action): RedirectResponse
     {
         return $this->handleActionException(
-            fn () => $action->execute($board),
+            fn() => $action->handle($board),
             errorMessage: 'Failed to delete the board.',
             logMessage: 'Board deletion failed.',
             route: 'dashboard.index',
-            successMessage: 'Board deleted successfully'
+            successMessage: 'Board deleted successfully',
         );
     }
 }
