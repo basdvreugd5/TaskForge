@@ -10,10 +10,6 @@ class DashboardController extends Controller
 {
     /**
      * Display the main dashboard view.
-     *
-     * @param  \App\Http\Requests\DashboardIndexRequest  $request
-     * @param  \App\Actions\Dashboard\RetrieveDashboardDataAction  $action
-     * @return \Illuminate\Contracts\View\View
      */
     public function index(DashboardIndexRequest $request, RetrieveDashboardDataAction $action)
     {
@@ -21,7 +17,7 @@ class DashboardController extends Controller
 
         $filters = $request->getFilters();
 
-        $data = $action->execute($filters);
+        $data = $action->handle($filters);
 
         return view('dashboard.index', [
             'user' => $user,

@@ -12,13 +12,9 @@ class LeaveBoardAction
     /**
      * Leave from a shared board.
      *
-     * @param  Board  $board
-     * @param  User  $user
-     * @return void
-     *
      * @throws \RuntimeException
      */
-    public function execute(Board $board, User $user): void
+    public function handle(Board $board, User $user): void
     {
         $deleted = 0;
 

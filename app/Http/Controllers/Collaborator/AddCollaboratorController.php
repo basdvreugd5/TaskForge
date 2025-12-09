@@ -24,7 +24,7 @@ class AddCollaboratorController extends Controller
         try {
             $collaborator = User::where('email', $request->email)->first();
 
-            $action->execute($board, $collaborator, $request->role);
+            $action->handle($board, $collaborator, $request->role);
 
             return back()->with('success', "{$collaborator->name} added as {$request->role}.");
         } catch (\Exception $e) {

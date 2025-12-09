@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Log;
 
 class RemoveCollaboratorAction
 {
-    public function execute(Board $board, User $collaborator): void
+    public function handle(Board $board, User $collaborator): void
     {
         if ($collaborator->id === $board->user_id) {
             throw new \Exception('Board owner cannot be removed.');

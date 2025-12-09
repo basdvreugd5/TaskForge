@@ -47,7 +47,7 @@ class TaskController extends Controller
     public function store(TaskStoreRequest $request, Board $board, CreateTaskAction $action): RedirectResponse
     {
         return $this->handleActionException(
-            fn () => $action->execute($board, $request->validated()),
+            fn () => $action->handle($board, $request->validated()),
             'Failed to create the task.',
             'Task creation failed.',
             ['board_id' => $board->id],
@@ -81,7 +81,7 @@ class TaskController extends Controller
         $this->authorize('update', $task);
 
         return $this->handleActionException(
-            fn () => $action->execute($task, $request->validated()),
+            fn () => $action->handle($task, $request->validated()),
             'Failed to update the task.',
             'Task update failed.',
             ['task_id' => $task->id],
@@ -99,7 +99,7 @@ class TaskController extends Controller
         $this->authorize('delete', $task);
 
         return $this->handleActionException(
-            fn () => $action->execute($task),
+            fn () => $action->handle($task),
             'Failed to delete the task.',
             'Task deletion failed.',
             ['task_id' => $task->id],

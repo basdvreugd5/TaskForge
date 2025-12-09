@@ -21,7 +21,7 @@ class TaskTagController extends Controller
     public function store(TagAttachRequest $request, Task $task, AttachTagToTaskAction $action): RedirectResponse
     {
         return $this->handleActionException(
-            fn () => $action->execute($task, $request->validated()['name']),
+            fn () => $action->handle($task, $request->validated()['name']),
             errorMessage: 'Failed to add the tag.',
             logMessage: 'Tag attach failed.',
             route: 'dashboard.tasks.show',
@@ -36,7 +36,7 @@ class TaskTagController extends Controller
     public function destroy(TagDetachRequest $request, Task $task, Tag $tag, DetachTagFromTaskAction $action): RedirectResponse
     {
         return $this->handleActionException(
-            fn () => $action->execute($task, $tag),
+            fn () => $action->handle($task, $tag),
             errorMessage: "Failed to remove {$tag->name}.",
             logMessage: 'Tag detach failed.',
             route: 'dashboard.tasks.show',

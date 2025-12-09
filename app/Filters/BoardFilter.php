@@ -18,13 +18,11 @@ class BoardFilter
         if ($type === 'owned') {
             $query->where('user_id', Auth::id());
         } elseif ($type === 'shared' || $type === 'collaborator') {
-            // exclude boards where the current user is the owner, then require them as a collaborator
             $query->where('user_id', '!=', Auth::id())
                 ->whereHas('collaborators', function ($q) {
                     $q->where('user_id', Auth::id());
                 });
         } else {
-            // default: only boards user can access (owned OR shared)
             $query->where(function ($q) {
                 $q->where('user_id', Auth::id())
                     ->orWhereHas('collaborators', function ($qq) {

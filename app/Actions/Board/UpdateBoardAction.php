@@ -9,7 +9,7 @@ class UpdateBoardAction
     /**
      * Update an existing Board.
      */
-    public function execute(Board $board, array $data): Board
+    public function handle(Board $board, array $data): Board
     {
         $board->update([
             'name' => $data['name'],

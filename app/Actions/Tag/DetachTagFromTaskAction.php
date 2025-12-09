@@ -10,7 +10,7 @@ class DetachTagFromTaskAction
     /**
      * Detaches the tag from the task.
      */
-    public function execute(Task $task, Tag $tag): void
+    public function handle(Task $task, Tag $tag): void
     {
         $task->tags()->detach($tag->id);
     }

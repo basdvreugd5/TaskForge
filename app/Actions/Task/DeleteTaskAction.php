@@ -10,7 +10,7 @@ class DeleteTaskAction
     /**
      * Delete a Task and return its parent board.
      */
-    public function execute(Task $task): Board
+    public function handle(Task $task): Board
     {
         $board = $task->board;
 

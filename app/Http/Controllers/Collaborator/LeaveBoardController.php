@@ -22,7 +22,7 @@ class LeaveBoardController extends Controller
     {
         try {
             $user = Auth::user();
-            $action->execute($board, $user);
+            $action->handle($board, $user);
 
             return back()->with('success', "You have successfully left the board: {$board->name}");
         } catch (\Throwable $e) {

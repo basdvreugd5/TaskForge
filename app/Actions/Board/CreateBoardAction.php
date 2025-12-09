@@ -11,7 +11,7 @@ class CreateBoardAction
     /**
      * Create new Board.
      */
-    public function execute(array $data): Board
+    public function handle(array $data): Board
     {
         return DB::transaction(function () use ($data) {
             $board = Board::create([

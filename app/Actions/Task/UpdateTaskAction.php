@@ -9,7 +9,7 @@ class UpdateTaskAction
     /**
      * Update an existing Task.
      */
-    public function execute(Task $task, array $data): Task
+    public function handle(Task $task, array $data): Task
     {
         $updateData = array_merge($data, [
             'checklist' => collect($data['checklist'] ?? [])->map(function ($item) {

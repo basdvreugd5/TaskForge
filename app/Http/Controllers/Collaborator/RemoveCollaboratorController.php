@@ -17,16 +17,11 @@ class RemoveCollaboratorController extends Controller
 
     /**
      * Remove a collaborator from the given board.
-     *
-     * @param  Board  $board
-     * @param  User  $collaborator
-     * @param  RemoveCollaboratorAction  $removeCollaborator
-     * @return RedirectResponse
      */
     public function __invoke(Board $board, User $collaborator, RemoveCollaboratorAction $action): RedirectResponse
     {
         try {
-            $action->execute($board, $collaborator);
+            $action->handle($board, $collaborator);
 
             return back()->with('success', "{$collaborator->name} has been removed from the board.");
         } catch (\Exception $e) {

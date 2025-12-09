@@ -10,7 +10,7 @@ class CreateTaskAction
     /**
      * Create a new Task.
      */
-    public function execute(Board $board, array $data): Task
+    public function handle(Board $board, array $data): Task
     {
         $taskData = array_merge($data, [
             'board_id' => $board->id,

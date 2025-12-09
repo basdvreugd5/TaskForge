@@ -10,7 +10,7 @@ class AttachTagToTaskAction
     /**
      * Finds/creates the tag and attaches it to the task.
      */
-    public function execute(Task $task, string $tagName): void
+    public function handle(Task $task, string $tagName): void
     {
         $tag = Tag::firstOrCreate(['name' => $tagName]);
 

@@ -16,7 +16,7 @@ class AddCollaboratorAction
      * @param  string  $role
      * @return void
      */
-    public function execute(Board $board, User $collaborator, string $role): void
+    public function handle(Board $board, User $collaborator, string $role): void
     {
         if ($collaborator->id === $board->user_id) {
             throw new \Exception("Owner of the Board can't be added as collaborator");

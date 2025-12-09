@@ -14,8 +14,6 @@ class TagAttachRequest extends FormRequest
         $task = $this->route('task'); // route model binding
 
         return $task && $this->user()?->can('update', $task);
-        // return true;
-
     }
 
     /**
