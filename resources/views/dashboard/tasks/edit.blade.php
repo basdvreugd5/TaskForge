@@ -40,7 +40,6 @@
                         @if ($errors->any())
                             <div class="p-4 mt-4 bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-700 text-red-700 dark:text-red-300 rounded-lg font-medium"
                                 role="alert">
-                                {{-- Loop through all errors in the default bag --}}
                                 @foreach ($errors->all() as $error)
                                     <p>{{ $error }}</p>
                                 @endforeach

@@ -5,6 +5,7 @@ namespace App\Actions\Collaborator;
 use App\Models\Board;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
+use RuntimeException;
 
 class AddCollaboratorAction
 {
@@ -14,7 +15,11 @@ class AddCollaboratorAction
     public function handle(Board $board, User $collaborator, string $role): void
     {
         if ($collaborator->id === $board->user_id) {
-            throw new \Exception("Owner of the Board can't be added as collaborator");
+            throw new RuntimeException("Owner of the Board can't be added as collaborator");
+        }
+
+        if ($board->collaborators()->where('user_id', $collaborator->id)->exists()) {
+            throw new RuntimeException('That user is already a collaborator');
         }
 
         try {
@@ -28,7 +33,7 @@ class AddCollaboratorAction
                 'error' => $e->getMessage(),
             ]);
 
-            throw new \Exception('Failed to add collaborator.');
+            throw new RuntimeException('Failed to add collaborator. Please try again.');
         }
     }
 }

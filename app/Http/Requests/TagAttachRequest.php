@@ -24,7 +24,7 @@ class TagAttachRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:64'],
+            'name' => ['required', 'string', 'max:64', 'min:1'],
         ];
     }
 }

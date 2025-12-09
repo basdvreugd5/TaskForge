@@ -5,7 +5,6 @@ namespace App\Http\Requests;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
 
 class CollaboratorStoreRequest extends FormRequest
 {
@@ -27,35 +26,6 @@ class CollaboratorStoreRequest extends FormRequest
         return [
             'email' => ['required', 'email', 'exists:users,email', 'max:255', 'min:5', 'string'],
             'role' => ['required', Rule::in(['editor', 'viewer']), 'string'],
-        ];
-    }
-
-    /**
-     * Get the validation callbacks that should run after validation.
-     *
-     * @return array<int, callable>
-     */
-    public function after(): array
-    {
-        return [
-            function (Validator $validator) {
-                $board = $this->route('board');
-                $collaborator = User::firstWhere('email', $this->email);
-
-                if (! $collaborator) {
-                    $validator->errors()->add('error', 'No user found with that email address.');
-
-                    return;
-                }
-
-                if ($collaborator->id === $board->user_id) {
-                    $validator->errors()->add('email', 'The board owner can not be added as a collaborator');
-                }
-
-                if ($board->collaborators()->where('user_id', $collaborator->id)->exists()) {
-                    $validator->errors()->add('email', 'That user is already a collaborator');
-                }
-            },
         ];
     }
 }

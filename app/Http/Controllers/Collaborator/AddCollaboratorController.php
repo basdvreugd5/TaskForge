@@ -7,10 +7,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CollaboratorStoreRequest;
 use App\Models\Board;
 use App\Models\User;
+use App\Traits\HandlesControllerExceptions;
 use Illuminate\Http\RedirectResponse;
 
 class AddCollaboratorController extends Controller
 {
+    use HandlesControllerExceptions;
+
     public function __construct()
     {
         $this->middleware('can:addCollaborator,board');
@@ -21,14 +24,20 @@ class AddCollaboratorController extends Controller
      */
     public function __invoke(CollaboratorStoreRequest $request, Board $board, AddCollaboratorAction $action): RedirectResponse
     {
-        try {
-            $collaborator = User::where('email', $request->email)->first();
-
-            $action->handle($board, $collaborator, $request->role);
-
-            return back()->with('success', "{$collaborator->name} added as {$request->role}.");
-        } catch (\Exception $e) {
-            return back()->with('error', $e->getMessage());
-        }
+        return $this->handleActionException(
+            fn() => $action->handle(
+                $board,
+                User::where('email', $request->email)->firstOrFail(),
+                $request->role,
+            ),
+            errorMessage: 'Failed to add collaborator.',
+            logMessage: 'AddCollaboratorController failed',
+            context: [
+                'board_id' => $board->id,
+                'email' => $request->email,
+                'role' => $request->role,
+            ],
+            successMessage: "{$request->email} added as {$request->role}.",
+        );
     }
 }

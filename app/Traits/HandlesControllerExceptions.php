@@ -37,7 +37,7 @@ trait HandlesControllerExceptions
 
             return $result instanceof RedirectResponse
                 ? $result
-                : back()->with('success', $errorMessage ?? 'Action completed successfully.');
+                : back()->with('success', $successMessage ?? 'Action completed successfully.');
         } catch (Throwable $e) {
             Log::error($logMessage ?? 'Controller action failed', array_merge($context, [
                 'error' => $e->getMessage(),
@@ -45,7 +45,8 @@ trait HandlesControllerExceptions
                 'route' => request()->path(),
             ]));
 
-            return back()->with('error', $errorMessage ?? 'Something went wrong. Please try again.');
+            return back()->with('error', $errorMessage ? "{$errorMessage} ({$e->getMessage()})" : $e->getMessage());
+
         }
     }
 }

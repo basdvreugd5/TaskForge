@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Collaborator;
 use App\Actions\Collaborator\LeaveBoardAction;
 use App\Http\Controllers\Controller;
 use App\Models\Board;
+use App\Traits\HandlesControllerExceptions;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
 class LeaveBoardController extends Controller
 {
+    use HandlesControllerExceptions;
+
     public function __construct()
     {
         $this->middleware('can:leave,board');
@@ -20,13 +23,15 @@ class LeaveBoardController extends Controller
      */
     public function __invoke(Board $board, LeaveBoardAction $action): RedirectResponse
     {
-        try {
-            $user = Auth::user();
-            $action->handle($board, $user);
-
-            return back()->with('success', "You have successfully left the board: {$board->name}");
-        } catch (\Throwable $e) {
-            return back()->with('error', $e->getMessage());
-        }
+        return $this->handleActionException(
+            fn() => $action->handle($board, Auth::user()),
+            errorMessage: 'Failed to leave the board.',
+            logMessage: 'LeaveBoardController failed',
+            context: [
+                'board_id' => $board->id,
+                'user_id' => Auth::id(),
+            ],
+            successMessage: "You have successfully left the board: {$board->name}",
+        );
     }
 }

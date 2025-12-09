@@ -45,6 +45,7 @@
                 </div>
             @endif
 
+
             <!-- Current Collaborators List -->
             <div class="p-6 max-h-[60vh] overflow-y-auto">
                 <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4">
