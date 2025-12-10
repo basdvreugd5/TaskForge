@@ -2,20 +2,25 @@
 
 namespace App\Actions\Board;
 
+use App\Domain\Boards\BoardPersistenceService;
+use App\Domain\Boards\BoardValidationService;
 use App\Models\Board;
 
 class UpdateBoardAction
 {
+    public function __construct(
+        protected BoardValidationService $validator,
+        protected BoardPersistenceService $persistence,
+    ) {}
     /**
      * Update an existing Board.
+     *
+     * @throws \RuntimeException
      */
     public function handle(Board $board, array $data): Board
     {
-        $board->update([
-            'name' => $data['name'],
-            'description' => $data['description'],
-        ]);
+        $this->validator->ensureNameIsUnique($board->user_id, $data['name'], $board->id);
 
-        return $board;
+        return $this->persistence->updateBoard($board, $data);
     }
 }

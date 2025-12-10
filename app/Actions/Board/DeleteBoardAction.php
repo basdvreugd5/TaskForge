@@ -2,11 +2,14 @@
 
 namespace App\Actions\Board;
 
+use App\Domain\Boards\BoardPersistenceService;
 use App\Models\Board;
-use Illuminate\Support\Facades\DB;
 
 class DeleteBoardAction
 {
+    public function __construct(
+        protected BoardPersistenceService $persistence,
+    ) {}
     /**
      * Board deletion logic.
      *
@@ -14,9 +17,7 @@ class DeleteBoardAction
      */
     public function handle(Board $board): bool
     {
-        return DB::transaction(function () use ($board) {
+        return $this->persistence->deleteBoard($board);
 
-            return $board->delete();
-        });
     }
 }

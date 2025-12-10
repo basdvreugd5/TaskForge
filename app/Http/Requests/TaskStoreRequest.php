@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use App\Models\Task;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Validator;
 
 class TaskStoreRequest extends FormRequest
 {
@@ -33,19 +32,6 @@ class TaskStoreRequest extends FormRequest
             'checklist' => ['nullable', 'array'],
             'checklist.*.title' => ['required_with:checklist', 'string', 'max:255'],
             'checklist.*.is_completed' => ['boolean'],
-        ];
-    }
-
-    public function after(): array
-    {
-        return [
-            function (Validator $validator) {
-                $board = $this->route('board');
-
-                if ($board && $board->tasks()->count() >= 200) {
-                    $validator->errors()->add('title', 'Task limit reached for this board.');
-                }
-            },
         ];
     }
 }

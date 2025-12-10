@@ -2,29 +2,27 @@
 
 namespace App\Actions\Board;
 
+use App\Domain\Boards\BoardPersistenceService;
+use App\Domain\Boards\BoardValidationService;
 use App\Models\Board;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class CreateBoardAction
 {
+    public function __construct(
+        protected BoardValidationService $validator,
+        protected BoardPersistenceService $persistence,
+    ) {}
     /**
      * Create a new Board.
      */
     public function handle(array $data): Board
     {
-        return DB::transaction(function () use ($data) {
-            $board = Board::create([
-                'name' => $data['name'],
-                'description' => $data['description'],
-                'user_id' => Auth::id(),
-            ]);
+        $user = Auth::user();
 
-            $board->collaborators()->syncWithoutDetaching([
-                Auth::id() => ['role' => 'owner'],
-            ]);
+        $this->validator->ensureNameIsUnique($user->id, $data['name']);
+        $this->validator->ensureBoardLimitNotExceeded($user->id);
 
-            return $board;
-        });
+        return $this->persistence->createBoard($user->id, $data);
     }
 }

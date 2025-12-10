@@ -42,6 +42,7 @@
                     <x-alert type="error" :message="$error" />
                 @endforeach
             @endif
+
             <form class="p-6 max-h-[60vh] overflow-y-auto" method="POST"
                 action="{{ route('dashboard.boards.update', $board) }}" enctype="multipart/form-data">
                 @csrf
