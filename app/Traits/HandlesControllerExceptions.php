@@ -24,10 +24,15 @@ trait HandlesControllerExceptions
         ?string $route = null,
         ?array $routeParams = [],
         ?string $successMessage = null,
-    ): RedirectResponse {
+        ?callable $successResponse = null,
+        ?callable $errorResponse = null,
+    ) {
         try {
             $result = $callback();
 
+            if ($successResponse) {
+                return $successResponse($result);
+            }
             if ($route) {
                 $params = empty($routeParams) ? [$result] : $routeParams;
 
@@ -44,6 +49,9 @@ trait HandlesControllerExceptions
                 'trace' => $e->getTraceAsString(),
                 'route' => request()->path(),
             ]));
+            if ($errorResponse) {
+                return $errorResponse($e);
+            }
 
             return back()->with('error', $errorMessage ? "{$errorMessage} ({$e->getMessage()})" : $e->getMessage());
 

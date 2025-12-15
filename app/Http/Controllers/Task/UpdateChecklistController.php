@@ -2,37 +2,33 @@
 
 namespace App\Http\Controllers\Task;
 
+use App\Actions\Task\UpdateChecklistItemAction;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateChecklistItemRequest;
 use App\Models\Task;
-use Illuminate\Http\Request;
+use App\Traits\HandlesControllerExceptions;
 
 class UpdateChecklistController extends Controller
 {
+    use HandlesControllerExceptions;
+    public function __construct(
+        protected UpdateChecklistItemAction $action,
+    ) {}
     /**
-     * Update the checklist.
+     * Update a single checklist item.
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function __invoke(Request $request, Task $task)
+    public function __invoke(UpdateChecklistItemRequest $request, Task $task)
     {
         $this->authorize('update', $task);
 
-        $validated = $request->validate([
-            'index' => 'required|integer',
-            'is_completed' => 'required|boolean',
-        ]);
-
-        $checklist = $task->checklist ?? [];
-
-        if (isset($checklist[$validated['index']])) {
-            $checklist[$validated['index']]['is_completed'] = (bool) $validated['is_completed'];
-        }
-
-        $task->update(['checklist' => $checklist]);
-
-        return response()->json([
-            'success' => true,
-            'checklist' => $checklist,
-        ]);
+        return $this->handleActionException(
+            fn() => $this->action->handle($task, $request->validated()),
+            successResponse: fn() => response()->json([
+                'success' => true,
+                'checklist' => $task->fresh()->checklist,
+            ]),
+        );
     }
 }
