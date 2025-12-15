@@ -2,35 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Filters\BoardFilter;
-use App\Models\Board;
-use App\Models\Task;
-use Illuminate\Http\Request;
+use App\Actions\Search\SearchBoardsAndTasksAction;
+use App\Http\Requests\SearchRequest;
+use App\Traits\HandlesControllerExceptions;
 
 class SearchController extends Controller
 {
+    use HandlesControllerExceptions;
+    public function __construct(
+        protected SearchBoardsAndTasksAction $action,
+    ) {}
     /**
      * Search index
      *
      * @return \Illuminate\Contracts\View\View
      */
-    public function index(Request $request)
+    public function __invoke(SearchRequest $request)
     {
-        $this->authorize('viewAny', Board::class);
-
-        $filters = $request->only('search', 'type');
-
-        $boards = (new BoardFilter())
-            ->apply(Board::query(), $filters)
-            ->where(function ($query) {})
-            ->get();
-
-        $boardIds = $boards->pluck('id')->toArray();
-
-        $tasks = Task::whereIn('board_id', $boardIds)
-            ->paginate(10)
-            ->withQueryString();
-
-        return view('dashboard.index', compact('boards', 'tasks', 'filters'));
+        return $this->handleActionException(
+            fn() => $this->action->handle($request->validated()),
+            logMessage: 'Search failed',
+            successResponse: fn($result) => view('dashboard.index', $result),
+        );
     }
 }
