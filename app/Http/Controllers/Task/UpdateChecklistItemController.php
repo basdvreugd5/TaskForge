@@ -8,7 +8,7 @@ use App\Http\Requests\UpdateChecklistItemRequest;
 use App\Models\Task;
 use App\Traits\HandlesControllerExceptions;
 
-class UpdateChecklistController extends Controller
+class UpdateChecklistItemController extends Controller
 {
     use HandlesControllerExceptions;
     public function __construct(

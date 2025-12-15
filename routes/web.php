@@ -8,7 +8,7 @@ use App\Http\Controllers\Collaborator\RemoveCollaboratorController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchController;
-use App\Http\Controllers\Task\UpdateChecklistController;
+use App\Http\Controllers\Task\UpdateChecklistItemController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskTagController;
 use App\Http\Controllers\TimelineController;
@@ -46,7 +46,7 @@ Route::middleware(['auth', 'verified'])
         Route::resource('tasks', TaskController::class)->except(['index', 'create', 'store']);
 
         // Custom Task Route
-        Route::put('tasks/{task}/checklist', UpdateChecklistController::class)->name('tasks.checklist.update');
+        Route::put('tasks/{task}/checklist', UpdateChecklistItemController::class)->name('tasks.checklist.update');
 
         // Collaborator routes
         Route::prefix('boards/{board}/collaborators')->name('boards.collaborators.')->group(function () {
@@ -64,4 +64,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
