@@ -17,13 +17,11 @@ class SearchBoardsAndTasksAction
 
     public function handle(array $filters): array
     {
-        // Filter boards
         $boards = $this->boardFilter
             ->apply(Board::query(), $filters)
             ->with('user')
             ->get();
 
-        // Filter tasks in filtered boards
         $tasksQuery = Task::query()
             ->whereIn('board_id', $boards->pluck('id'))
             ->when(!empty($filters['search']), function ($q) use ($filters) {

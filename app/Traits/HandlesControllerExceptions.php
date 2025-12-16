@@ -26,7 +26,7 @@ trait HandlesControllerExceptions
         ?string $successMessage = null,
         ?callable $successResponse = null,
         ?callable $errorResponse = null,
-    ) {
+    ): mixed {
         try {
             $result = $callback();
 
