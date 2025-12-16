@@ -25,7 +25,7 @@ Route::middleware(['auth', 'verified'])
 
         // ... Dashboard, Search, Timeline routes ...
         Route::get('/', [DashboardController::class, 'index'])->name('index');
-        Route::get('/search', [SearchController::class, 'index'])->name('search.index');
+        Route::get('/search', SearchController::class)->name('search.index');
         Route::get('/timeline', [TimelineController::class, 'index'])->name('timeline');
 
         // ----------------------------------------------------------------------

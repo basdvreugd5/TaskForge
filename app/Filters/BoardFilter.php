@@ -10,27 +10,14 @@ class BoardFilter
     public function apply(Builder $query, array $filters)
     {
         if (! empty($filters['search'])) {
-            $query->where('name', 'like', '%'.$filters['search'].'%');
-        }
-
-        $type = $filters['type'] ?? null;
-
+            $query->where('name', 'like', '%' . $filters['search'] . '%');
+        } $type = $filters['type'] ?? null;
         if ($type === 'owned') {
             $query->where('user_id', Auth::id());
         } elseif ($type === 'shared' || $type === 'collaborator') {
-            $query->where('user_id', '!=', Auth::id())
-                ->whereHas('collaborators', function ($q) {
-                    $q->where('user_id', Auth::id());
-                });
+            $query->where('user_id', '!=', Auth::id()) ->whereHas('collaborators', function ($q) { $q->where('user_id', Auth::id()); });
         } else {
-            $query->where(function ($q) {
-                $q->where('user_id', Auth::id())
-                    ->orWhereHas('collaborators', function ($qq) {
-                        $qq->where('user_id', Auth::id());
-                    });
-            });
-        }
-
-        return $query;
+            $query->where(function ($q) { $q->where('user_id', Auth::id()) ->orWhereHas('collaborators', function ($qq) { $qq->where('user_id', Auth::id()); }); });
+        } return $query;
     }
 }
