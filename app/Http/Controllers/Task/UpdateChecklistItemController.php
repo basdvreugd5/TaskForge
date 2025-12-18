@@ -25,6 +25,9 @@ class UpdateChecklistItemController extends Controller
 
         return $this->handleActionException(
             fn() => $this->action->handle($task, $request->validated()),
+            errorResponse: fn($e) => response()->json([
+                'error' => $e->getMessage(),
+            ], 400),
             successResponse: fn() => response()->json([
                 'success' => true,
                 'checklist' => $task->fresh()->checklist,
