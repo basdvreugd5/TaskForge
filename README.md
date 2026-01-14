@@ -1,29 +1,29 @@
 # TaskForge
 
-TaskForge is a Laravel-based task management application that was originally built as a **learning and experimentation project**.
+TaskForge is a Laravel-based task management application built as an **early architectural learning and experimentation project**.
 
-It explores building a feature-rich application with authentication, collaboration, filtering, and UI components — and, importantly, serves as a **reflection point** on architectural decisions, trade-offs, and lessons learned.
+It explores building a relatively feature-rich application (authentication, collaboration, filtering, UI components) and now primarily serves as a **reflection point** on architectural decisions, trade-offs, and lessons learned.
 
-This repository is intentionally kept public in its current state as an **architectural experiment**, not as a polished reference implementation.
+This repository is intentionally kept public in its current state as an **architectural experiment**, not as a reference or recommended implementation.
 
 ---
 
 ## Project Status
 
-⚠️ **This project is frozen and no longer under active development.**
+⚠️ **This project is frozen and should not be used as an architectural reference.**
 
-TaskForge should be viewed as:
+TaskForge should be viewed strictly as:
 - an exploratory build
 - a place where ideas were tried
-- a reference for what *worked* and what *did not*
+- a reference for architectural mistakes and lessons learned
 
-For a clean, idiomatic Laravel example, see my newer repositories (e.g. *LaraNote*), which apply the lessons outlined below.
+For a clean, idiomatic Laravel reference project, see **LaraNote**, which intentionally applies the lessons outlined below.
 
 ---
 
 ## Key Features
 
-TaskForge includes a wide range of features typically found in task management tools:
+TaskForge includes a broad but inconsistently implemented feature set, typical of an exploratory task management build:
 
 - User authentication & authorization
 - Boards, tasks, collaborators, and tags
@@ -48,7 +48,7 @@ The feature set is intentionally broad and was used to explore Laravel, and UI-d
 
 ## Architectural Reflection
 
-This section documents **lessons learned** during development and what I would approach differently today.
+This section documents **lessons learned** during development and highlights architectural decisions I would explicitly avoid today.
 
 ### What Worked Well
 
@@ -116,7 +116,7 @@ php artisan serve
 
 ## Why This Repo Still Exists
 
-This repository is intentionally **not deleted or rewritten**.
+This repository is intentionally **not deleted or rewritten**, despite its flaws.
 
 It represents:
 - a learning phase
