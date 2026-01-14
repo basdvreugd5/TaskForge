@@ -32,7 +32,7 @@ TaskForge includes a wide range of features typically found in task management t
 - Dashboard-style UI
 - Responsive layout with Tailwind CSS
 
-The feature set is intentionally broad and was used to explore Laravel, Filament, and UI-driven development.
+The feature set is intentionally broad and was used to explore Laravel, and UI-driven development.
 
 ---
 
@@ -40,9 +40,8 @@ The feature set is intentionally broad and was used to explore Laravel, Filament
 
 - **Backend:** Laravel (PHP)
 - **Frontend:** Blade + Tailwind CSS
-- **Admin / UI tooling:** Filament
 - **Build tooling:** Vite
-- **Database:** MySQL (via Eloquent ORM)
+- **Database:** SQLite (via Eloquent ORM)
 - **Package management:** Composer & npm
 
 ---
@@ -54,7 +53,6 @@ This section documents **lessons learned** during development and what I would a
 ### What Worked Well
 
 - Gaining hands-on experience with Laravel’s ecosystem
-- Learning Filament and rapid UI scaffolding
 - Exploring authorization logic and multi-user features
 - Understanding how complexity grows in real applications
 
@@ -124,8 +122,6 @@ It represents:
 - a learning phase
 - architectural exploration
 - and growth as a developer
-
-Keeping it visible provides context for later, cleaner projects and demonstrates the ability to **reflect, self-critique, and improve** — a skill that matters in professional software development.
 
 ---
 
